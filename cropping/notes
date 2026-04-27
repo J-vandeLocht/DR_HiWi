@@ -1,0 +1,3 @@
+Manually created masks for both a selection of the frames Simon chose and randomly sampled frames from the videos.
+-> two different csv files and two different annotation apps; for the final cropping only the video-based frames and model is used
+-> trained an U-Net++

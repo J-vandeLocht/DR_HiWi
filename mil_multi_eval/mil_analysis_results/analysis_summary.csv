@@ -1,0 +1,5 @@
+Run,Best_Threshold,Best_F1
+dino_mil_complex_0426_1242_best_mil_model,0.6336,0.8889
+dino_mil_complex_0426_1409_best_mil_model,0.3116,0.8857
+dino_mil_complex_0426_1535_best_mil_model,0.355,0.8857
+dino_mil_complex_0426_1701_best_mil_model,0.027,0.8857

@@ -1,0 +1,17 @@
+sample_frames.py: Takes videos from data/dr_videos and samples frames to data/frames_raw_extract
+
+grade_frames.py: Take frames from data/frames_raw_extract and grade into 2 (or 3) classes using an interface
+
+crop_frames.py: Use trained cropping model to crop the extracted frames and move them to 0 and 1 folders to data/labeled_and_cropped_dataset
+
+classify_frames.py: Use images in data/labeled_and_cropped_dataset to train EfficientNet for classifying frames into informative and not
+
+extract_inf_frames.py: Use trained cropping model and trained informative frames model to both crop and filter all videos in data/dr_videos;
+We separate into train and val results because we trained the informative frames model on the same videos. But it should not really matter.
+I think the model generalizes good enough for assuming that both train and val results are the same.
+
+
+manual_labels.csv and manual_labels_binary_2.csv contain the labels for the two sampled frame datasets I created.
+The two split_... files tell us how we split the data into train and val in classify_frames.py.
+
+(Did I really train with the joined dataset? I think I just used the one with the four extracted frames from each video for ..._new)

@@ -1,0 +1,7 @@
+dinov3 is the cloned official repository of DINOv3.
+
+We use the ViT-L version of DINOv3.
+
+Contains the classifier and MIL script using DINOv3.
+
+(not tested if this works with the refactoring)

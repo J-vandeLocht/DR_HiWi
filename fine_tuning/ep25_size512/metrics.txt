@@ -1,0 +1,4 @@
+Accuracy: 0.7872
+F1 (Weighted): 0.8051
+F1 (Macro): 0.5476
+PR-AUC (Mean): 0.5725

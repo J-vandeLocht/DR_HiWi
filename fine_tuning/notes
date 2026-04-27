@@ -1,0 +1,10 @@
+(do train_new.py and eval_new.py work as expected?)
+
+
+Trains an efficientnet_b4 (with ImageNet weights) on a public Kaggle dataset
+(https://www.kaggle.com/datasets/ascanipek/eyepacs-aptos-messidor-diabetic-retinopathy) that combines a number of
+public DR datasets.
+
+Best model weight is saved based on Quadratic Weighted Kappa.
+
+ep25_size512 contains results of the model run with image size = 512.

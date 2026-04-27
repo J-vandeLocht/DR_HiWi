@@ -1,0 +1,9 @@
+cropping/misc/frames_to_annotate/
+data/2024_Paxos_Frames/
+data/clips_hd/
+data/own_clips_hd/
+data/informative_frames
+dino/dinov3/
+*.pt
+*.pth
+*.ckpt

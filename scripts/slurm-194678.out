@@ -1,0 +1,62 @@
+Loading classifier backbone from: classifier/dino_lr5e-06_bs16_sz512_ft_cls_same_processing/best_model.pth
+Backbone weights loaded.
+--- DINO MIL [1024 features] weights initialized ---
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/s6jovand/job/new/dino/train_dino_mil.py", line 281, in <module>
+    train_mil(args)
+  File "/home/s6jovand/job/new/dino/train_dino_mil.py", line 181, in train_mil
+    ).to(device)
+      ^^^^^^^^^^
+  File "/home/s6jovand/.conda/envs/job_new/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1355, in to
+    return self._apply(convert)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/s6jovand/.conda/envs/job_new/lib/python3.12/site-packages/torch/nn/modules/module.py", line 915, in _apply
+    module._apply(fn)
+  File "/home/s6jovand/.conda/envs/job_new/lib/python3.12/site-packages/torch/nn/modules/module.py", line 915, in _apply
+    module._apply(fn)
+  File "/home/s6jovand/.conda/envs/job_new/lib/python3.12/site-packages/torch/nn/modules/module.py", line 915, in _apply
+    module._apply(fn)
+  File "/home/s6jovand/.conda/envs/job_new/lib/python3.12/site-packages/torch/nn/modules/module.py", line 942, in _apply
+    param_applied = fn(param)
+                    ^^^^^^^^^
+  File "/home/s6jovand/.conda/envs/job_new/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1341, in convert
+    return t.to(
+           ^^^^^
+RuntimeError: CUDA error: uncorrectable ECC error encountered
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+Loading classifier backbone from: classifier/dino_lr5e-06_bs16_sz512_ft_cls/best_model.pth
+Backbone weights loaded.
+--- DINO MIL [1024 features] weights initialized ---
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/s6jovand/job/new/dino/train_dino_mil.py", line 281, in <module>
+    train_mil(args)
+  File "/home/s6jovand/job/new/dino/train_dino_mil.py", line 181, in train_mil
+    ).to(device)
+      ^^^^^^^^^^
+  File "/home/s6jovand/.conda/envs/job_new/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1355, in to
+    return self._apply(convert)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/s6jovand/.conda/envs/job_new/lib/python3.12/site-packages/torch/nn/modules/module.py", line 915, in _apply
+    module._apply(fn)
+  File "/home/s6jovand/.conda/envs/job_new/lib/python3.12/site-packages/torch/nn/modules/module.py", line 915, in _apply
+    module._apply(fn)
+  File "/home/s6jovand/.conda/envs/job_new/lib/python3.12/site-packages/torch/nn/modules/module.py", line 915, in _apply
+    module._apply(fn)
+  File "/home/s6jovand/.conda/envs/job_new/lib/python3.12/site-packages/torch/nn/modules/module.py", line 942, in _apply
+    param_applied = fn(param)
+                    ^^^^^^^^^
+  File "/home/s6jovand/.conda/envs/job_new/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1341, in convert
+    return t.to(
+           ^^^^^
+RuntimeError: CUDA error: uncorrectable ECC error encountered
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+

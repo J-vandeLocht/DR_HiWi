@@ -1,0 +1,10 @@
+dataset.py: Contains the dataset classes used in the whole project
+
+match_clips.py: Save in matching_results_hd.json the connection between the selected frames from Simon to the available videos;
+We need this later to create a consistent dataset split for both the frame-based and video-based models
+
+match_grades.py: Use matching_results_hd.json and the official grading in DR_Grading_Summary_v3.csv to extract the grading;
+saved into final_clip_labels_hd.json and final_image_labels_hd.json
+
+split_data.py: Create stratified split (original 5 grades) video-based with final_clip_labels_hd.json and get the frame-based split
+using matching_results_hd.json. The split is 0.8 to 0.2 video-wise and only approximately 0.8 to 0.2 frame-wise.

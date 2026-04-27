@@ -1,0 +1,23 @@
+Loading classifier backbone from: classifier/dino_lr5e-06_bs16_sz512_ft_cls_same_processing/best_model.pth
+Backbone weights loaded.
+--- DINO MIL [1024 features] weights initialized ---
+Mapping dataset from data/mil_train.json...
+Successfully mapped 0 videos.
+Skipped 230 videos (not found).
+Mapping dataset from data/mil_val.json...
+Successfully mapped 0 videos.
+Skipped 58 videos (not found).
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/s6jovand/job/new/dino/train_dino_mil.py", line 281, in <module>
+    train_mil(args)
+  File "/home/s6jovand/job/new/dino/train_dino_mil.py", line 195, in train_mil
+    train_loader = torch.utils.data.DataLoader(train_ds, batch_size=1, shuffle=True)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s6jovand/.conda/envs/job_new/lib/python3.12/site-packages/torch/utils/data/dataloader.py", line 385, in __init__
+    sampler = RandomSampler(dataset, generator=generator)  # type: ignore[arg-type]
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s6jovand/.conda/envs/job_new/lib/python3.12/site-packages/torch/utils/data/sampler.py", line 156, in __init__
+    raise ValueError(
+ValueError: num_samples should be a positive integer value, but got num_samples=0
