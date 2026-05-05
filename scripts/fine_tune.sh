@@ -9,4 +9,4 @@
 source ~/.bashrc
 conda activate job_new
 cd ..
-python -u -m fine_tuning.train_new
+python -u -m fine_tuning.train_eff

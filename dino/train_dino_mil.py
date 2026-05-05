@@ -13,17 +13,16 @@ from mil.utils import train_one_epoch_mil, validate_extended_mil
 
 
 class DinoBackbone(nn.Module):
-    def __init__(self, repo_dir, weights, checkpoint_path=None, freeze=True, use_cls=True):
+    def __init__(self, checkpoint_path=None, freeze=True):
         super().__init__()
 
         self.model = torch.hub.load(
-            repo_dir,
+            "dino/dinov3",
             "dinov3_vitl16",
             source="local",
-            weights=weights
+            weights="dino/dinov3_vitl16_pretrain_lvd1689m-8aa4cbdd.pth"
         )
 
-        self.use_cls = use_cls
         self.embed_dim = self.model.embed_dim
 
         # Load classifier checkpoint
@@ -46,53 +45,27 @@ class DinoBackbone(nn.Module):
 
     def forward(self, x):
         feats = self.model.forward_features(x)
-
-        if self.use_cls:
-            return feats["x_norm_clstoken"]
-        else:
-            return feats["x_norm_patchtokens"].mean(dim=1)
+        return feats["x_norm_clstoken"]
 
 
 class DinoMIL(nn.Module):
     def __init__(
-        self,
-        repo_dir,
-        weights,
-        checkpoint_path=None,
-        freeze_backbone=True,
-        use_cls=True,
-        D=512,
-        K=1
+            self,
+            checkpoint_path=None,
+            freeze_backbone=True,
+            D=512,
+            K=1
     ):
         super().__init__()
 
         self.backbone = torch.hub.load(
-            repo_dir,
+            "dino/dinov3",
             "dinov3_vitl16",
             source="local",
-            weights=weights
+            weights="dino/dinov3_vitl16_pretrain_lvd1689m-8aa4cbdd.pth"
         )
 
-        self.use_cls = use_cls
         self.L = self.backbone.embed_dim  # feature dim
-
-        # Load classifier-trained backbone if provided
-        if checkpoint_path is not None:
-            print(f"Loading classifier backbone from: {checkpoint_path}")
-            state_dict = torch.load(checkpoint_path, map_location="cpu")
-
-            backbone_state = {}
-            for k, v in state_dict.items():
-                if k.startswith("backbone."):
-                    backbone_state[k.replace("backbone.", "")] = v
-
-            self.backbone.load_state_dict(backbone_state, strict=False)
-            print("Backbone weights loaded.")
-
-        # Freeze backbone
-        if freeze_backbone:
-            for p in self.backbone.parameters():
-                p.requires_grad = False
 
         self.attention_V = nn.Sequential(
             nn.Linear(self.L, D),
@@ -113,7 +86,30 @@ class DinoMIL(nn.Module):
             nn.Linear(256, 1)
         )
 
+        # 1. ALWAYS initialize the MIL head randomly first (Preserves your training setup)
         self._init_weights()
+
+        # 2. Override with checkpoint weights if provided
+        if checkpoint_path is not None:
+            print(f"Loading checkpoint from: {checkpoint_path}")
+            state_dict = torch.load(checkpoint_path, map_location="cpu")
+
+            # Load backbone weights
+            backbone_state = {k.replace("backbone.", ""): v for k, v in state_dict.items() if k.startswith("backbone.")}
+            if backbone_state:
+                self.backbone.load_state_dict(backbone_state, strict=False)
+                print("Backbone weights loaded.")
+
+            # Load MIL Head weights (Only does something during evaluation)
+            head_state = {k: v for k, v in state_dict.items() if not k.startswith("backbone.")}
+            if head_state:
+                self.load_state_dict(head_state, strict=False)
+                print("MIL Head weights loaded.")
+
+        # Freeze backbone
+        if freeze_backbone:
+            for p in self.backbone.parameters():
+                p.requires_grad = False
 
     def _init_weights(self):
         for m in [self.attention_V, self.attention_U, self.attention_w, self.classifier]:
@@ -130,33 +126,39 @@ class DinoMIL(nn.Module):
 
         print(f"--- DINO MIL [{self.L} features] weights initialized ---")
 
+    # ---------------------------------------------------------
+    # MODULAR EVALUATION METHODS (For 4-way script)
+    # ---------------------------------------------------------
+    def extract_features(self, x):
+        """ Runs ONLY the DINO backbone to cache features. """
+        feats = self.backbone.forward_features(x)
+        return feats["x_norm_clstoken"]
+
+    def forward_head(self, h):
+        """ Runs ONLY the MIL Head on pre-computed features. """
+        a_v = self.attention_V(h)
+        a_u = self.attention_U(h)
+        a = self.attention_w(a_v * a_u)  # [N, K]
+
+        weights = torch.softmax(a, dim=0)  # over frames
+        bag_representation = torch.sum(weights * h, dim=0)  # [L]
+        logits = self.classifier(bag_representation.unsqueeze(0))  # [1,1]
+
+        # Returns raw_a for the 'Max Attention' evaluation strategy
+        return logits, weights, a.flatten()
+
+    # ---------------------------------------------------------
+    # STANDARD TRAINING FORWARD PASS (Unchanged)
+    # ---------------------------------------------------------
     def forward(self, x):
         """
         x: [num_frames, 3, H, W]
         """
+        h = self.extract_features(x)
+        logits, weights, _ = self.forward_head(h)
 
-        feats = self.backbone.forward_features(x)
-
-        if self.use_cls:
-            h = feats["x_norm_clstoken"]              # [N, L]
-        else:
-            h = feats["x_norm_patchtokens"].mean(dim=1)
-
-        # ---------------------------
-        # Gated Attention (IDENTICAL)
-        # ---------------------------
-        a_v = self.attention_V(h)
-        a_u = self.attention_U(h)
-        a = self.attention_w(a_v * a_u)          # [N, K]
-
-        weights = torch.softmax(a, dim=0)        # over frames
-
-        # Bag representation
-        bag_representation = torch.sum(weights * h, dim=0)  # [L]
-
-        # Classification
-        logits = self.classifier(bag_representation.unsqueeze(0))  # [1,1]
-
+        # We explicitly drop the raw_a here so your training script
+        # continues to receive exactly 2 items, preventing crashes.
         return logits, weights
 
 
@@ -164,33 +166,29 @@ def train_mil(args):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     timestamp = datetime.now().strftime('%m%d_%H%M')
-    run_name = f"dino_mil_{'complex' if args.complex_augs else 'simple'}_{timestamp}"
+    run_name = f"dino_mil_{'complex' if args.complex_augs else 'simple'}_{args.split_path.split('/')[-1]}_{'segmented' if args.random_segment_sample else 'uniform'}_{timestamp}"
 
-    run_dir = os.path.join("mil_runs", run_name)
+    run_dir = os.path.join("mil", "models", run_name)
     os.makedirs(run_dir, exist_ok=True)
 
     writer = SummaryWriter(log_dir=os.path.join("runs", run_name))
+    writer.add_text("args", str(args))
 
     # --- Model ---
-    model = DinoMIL(
-        repo_dir=args.repo_dir,
-        weights=args.weight_path,
-        checkpoint_path=args.classifier_checkpoint,
-        freeze_backbone=args.freeze_backbone,
-        use_cls=args.use_cls
-    ).to(device)
+    model = DinoMIL(checkpoint_path=args.classifier_checkpoint, freeze_backbone=args.freeze_backbone).to(device)
 
     # --- Transforms ---
     train_trans = make_train_transform_dino(args.img_size, args.complex_augs)
     val_trans = make_val_transform_dino(args.img_size, args.complex_augs)
 
     # --- Datasets ---
-    if not args.use_new_clips:
-        train_ds = MILVideoDataset("data/mil_train.json", "data/clips_hd", num_frames=32, transform=train_trans)
-        val_ds = MILVideoDataset("data/mil_val.json", "data/clips_hd", num_frames=32, transform=val_trans)
-    else:
-        train_ds = MILVideoDatasetNew("data/mil_train.json", num_frames=32, transform=train_trans)
-        val_ds = MILVideoDatasetNew("data/mil_val.json", num_frames=32, transform=val_trans)
+    train_ds = MILVideoDatasetNew(os.path.join(args.split_path, "mil_train.json"),
+                                  num_frames=32,
+                                  transform=train_trans,
+                                  random_segment_sample=args.random_segment_sample)
+    val_ds = MILVideoDatasetNew(os.path.join(args.split_path, "mil_val.json"),
+                                num_frames=32,
+                                transform=val_trans)
 
     train_loader = torch.utils.data.DataLoader(train_ds, batch_size=1, shuffle=True)
     val_loader = torch.utils.data.DataLoader(val_ds, batch_size=1, shuffle=False)
@@ -213,19 +211,19 @@ def train_mil(args):
         # Save confusion matrix
         save_confusion_matrix(m['y_true'], m['y_pred'], epoch, run_dir)
 
-        # --- Visualization ---
-        try:
-            # We pass run_dir so you can modify this function to save inside the run folder
-            visualize_full_video_attention(
-                model,
-                "data/own_clips_hd/val_results_new/cleaned_videos/CLEAN_2024_02_11_12_26_IMG_4608 LE MILD NPDR.mp4",
-                val_trans,
-                device,
-                epoch,
-                output_dir=run_dir
-            )
-        except Exception as e:
-            print(f"Visualization skipped: {e}")
+        # # --- Visualization ---
+        # try:
+        #     # We pass run_dir so you can modify this function to save inside the run folder
+        #     visualize_full_video_attention(
+        #         model,
+        #         "data/own_clips_hd/val_videos/cleaned_videos/CLEAN_2024_02_11_12_26_IMG_4608 LE MILD NPDR.mp4",
+        #         val_trans,
+        #         device,
+        #         epoch,
+        #         output_dir=run_dir
+        #     )
+        # except Exception as e:
+        #     print(f"Visualization skipped: {e}")
 
         # Save best model
         if m['pr_auc'] > best_pr_auc:
@@ -260,23 +258,18 @@ def train_mil(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--repo_dir', type=str, required=True)
-    parser.add_argument('--weight_path', type=str, required=True)
     parser.add_argument('--classifier_checkpoint', type=str, default=None,
                         help='Path to trained classifier model (.pth)')
-
+    parser.add_argument('--split_path', type=str, required=True)
+    parser.add_argument('--weight_path', type=str, default=None,
+                        help='Path to pretrained DINO classifier weights')
     parser.add_argument('--freeze_backbone', action='store_true')
-    parser.add_argument('--use_cls', action='store_true')
-
     parser.add_argument('--epochs', type=int, default=15)
     parser.add_argument('--lr_step', type=int, default=10)
     parser.add_argument('--img_size', type=int, default=512)
     parser.add_argument('--lr', type=float, default=1e-5)
-
     parser.add_argument('--complex_augs', action='store_true')
-
-    parser.add_argument('--use_old_clips', dest='use_new_clips', action='store_false')
-    parser.set_defaults(use_new_clips=True)
+    parser.add_argument('--random_segment_sample', action='store_true')
 
     args = parser.parse_args()
 

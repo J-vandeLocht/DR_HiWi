@@ -13,33 +13,28 @@ from dino.utils import apply_clahe_cv2_dino, make_train_transform_dino, make_val
 
 
 class DinoClassifier(nn.Module):
-    def __init__(self, repo_dir, weights, freeze_backbone=True, use_cls=True):
+    def __init__(self, freeze_backbone=True, num_classes=5):
         super().__init__()
 
         self.backbone = torch.hub.load(
-            repo_dir,
+            "dino/dinov3",
             "dinov3_vitl16",
             source="local",
-            weights=weights
+            weights="dino/dinov3_vitl16_pretrain_lvd1689m-8aa4cbdd.pth"
         )
 
-        self.use_cls = use_cls
         self.embed_dim = self.backbone.embed_dim
 
         if freeze_backbone:
             for p in self.backbone.parameters():
                 p.requires_grad = False
 
-        self.head = nn.Linear(self.embed_dim, 1)
+        self.head = nn.Linear(self.embed_dim, num_classes)
 
     def forward(self, x):
         feats = self.backbone.forward_features(x)
-
-        if self.use_cls:
-            x = feats["x_norm_clstoken"]
-        else:
-            x = feats["x_norm_patchtokens"].mean(dim=1)
-
+        # Perform classification based on the class token
+        x = feats["x_norm_clstoken"]
         return self.head(x)
 
 
@@ -47,25 +42,40 @@ def train_classifier(args):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     timestamp = datetime.now().strftime('%m%d_%H%M')
-    run_name = f"dino_{'complex' if args.complex_augs else 'simple'}_{timestamp}"
+    run_name = f"dino_{'complex' if args.complex_augs else 'simple'}_{args.split_path.split('/')[-1]}_{'kaggle' if args.weight_path else 'imagenet'}_{timestamp}"
 
-    run_dir = os.path.join("classifier", run_name)
+    run_dir = os.path.join("classifier", "models", run_name)
     os.makedirs(run_dir, exist_ok=True)
 
     writer = SummaryWriter(log_dir=os.path.join("runs", run_name))
+    writer.add_text("args", str(args))
 
+    # Step 1: Initialize model with ORIGINAL training setup (5 classes)
     model = DinoClassifier(
-        repo_dir=args.repo_dir,
-        weights=args.weight_path,
         freeze_backbone=args.freeze_backbone,
-        use_cls=args.use_cls
+        num_classes=5
     ).to(device)
+
+    # Step 2: Load pretrained weights if provided
+    if args.weight_path:
+        print(f"Loading pretrained weights from: {args.weight_path}")
+        state_dict = torch.load(args.weight_path, map_location=device)
+
+        model.load_state_dict(state_dict)
+        print("Successfully loaded pretrained DINO weights.")
+
+    # Step 3: Replace head for NEW task (binary = 1 output)
+    model.head = nn.Linear(model.embed_dim, 1).to(device)
 
     train_trans = make_train_transform_dino(args.img_size, args.complex_augs)
     val_trans = make_val_transform_dino(args.img_size, args.complex_augs)
 
-    train_dataset = FrameDataset("data/frame_train.json", "data/2024_Paxos_Frames/cropped_frames", transform=train_trans)
-    val_dataset = FrameDataset("data/frame_val.json", "data/2024_Paxos_Frames/cropped_frames", transform=val_trans)
+    train_dataset = FrameDataset(os.path.join(args.split_path, "frame_train.json"),
+                                 "data/2024_Paxos_Frames/cropped_frames",
+                                 transform=train_trans)
+    val_dataset = FrameDataset(os.path.join(args.split_path, "frame_val.json"),
+                               "data/2024_Paxos_Frames/cropped_frames",
+                               transform=val_trans)
 
     train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True)
     val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=1, shuffle=False)
@@ -117,18 +127,15 @@ def train_classifier(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--repo_dir', type=str, required=True)
-    parser.add_argument('--weight_path', type=str, required=True)
-
+    parser.add_argument('--split_path', type=str, required=True)
+    parser.add_argument('--weight_path', type=str, default=None,
+                        help='Path to pretrained DINO classifier weights')
     parser.add_argument('--freeze_backbone', action='store_true')
-    parser.add_argument('--use_cls', action='store_true')
-
     parser.add_argument('--epochs', type=int, default=15)
     parser.add_argument('--lr_step', type=int, default=10)
     parser.add_argument('--img_size', type=int, default=512)
-    parser.add_argument('--batch_size', type=int, default=32)
+    parser.add_argument('--batch_size', type=int, default=16)
     parser.add_argument('--lr', type=float, default=1e-4)
-
     parser.add_argument('--complex_augs', action='store_true')
 
     args = parser.parse_args()

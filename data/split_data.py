@@ -1,19 +1,25 @@
 import json
 import os
-from sklearn.model_selection import train_test_split
+import pandas as pd
+import matplotlib.pyplot as plt
+from collections import Counter
+from sklearn.model_selection import StratifiedKFold
 
 
-def create_unified_splits(matching_path, clip_labels_path, val_size=0.2, random_seed=42):
-    # 1. Load data
+def create_kfold_splits(matching_path, clip_labels_path, n_splits=5, output_dir="stratified_splits", random_seed=42):
+    # 1. Setup Environment
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
+    # 2. Load data
     with open(matching_path, "r") as f:
         data = json.load(f)
-        matches = data.get("matches", data)  # Handle if "matches" key exists or if it's raw dict
+        matches = data.get("matches", data)
 
     with open(clip_labels_path, "r") as f:
         clip_labels = json.load(f)
 
-    # 2. Sync IDs: Only use IDs present in BOTH labels and matches
-    # matches keys = "12345", clip_labels keys = "12345.mp4"
+    # 3. Sync IDs and prepare for K-Fold
     labeled_clip_ids = []
     stratify_labels = []
 
@@ -21,79 +27,97 @@ def create_unified_splits(matching_path, clip_labels_path, val_size=0.2, random_
         clip_filename = f"{cid}.mp4"
         if clip_filename in clip_labels:
             labeled_clip_ids.append(cid)
-            # --- THE FIX: Use the raw Grade (0-4) for stratification ---
             stratify_labels.append(clip_labels[clip_filename])
 
-    # 3. Perform the Split (Stratified by Grade 0-4)
-    # This ensures Grade 3s and 4s are evenly split between Train/Val
-    try:
-        train_ids, val_ids = train_test_split(
-            labeled_clip_ids,
-            test_size=val_size,
-            stratify=stratify_labels,  # Stratifying on raw grades now
-            random_state=random_seed
-        )
-    except ValueError as e:
-        print(f"Stratification failed (likely a class with only 1 member): {e}")
-        print("Falling back to random split.")
-        train_ids, val_ids = train_test_split(
-            labeled_clip_ids,
-            test_size=val_size,
-            random_state=random_seed
-        )
+    # Convert to numpy for easy indexing
+    import numpy as np
+    labeled_clip_ids = np.array(labeled_clip_ids)
+    stratify_labels = np.array(stratify_labels)
 
-    # 4. Create the 4 JSON structures
-    # We still SAVE the binary label (Referable/Non-Referable) for training if that's what you need,
-    # OR we can save the Grade. Usually, for binary training, you convert at runtime.
-    # Below, I save the RAW GRADE so you have flexibility later.
+    # 4. Initialize K-Fold and Stats Tracking
+    skf = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=random_seed)
+    stats_log = []
 
-    train_clips, val_clips = {}, {}
-    train_images, val_images = {}, {}
+    print(f"--- Starting {n_splits}-Fold Stratified Split ---")
 
-    # Helper to map IDs to Dicts
-    def populate_splits(id_list, clip_dict, image_dict):
-        for cid in id_list:
-            clip_filename = f"{cid}.mp4"
-            grade = clip_labels[clip_filename]
+    for fold, (train_idx, val_idx) in enumerate(skf.split(labeled_clip_ids, stratify_labels), 1):
+        fold_dir = os.path.join(output_dir, f"split_{fold}")
+        os.makedirs(fold_dir, exist_ok=True)
 
-            # Save Clip Label
-            clip_dict[clip_filename] = grade
+        train_ids, val_ids = labeled_clip_ids[train_idx], labeled_clip_ids[val_idx]
 
-            # Save Image Labels (All frames inherit the clip's grade)
-            if cid in matches:
-                for img_name in matches[cid]:
-                    image_dict[img_name] = grade
+        # Structures for this fold
+        structures = {
+            "mil_train.json": {}, "mil_val.json": {},
+            "frame_train.json": {}, "frame_val.json": {}
+        }
 
-    populate_splits(train_ids, train_clips, train_images)
-    populate_splits(val_ids, val_clips, val_images)
+        # Helper to populate and calculate binary distribution
+        # Assuming Binary 1 (Referable) is Grade >= 2, else 0
+        def process_subset(ids, clip_dict, image_dict):
+            grades = []
+            for cid in ids:
+                filename = f"{cid}.mp4"
+                grade = clip_labels[filename]
+                grades.append(grade)
+                clip_dict[filename] = grade
+                if cid in matches:
+                    for img_name in matches[cid]:
+                        image_dict[img_name] = grade
+            return grades
 
-    # 5. Save all 4 files
-    output_files = {
-        "mil_train.json": train_clips,
-        "mil_val.json": val_clips,
-        "frame_train.json": train_images,
-        "frame_val.json": val_images
-    }
+        train_grades = process_subset(train_ids, structures["mil_train.json"], structures["frame_train.json"])
+        val_grades = process_subset(val_ids, structures["mil_val.json"], structures["frame_val.json"])
 
-    for filename, content in output_files.items():
-        with open(filename, "w") as f:
-            json.dump(content, f, indent=4)
+        # Save the 4 JSON files for this fold
+        for filename, content in structures.items():
+            with open(os.path.join(fold_dir, filename), "w") as f:
+                json.dump(content, f, indent=4)
 
-    print(f"--- Unified Split Complete (Stratified by Original Grades) ---")
-    print(f"Total Patients: {len(labeled_clip_ids)}")
-    print(f"Training: {len(train_ids)} patients")
-    print(f"Validation: {len(val_ids)} patients")
+        # 5. Collect Metadata/Stats
+        for name, g_list in [("train", train_grades), ("val", val_grades)]:
+            counts = Counter(g_list)
+            binary_counts = Counter([1 if g >= 2 else 0 for g in g_list])
 
-    # Print distribution check
-    from collections import Counter
-    train_grades = [clip_labels[f"{cid}.mp4"] for cid in train_ids]
-    val_grades = [clip_labels[f"{cid}.mp4"] for cid in val_ids]
-    print(f"Train Grade Dist: {dict(Counter(train_grades))}")
-    print(f"Val Grade Dist:   {dict(Counter(val_grades))}")
+            entry = {
+                "fold": fold,
+                "set": name,
+                "total": len(g_list),
+                **{f"grade_{i}": counts.get(i, 0) for i in range(5)},
+                "binary_0": binary_counts.get(0, 0),
+                "binary_1": binary_counts.get(1, 0)
+            }
+            stats_log.append(entry)
 
-    return output_files.keys()
+    # 6. Save Metadata CSV
+    df_stats = pd.DataFrame(stats_log)
+    df_stats.to_csv(os.path.join(output_dir, "split_metadata.csv"), index=False)
+
+    # 7. Generate Distribution Plot
+    generate_plots(df_stats, output_dir)
+
+    print(f"Success! Splits and metadata saved to: {output_dir}")
+
+
+def generate_plots(df, output_dir):
+    fig, axes = plt.subplots(1, 2, figsize=(15, 6))
+
+    # Plot 1: 0-4 Grades (Train sets only for clarity, or can be adjusted)
+    df_train = df[df['set'] == 'train']
+    grade_cols = [f"grade_{i}" for i in range(5)]
+    df_train.set_index('fold')[grade_cols].plot(kind='bar', stacked=True, ax=axes[0])
+    axes[0].set_title("Grade Distribution (0-4) per Fold (Train)")
+    axes[0].set_ylabel("Count")
+
+    # Plot 2: Binary Distribution (Train sets)
+    df_train.set_index('fold')[['binary_0', 'binary_1']].plot(kind='bar', ax=axes[1])
+    axes[1].set_title("Binary Distribution (Referable vs Not) per Fold")
+    axes[1].set_ylabel("Count")
+
+    plt.tight_layout()
+    plt.savefig(os.path.join(output_dir, "distribution_plot.png"))
+    plt.close()
 
 
 if __name__ == '__main__':
-    # Update paths if necessary
-    create_unified_splits("matching_results_hd.json", "final_clip_labels_hd.json")
+    create_kfold_splits("matching_results_hd.json", "final_clip_labels_hd.json")

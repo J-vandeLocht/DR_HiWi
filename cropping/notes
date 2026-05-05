@@ -1,3 +1,6 @@
 Manually created masks for both a selection of the frames Simon chose and randomly sampled frames from the videos.
 -> two different csv files and two different annotation apps; for the final cropping only the video-based frames and model is used
 -> trained an U-Net++
+
+We should sample a few more frames and annotate them. Then we can also do a 5-fold cross validation to get the best cropping.
+Also use png files and not jpg files for training the model, like it is done at the moment.

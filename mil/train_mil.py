@@ -87,7 +87,7 @@ def train_mil(args):
             # We pass run_dir so you can modify this function to save inside the run folder
             visualize_full_video_attention(
                 model,
-                "data/own_clips_hd/val_results_new/cleaned_videos/CLEAN_2024_02_11_12_26_IMG_4608 LE MILD NPDR.mp4",
+                "data/own_clips_hd/val_videos/cleaned_videos/CLEAN_2024_02_11_12_26_IMG_4608 LE MILD NPDR.mp4",
                 val_trans,
                 device,
                 epoch,

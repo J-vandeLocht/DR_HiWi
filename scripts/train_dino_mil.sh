@@ -11,57 +11,126 @@ source ~/.bashrc
 conda activate job_new
 cd ..
 
-REPO=dino/dinov3
-WEIGHTS=dino/dinov3_vitl16_pretrain_lvd1689m-8aa4cbdd.pth
+#CLASSIFIER_WEIGHTS=classifier/models/dino_complex_split_1_kaggle_0502_1258/best_model.pth
+#python -u -m dino.train_dino_mil \
+#  --classifier_checkpoint $CLASSIFIER_WEIGHTS \
+#  --split_path "data/stratified_splits/split_1" \
+#  --freeze_backbone \
+#  --lr 1e-4 \
+#  --epochs 5 \
+#  --lr_step 3 \
+#  --complex_augs
+#
+#CLASSIFIER_WEIGHTS=classifier/models/dino_complex_split_1_kaggle_0502_1828/best_model.pth
+#python -u -m dino.train_dino_mil \
+#  --classifier_checkpoint $CLASSIFIER_WEIGHTS \
+#  --split_path "data/stratified_splits/split_1" \
+#  --freeze_backbone \
+#  --lr 1e-4 \
+#  --epochs 5 \
+#  --lr_step 3 \
+#  --complex_augs
+#
+#CLASSIFIER_WEIGHTS=classifier/models/dino_complex_split_1_kaggle_0502_1856/best_model.pth
+#python -u -m dino.train_dino_mil \
+#  --classifier_checkpoint $CLASSIFIER_WEIGHTS \
+#  --split_path "data/stratified_splits/split_1" \
+#  --freeze_backbone \
+#  --lr 1e-4 \
+#  --epochs 5 \
+#  --lr_step 3 \
+#  --complex_augs
+#
+#CLASSIFIER_WEIGHTS=classifier/models/dino_complex_split_1_kaggle_0502_1925/best_model.pth
+#python -u -m dino.train_dino_mil \
+#  --classifier_checkpoint $CLASSIFIER_WEIGHTS \
+#  --split_path "data/stratified_splits/split_1" \
+#  --freeze_backbone \
+#  --lr 1e-4 \
+#  --epochs 5 \
+#  --lr_step 3 \
+#  --complex_augs
 
-# -----------------------------
-# RUN 2: Complex Augementations
-# -----------------------------
-
-CLASSIFIER_WEIGHTS=classifier/dino_complex_0424_1900/best_model.pth
+CLASSIFIER_WEIGHTS=classifier/models/dino_complex_split_2/best_model.pth
 python -u -m dino.train_dino_mil \
-  --repo_dir $REPO \
-  --weight_path $WEIGHTS \
   --classifier_checkpoint $CLASSIFIER_WEIGHTS \
+  --split_path "data/stratified_splits/split_2" \
   --freeze_backbone \
-  --use_cls \
-  --img_size 512 \
   --lr 1e-4 \
   --epochs 5 \
-  --complex_augs
+  --lr_step 3 \
+  --complex_augs \
+  --random_segment_sample
 
-CLASSIFIER_WEIGHTS=classifier/dino_complex_0424_1920/best_model.pth
+CLASSIFIER_WEIGHTS=classifier/models/dino_complex_split_2/best_model.pth
 python -u -m dino.train_dino_mil \
-  --repo_dir $REPO \
-  --weight_path $WEIGHTS \
   --classifier_checkpoint $CLASSIFIER_WEIGHTS \
+  --split_path "data/stratified_splits/split_2" \
   --freeze_backbone \
-  --use_cls \
-  --img_size 512 \
   --lr 1e-4 \
   --epochs 5 \
-  --complex_augs
+  --lr_step 3 \
+  --complex_augs \
+  --random_segment_sample
 
-CLASSIFIER_WEIGHTS=classifier/dino_complex_0424_1940/best_model.pth
+CLASSIFIER_WEIGHTS=classifier/models/dino_complex_split_2/best_model.pth
 python -u -m dino.train_dino_mil \
-  --repo_dir $REPO \
-  --weight_path $WEIGHTS \
   --classifier_checkpoint $CLASSIFIER_WEIGHTS \
+  --split_path "data/stratified_splits/split_2" \
   --freeze_backbone \
-  --use_cls \
-  --img_size 512 \
   --lr 1e-4 \
   --epochs 5 \
-  --complex_augs
+  --lr_step 3 \
+  --complex_augs \
+  --random_segment_sample
 
-CLASSIFIER_WEIGHTS=classifier/dino_complex_0424_2000/best_model.pth
+CLASSIFIER_WEIGHTS=classifier/models/dino_complex_split_2/best_model.pth
 python -u -m dino.train_dino_mil \
-  --repo_dir $REPO \
-  --weight_path $WEIGHTS \
   --classifier_checkpoint $CLASSIFIER_WEIGHTS \
+  --split_path "data/stratified_splits/split_2" \
   --freeze_backbone \
-  --use_cls \
-  --img_size 512 \
   --lr 1e-4 \
   --epochs 5 \
-  --complex_augs
+  --lr_step 3 \
+  --complex_augs \
+  --random_segment_sample
+
+#CLASSIFIER_WEIGHTS=classifier/models/dino_complex_split_2/best_model.pth
+#python -u -m dino.train_dino_mil \
+#  --classifier_checkpoint $CLASSIFIER_WEIGHTS \
+#  --split_path "data/stratified_splits/split_2" \
+#  --freeze_backbone \
+#  --lr 1e-4 \
+#  --epochs 5 \
+#  --lr_step 3 \
+#  --complex_augs
+
+#CLASSIFIER_WEIGHTS=classifier/models/dino_complex_split_3/best_model.pth
+#python -u -m dino.train_dino_mil \
+#  --classifier_checkpoint $CLASSIFIER_WEIGHTS \
+#  --split_path "data/stratified_splits/split_3" \
+#  --freeze_backbone \
+#  --lr 1e-4 \
+#  --epochs 5 \
+#  --lr_step 3 \
+#  --complex_augs
+#
+#CLASSIFIER_WEIGHTS=classifier/models/dino_complex_split_4/best_model.pth
+#python -u -m dino.train_dino_mil \
+#  --classifier_checkpoint $CLASSIFIER_WEIGHTS \
+#  --split_path "data/stratified_splits/split_4" \
+#  --freeze_backbone \
+#  --lr 1e-4 \
+#  --epochs 5 \
+#  --lr_step 3 \
+#  --complex_augs
+#
+#CLASSIFIER_WEIGHTS=classifier/models/dino_complex_split_5/best_model.pth
+#python -u -m dino.train_dino_mil \
+#  --classifier_checkpoint $CLASSIFIER_WEIGHTS \
+#  --split_path "data/stratified_splits/split_5" \
+#  --freeze_backbone \
+#  --lr 1e-4 \
+#  --epochs 5 \
+#  --lr_step 3 \
+#  --complex_augs

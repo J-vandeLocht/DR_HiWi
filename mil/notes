@@ -1,0 +1,2 @@
+models now contains the 5 runs for the 5 splits of DINOv3, with the complex augmentations, frozen backbone and trained
+with the cls token (all based on their classifier in 'classifier/models')

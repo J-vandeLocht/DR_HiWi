@@ -4,4 +4,76 @@ We use the ViT-L version of DINOv3.
 
 Contains the classifier and MIL script using DINOv3.
 
-(not tested if this works with the refactoring)
+Four different evals on the validation set:
+Cat: slurm-196461.out
+--- DINO MIL [1024 features] weights initialized ---
+Loading checkpoint from: mil/models/dino_mil_complex_split_1/best_mil_model.pth
+Backbone weights loaded.
+MIL Head weights loaded.
+Starting 4-Way Evaluation...
+Processed R052R | Frames: 593
+Processed IMG_5030 | Frames: 562
+Processed R068L | Frames: 834
+Processed IMG_2516 | Frames: 415
+Processed IMG_3432 | Frames: 1646
+Processed IMG_4967 | Frames: 948
+Processed IMG_3433 | Frames: 1118
+Processed IMG_4952 | Frames: 287
+Processed IMG_3445 | Frames: 1281
+Processed IMG_4445 | Frames: 128
+Processed IMG_4956 | Frames: 578
+Processed R015L2 | Frames: 305
+Processed IMG_5057 | Frames: 1317
+Processed IMG_2512 | Frames: 196
+Processed IMG_3444 | Frames: 1674
+Processed R065L | Frames: 926
+Processed IMG_5039 | Frames: 772
+Processed R027L | Frames: 1659
+Processed R059R | Frames: 327
+Processed IMG_3489 | Frames: 2059
+Processed IMG_3271 | Frames: 833
+Processed IMG_4648 | Frames: 690
+Processed IMG_2611 | Frames: 867
+Processed IMG_2544 | Frames: 1514
+Processed IMG_3457 | Frames: 1384
+Processed IMG_4681 | Frames: 1102
+Processed IMG_5033 | Frames: 1167
+Processed IMG_5031 | Frames: 947
+Processed IMG_2608 | Frames: 412
+Processed IMG_3456 | Frames: 1263
+Processed R026L2 | Frames: 1537
+Processed IMG_4873 | Frames: 1301
+Processed IMG_4679 | Frames: 532
+Processed IMG_2578 | Frames: 127
+Processed R023L | Frames: 136
+Processed R058R | Frames: 907
+Processed IMG_4931 | Frames: 982
+Processed IMG_4174 | Frames: 536
+Processed IMG_3269 | Frames: 659
+Processed IMG_4942 | Frames: 671
+Processed IMG_4650 | Frames: 1057
+Processed R029L2 | Frames: 1398
+Processed IMG_4883 | Frames: 640
+Processed IMG_2605 | Frames: 6
+Processed IMG_4662 | Frames: 100
+Processed IMG_5009 | Frames: 1099
+Processed IMG_2871 | Frames: 308
+Processed IMG_4953 | Frames: 249
+Processed R056L | Frames: 827
+Processed IMG_3472 | Frames: 811
+Processed R042R | Frames: 301
+Processed IMG_3439 | Frames: 1509
+Processed IMG_4897 | Frames: 627
+Processed IMG_2892 | Frames: 202
+Processed IMG_3454 | Frames: 1283
+Processed IMG_2708 | Frames: 644
+Processed IMG_4922 | Frames: 316
+Processed IMG_2868 | Frames: 397
+
+========================================
+FINAL RESULTS
+========================================
+[Strategy A (Max Attn Frame)] PR-AUC: 0.9738 | F1: 0.8312 | Acc: 0.7759
+[Strategy B (Uniform 32)  ] PR-AUC: 0.9791 | F1: 0.9000 | Acc: 0.8966
+[Strategy C (All Frames)    ] PR-AUC: 0.9721 | F1: 0.9000 | Acc: 0.8966
+[Strategy D (10x Ensemble)  ] PR-AUC: 0.9731 | F1: 0.9000 | Acc: 0.8966

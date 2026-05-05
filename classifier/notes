@@ -17,3 +17,6 @@ created by using the rotations and flips and so on is not needed for good result
     -> However, in the end the performance for the MIL model is the most important and not the one of the classifier in isolation
 
 misc contains vis of some train and val images and the GradCam result from some model (just for vis of idea of GC).
+
+models now contains the 5 runs for the 5 splits of DINOv3 without Kaggle fine-tuning, with the complex augmentations,
+un-frozen backbone and trained with the cls token

@@ -106,12 +106,13 @@ class MILVideoDataset(Dataset):
 
 
 class MILVideoDatasetNew(Dataset):
-    def __init__(self, json_path, num_frames=32, transform=None):
+    def __init__(self, json_path, num_frames=32, transform=None, random_segment_sample=False):
         with open(json_path, 'r') as f:
             self.label_map = json.load(f)
 
         self.num_frames = num_frames
         self.transform = transform
+        self.random_segment_sample = random_segment_sample
 
         search_dirs = [
             Path('data/own_clips_hd/train_videos/cleaned_videos'),
@@ -131,13 +132,7 @@ class MILVideoDatasetNew(Dataset):
 
         for vid_name, grade in self.label_map.items():
             matched_path = None
-
-            # 1. Clean up the JSON key in case it has an extension (like "R062R.mp4")
             base_name = vid_name.replace('.mp4', '').replace('.avi', '')
-
-            # 2. Build the Regex pattern.
-            # re.escape makes sure any weird characters in your names are handled safely.
-            # (?![a-zA-Z0-9]) ensures the match isn't just the prefix of a longer ID.
             pattern = re.compile(rf"{re.escape(base_name)}(?![a-zA-Z0-9])")
 
             for path in all_video_paths:
@@ -146,7 +141,6 @@ class MILVideoDatasetNew(Dataset):
                     break
 
             if matched_path and matched_path.exists():
-                # 3. Health check against 0-byte zombie files
                 if matched_path.stat().st_size > 1000:
                     self.data.append({
                         'vid_name': vid_name,
@@ -181,24 +175,46 @@ class MILVideoDatasetNew(Dataset):
 
         total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
-        # Prevent math errors if a video is completely broken
         if total_frames <= 0:
             cap.release()
             raise RuntimeError(f"Video {path} has 0 frames or unreadable metadata.")
 
-        # Generate target indices. If total_frames < num_frames, this automatically creates duplicates!
-        target_indices = np.linspace(0, total_frames - 1, self.num_frames, dtype=int).tolist()
+        # ==========================================
+        # INDEX GENERATION LOGIC
+        # ==========================================
+        if not self.random_segment_sample:
+            # 1. Uniform Sampling (Deterministic)
+            target_indices = np.linspace(0, total_frames - 1, self.num_frames, dtype=int).tolist()
+        else:
+            # 2. Temporal Segment Sampling (Stochastic)
+            target_indices = []
+            boundaries = np.linspace(0, total_frames, self.num_frames + 1, dtype=int)
+
+            for i in range(self.num_frames):
+                start_idx = boundaries[i]
+                end_idx = boundaries[i + 1]
+
+                if start_idx >= end_idx:
+                    # Failsafe for short videos (e.g., 20 frames total, but need 32)
+                    # It will just duplicate the frame, acting similarly to uniform fallback
+                    target_indices.append(min(start_idx, total_frames - 1))
+                else:
+                    # Pick a random frame within the temporal segment
+                    sampled_idx = np.random.randint(start_idx, end_idx)
+                    target_indices.append(sampled_idx)
+
+            # Ensure they are sorted so the sequential OpenCV reader works properly
+            target_indices.sort()
+        # ==========================================
 
         last_valid_frame = None
 
         for i in range(total_frames):
             ret, frame = cap.read()
             if not ret:
-                break  # Video ended earlier than metadata suggested
+                break
 
             last_valid_frame = frame
-
-            # Count how many times this specific frame index is needed
             times_to_add = target_indices.count(i)
 
             if times_to_add > 0:
@@ -208,18 +224,14 @@ class MILVideoDatasetNew(Dataset):
                 if self.transform:
                     img = self.transform(img)
 
-                # Append it the required number of times (handles the duplication)
                 for _ in range(times_to_add):
                     frames.append(img)
 
-            # Optimization: break early if we filled the bag
             if len(frames) == self.num_frames:
                 break
 
         cap.release()
 
-        # Failsafe: If OpenCV's total_frames metadata was wrong and the video ended early,
-        # we pad the remaining slots with the last valid frame we successfully read.
         while len(frames) < self.num_frames and last_valid_frame is not None:
             frame_rgb = cv2.cvtColor(last_valid_frame, cv2.COLOR_BGR2RGB)
             img = Image.fromarray(frame_rgb)
@@ -231,7 +243,7 @@ class MILVideoDatasetNew(Dataset):
             raise RuntimeError(
                 f"Critical failure: Expected {self.num_frames} frames from {path}, but ended up with {len(frames)}.")
 
-        return torch.stack(frames)  # Shape: [num_frames, C, H, W]
+        return torch.stack(frames)
 
 
 class KaggleDRDataset(Dataset):
