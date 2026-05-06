@@ -8,3 +8,7 @@ saved into final_clip_labels_hd.json and final_image_labels_hd.json
 
 split_data.py: Create stratified split (original 5 grades) video-based with final_clip_labels_hd.json and get the frame-based split
 using matching_results_hd.json. The split is 0.8 to 0.2 video-wise and only approximately 0.8 to 0.2 frame-wise.
+
+There might be videos in the set of 420 that have no matched clip/frame pair but still a label in the DR_Grading_Summary_v3.csv.
+-> Find these videos (if any) and predict the label using the clips (which we have for all 420 videos; well almost, some are vids are garbage)
+-> Or just use my clips for matching since they include all (probably the easiest solution to then compare the two matchings)

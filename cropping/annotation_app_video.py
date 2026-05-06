@@ -6,8 +6,8 @@ from pathlib import Path
 
 # --- Configuration ---
 # This points to the folder created by your extraction script
-input_folder = Path('misc/frames_to_annotate')
-output_csv = 'annotations_video_frames.csv'
+input_folder = Path('frames_to_annotate_larger')
+output_csv = 'annotations_video_frames_larger.csv'
 
 # UI PADDING: Extra space around the image in the window so you can click
 # "outside" the frame if the retina is partially off-screen.

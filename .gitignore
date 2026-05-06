@@ -1,4 +1,5 @@
-cropping/misc/frames_to_annotate/
+cropping/frames_to_annotate/
+cropping/frames_to_annotate_larger/
 data/2024_Paxos_Frames/
 data/clips_hd/
 data/own_clips_hd/

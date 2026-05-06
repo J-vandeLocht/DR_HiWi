@@ -3,7 +3,7 @@ import numpy as np
 from pathlib import Path
 
 VIDEO_DIR = Path('data/dr_videos')
-OUTPUT_DIR = Path('cropping/frames_to_annotate')
+OUTPUT_DIR = Path('cropping/frames_to_annotate_larger')
 
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -41,7 +41,7 @@ def extract_and_pad_sequential():
             print(f"Skipping {video_path.name}: Invalid frame count.")
             continue
 
-        targets = [int(total_frames * f) for f in [0.25, 0.50, 0.75]]
+        targets = [int(total_frames * f) for f in [0.50]]
         max_target = max(targets)
 
         print(f"Processing: {video_path.name} ({total_frames} frames)...")
@@ -57,10 +57,10 @@ def extract_and_pad_sequential():
             if current_idx in targets:
                 # 3. Square and Save
                 square_frame = pad_to_square(frame)
-                filename = f"{video_path.stem}_frame_{current_idx}.jpg"
+                filename = f"{video_path.stem}_frame_{current_idx}.png"
                 save_path = OUTPUT_DIR / filename
 
-                cv2.imwrite(str(save_path), square_frame, [int(cv2.IMWRITE_JPEG_QUALITY), 95])
+                cv2.imwrite(str(save_path), square_frame, [cv2.IMWRITE_PNG_COMPRESSION, 0])
                 print(f"  -> Extracted frame {current_idx}")
 
             current_idx += 1
