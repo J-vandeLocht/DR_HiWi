@@ -3,7 +3,7 @@ from pathlib import Path
 
 # --- Configuration ---
 VIDEO_DIR = Path('data/dr_videos')
-OUTPUT_DIR = Path('data/frames_raw_extract_2')
+OUTPUT_DIR = Path('data/informative_frames/frames_raw_extract')
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 
@@ -26,8 +26,7 @@ def extract_fast_lossless():
             cap.release()
             continue
 
-        # Target 25%, 50%, 75%
-        targets = [int(total_frames * f) for f in [0.125, 0.375, 0.625, 0.875]]
+        targets = [int(total_frames * f) for f in [0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875]]
 
         print(f"Processing: {video_path.name}")
 

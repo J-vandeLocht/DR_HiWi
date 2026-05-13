@@ -3,6 +3,7 @@ cropping/frames_to_annotate_larger/
 data/2024_Paxos_Frames/
 data/clips_hd/
 data/own_clips_hd/
+ensemble_results/
 data/informative_frames
 dino/dinov3/
 *.pt

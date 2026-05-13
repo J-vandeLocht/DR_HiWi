@@ -114,15 +114,11 @@ class MILVideoDatasetNew(Dataset):
         self.transform = transform
         self.random_segment_sample = random_segment_sample
 
-        search_dirs = [
-            Path('data/own_clips_hd/train_videos/cleaned_videos'),
-            Path('data/own_clips_hd/val_videos/cleaned_videos')
-        ]
+        search_dir = Path('ensemble_results/cleaned_videos')
 
         all_video_paths = []
-        for d in search_dirs:
-            if d.exists():
-                all_video_paths.extend(list(d.glob('*.mp4')))
+        if search_dir.exists():
+            all_video_paths.extend(list(search_dir.glob('*.mp4')))
 
         self.data = []
         missing_count = 0

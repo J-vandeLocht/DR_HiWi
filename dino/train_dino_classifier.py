@@ -9,7 +9,7 @@ import argparse
 from data.dataset import FrameDataset
 from misc.utils import save_confusion_matrix
 from classifier.utils import validate_classifier, train_one_epoch_classifier
-from dino.utils import apply_clahe_cv2_dino, make_train_transform_dino, make_val_transform_dino
+from dino.utils import make_train_transform_dino, make_val_transform_dino
 
 
 class DinoClassifier(nn.Module):
@@ -29,7 +29,23 @@ class DinoClassifier(nn.Module):
             for p in self.backbone.parameters():
                 p.requires_grad = False
 
-        self.head = nn.Linear(self.embed_dim, num_classes)
+        self.head = nn.Sequential(
+            nn.Linear(self.embed_dim, 512),
+            nn.ReLU(),
+            nn.Dropout(0.2),
+            nn.Linear(512, 256),
+            nn.ReLU(),
+            nn.Linear(256, num_classes)
+        )
+
+        self._init_weights()
+
+    def _init_weights(self):
+        for layer in self.head:
+            if isinstance(layer, nn.Linear):
+                nn.init.xavier_uniform_(layer.weight)
+                if layer.bias is not None:
+                    nn.init.constant_(layer.bias, 0)
 
     def forward(self, x):
         feats = self.backbone.forward_features(x)
@@ -65,7 +81,15 @@ def train_classifier(args):
         print("Successfully loaded pretrained DINO weights.")
 
     # Step 3: Replace head for NEW task (binary = 1 output)
-    model.head = nn.Linear(model.embed_dim, 1).to(device)
+    model.head = nn.Sequential(
+            nn.Linear(model.embed_dim, 512),
+            nn.ReLU(),
+            nn.Dropout(0.2),
+            nn.Linear(512, 256),
+            nn.ReLU(),
+            nn.Linear(256, 1)
+        ).to(device)
+    model._init_weights()
 
     train_trans = make_train_transform_dino(args.img_size, args.complex_augs)
     val_trans = make_val_transform_dino(args.img_size, args.complex_augs)
