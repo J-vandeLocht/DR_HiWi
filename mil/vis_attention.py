@@ -9,13 +9,14 @@ import matplotlib.gridspec as gridspec
 from PIL import Image
 from pathlib import Path
 from torchvision.transforms import v2
+from dino.utils import apply_clahe_cv2_dino
 
 
 # --- 1. MODEL DEFINITION ---
 # Updated to return (logits, softmax_weights, raw_logits)
-class DinoMIL(nn.Module):
+class EvalDinoMIL(nn.Module):
     def __init__(self, checkpoint_path=None, freeze_backbone=True, D=512, K=1):
-        super(DinoMIL, self).__init__()
+        super(EvalDinoMIL, self).__init__()
         # 1. Load the DINOv3 backbone
         self.backbone = torch.hub.load(
             "dino/dinov3", "dinov3_vitl16", source="local",
@@ -83,26 +84,6 @@ class DinoMIL(nn.Module):
 
         # Return Logits, Softmax weights, and Raw logits (flattened)
         return logits, weights, a.flatten()
-
-
-# --- 2. UTILITY FUNCTIONS ---
-
-def apply_clahe_cv2_dino(img):
-    """ Your original logic: Handles Tensor/PIL, applies LAB-CLAHE, returns 0-1 Tensor """
-    if isinstance(img, torch.Tensor):
-        img = img.permute(1, 2, 0).cpu().numpy()
-    elif isinstance(img, Image.Image):
-        img = np.array(img)
-    if img.dtype != np.uint8:
-        img = (img * 255).astype(np.uint8)
-
-    lab = cv2.cvtColor(img, cv2.COLOR_RGB2LAB)
-    l, a, b = cv2.split(lab)
-    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
-    l = clahe.apply(l)
-    lab = cv2.merge((l, a, b))
-    img = cv2.cvtColor(lab, cv2.COLOR_LAB2RGB)
-    return torch.from_numpy(img).permute(2, 0, 1).float() / 255.0
 
 
 def get_processed_data(video_path, img_size, norm_transform, indices=None):
@@ -235,22 +216,32 @@ def visualize_eval_simulation(model, video_path, img_size, device, split, norm_t
 
 if __name__ == "__main__":
     videos = [
-        "data/own_clips_hd/val_videos/cleaned_videos/CLEAN_2024_02_11_12_26_IMG_4608 LE MILD NPDR.mp4",
-        "data/own_clips_hd/val_videos/cleaned_videos/CLEAN_2024_03_30_11_37_IMG_4851 RE MILD NPDR.mp4",
-        "data/own_clips_hd/val_videos/cleaned_videos/CLEAN_R042R.mp4",
-        "data/own_clips_hd/val_videos/cleaned_videos/CLEAN_R058R2.mp4"
+        "ensemble_results/cleaned_videos/CLEAN_2024_02_11_12_26_IMG_4608 LE MILD NPDR.mp4",
+        "ensemble_results/cleaned_videos/CLEAN_2024_03_30_11_37_IMG_4851 RE MILD NPDR.mp4",
+        "ensemble_results/cleaned_videos/CLEAN_2024_04_02_12_48_IMG_4883 RE SEV NPDR WITH DME.mp4",
+        "ensemble_results/cleaned_videos/CLEAN_R058R2.mp4"
+    ]
+    # split_paths = [
+    #     ("mil/models/dino_mil_complex_split_1_segmented_0512_1705", 1),
+    #     ("mil/models/dino_mil_complex_split_2_segmented_0512_1824", 2),
+    #     ("mil/models/dino_mil_complex_split_3_segmented_0512_1945", 3),
+    #     ("mil/models/dino_mil_complex_split_4_segmented_0512_2107", 4),
+    #     ("mil/models/dino_mil_complex_split_5_segmented_0514_1205", 5)
+    # ]
+    split_paths = [
+        ("mil/models/dino_mil_complex_split_5_segmented_0514_1205", 5)
     ]
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     # Define normalization (standard ImageNet used in DinoV3)
     norm_transform = v2.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
 
-    for split in [1, 2]:
-        path = os.path.join("mil", "models", f"dino_mil_complex_split_{split}", "best_mil_model.pth")
+    for (path, split) in split_paths:
+        model_path = os.path.join(path, "best_mil_model.pth")
         if not os.path.exists(path): continue
 
-        print(f"Processing Split {split}...")
-        model = DinoMIL(checkpoint_path=path).to(device)
+        print(f"Processing split in {path}...")
+        model = EvalDinoMIL(checkpoint_path=model_path).to(device)
 
         for vid in videos:
             print(f"Analyzing: {os.path.basename(vid)}")

@@ -1,10 +1,0 @@
---- DINO MIL [1024 features] weights initialized ---
-Loading checkpoint from: classifier/models/dino_complex_split_1_imagenet_0510_2144/best_model.pth
-Backbone weights loaded.
-MIL Head weights loaded.
-Mapping dataset from data/stratified_splits/split_1/mil_train.json...
-Successfully mapped 232 videos.
-Mapping dataset from data/stratified_splits/split_1/mil_val.json...
-Successfully mapped 58 videos.
-Starting MIL Training: dino_mil_complex_split_1_segmented_0510_2320
-  0%|          | 0/232 [00:00<?, ?it/s]  0%|          | 1/232 [00:05<20:02,  5.21s/it]  1%|          | 2/232 [00:09<18:44,  4.89s/it]  1%|▏         | 3/232 [00:13<16:31,  4.33s/it]  2%|▏         | 4/232 [00:17<16:37,  4.37s/it]  2%|▏         | 5/232 [00:21<14:47,  3.91s/it]  3%|▎         | 6/232 [00:24<13:50,  3.67s/it][2026-05-10T23:20:46.314] error: *** JOB 197713 ON node-04 CANCELLED AT 2026-05-10T23:20:46 DUE to SIGNAL Terminated ***
