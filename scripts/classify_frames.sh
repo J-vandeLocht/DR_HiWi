@@ -10,4 +10,4 @@ source ~/.bashrc
 conda activate job_new
 cd ..
 
-python -u -m informative_frames.classify_frames_new
+python -u -m informative_frames.classify_frames

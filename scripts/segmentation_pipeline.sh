@@ -10,4 +10,4 @@ source ~/.bashrc
 conda activate job_new
 cd ..
 
-python -u -m cropping.segmentation_pipeline_new
+python -u -m cropping.segmentation_pipeline

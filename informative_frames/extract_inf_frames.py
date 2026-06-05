@@ -14,7 +14,7 @@ from albumentations.pytorch import ToTensorV2
 from tqdm import tqdm
 
 from misc.utils import apply_clahe_cv2
-from .crop_frames_new import crop_and_pad, get_largest_component_mask
+from .crop_frames import crop_and_pad, get_largest_component_mask
 
 
 def parse_args():

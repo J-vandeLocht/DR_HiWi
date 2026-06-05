@@ -11,4 +11,4 @@ source ~/.bashrc
 conda activate job_new
 cd ..
 
-python -u -m informative_frames.extract_inf_frames_new --total_gpus 1
+python -u -m informative_frames.extract_inf_frames --total_gpus 1
