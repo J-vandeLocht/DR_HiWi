@@ -138,6 +138,4 @@ def start_labeling(folder_path, mode=MODE_BINARY):
 
 
 if __name__ == "__main__":
-    # Choose mode here:
     start_labeling(INPUT_DIR, mode=MODE_BINARY)
-    # start_labeling(INPUT_DIR, mode=MODE_THREE_CLASS)

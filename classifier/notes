@@ -20,3 +20,11 @@ misc contains vis of some train and val images and the GradCam result from some 
 
 models now contains the 5 runs for the 5 splits of DINOv3 without Kaggle fine-tuning, with the complex augmentations,
 un-frozen backbone and trained with the cls token
+
+train_classifier.py:
+(not modified for the new 5-split setting and the final classifier is also simpler than the DINO one,
+needs to be changed before next use)
+train B4 classifier on the cropped frames
+
+utils.py:
+some utils used for training both the B4 and DINO classifier

@@ -1,17 +1,19 @@
-sample_frames.py: Takes videos from data/dr_videos and samples frames to data/frames_raw_extract
+sample_frames.py: Takes videos from data/dr_videos and samples 7 frames to data/informative_frames/frames_raw_extract
 
-grade_frames.py: Take frames from data/frames_raw_extract and grade into 2 (or 3) classes using an interface
+grade_frames.py: Take frames from data/frames_raw_extract and grade into 2 (or 3) classes using an interface.
+At the moment only the 2 class setting is used.
 
-crop_frames.py: Use trained cropping model to crop the extracted frames and move them to 0 and 1 folders to data/labeled_and_cropped_dataset
+crop_frames.py: Use the 5 trained cropping models to crop the extracted frames (data/informative_frames/frames_raw_extract)
+and move them to 0 and 1 folders in data/informative_frames/frames_cropped
 
-classify_frames.py: Use images in data/labeled_and_cropped_dataset to train EfficientNet for classifying frames into informative and not
+classify_frames.py: Use images in data/informative_frames/frames_cropped to train 5 EfficientNets for classifying frames
+into informative and not with 5 splits. Models are saved in models. The split_info_5fold_{timestamp}.csv that saves the
+mapping seems to be lost unfortunately
 
-extract_inf_frames.py: Use trained cropping model and trained informative frames model to both crop and filter all videos in data/dr_videos;
-We separate into train and val results because we trained the informative frames model on the same videos. But it should not really matter.
-I think the model generalizes good enough for assuming that both train and val results are the same.
+extract_inf_frames.py: Use trained cropping model ensemble and trained informative frames model ensemble to both crop
+and filter all videos in data/dr_videos;
+results are saved in ensemble_results (at the moment, needs to be moved to data) and contains the clips and txts/plots
+that visualize the confidences for each frame
 
+split_info_full.csv contains the annotations for all of the 7x417=2919 frames (also an train/val column that can be removed)
 
-manual_labels.csv and manual_labels_binary_2.csv contain the labels for the two sampled frame datasets I created.
-The two split_... files tell us how we split the data into train and val in classify_frames.py.
-
-(Did I really train with the joined dataset? I think I just used the one with the four extracted frames from each video for ..._new)

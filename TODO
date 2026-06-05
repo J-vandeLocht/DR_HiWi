@@ -1,3 +1,0 @@
-Train new informative Frame selection model since I did not use all 7 frames but only 4.
-
-Have not tested if the code still works after the refactoring. So it would be good to try to run each script again.

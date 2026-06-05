@@ -1,0 +1,3 @@
+analyse_runs.py:
+uses confidences in mil_multi_eval/predictions_split_{split}.csv to create results in split_analysis_results where we
+visualize the results

@@ -2,7 +2,7 @@ import os
 import json
 import re
 
-frame_dir = "data/2024_Paxos_Frames/cropped_frames_new"
+frame_dir = "data/2024_Paxos_Frames/cropped_frames"
 clip_dir = "ensemble_results/cleaned_videos"
 
 

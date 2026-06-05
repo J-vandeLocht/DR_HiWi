@@ -8,8 +8,8 @@ from albumentations.pytorch import ToTensorV2
 from pathlib import Path
 
 # --- Configuration ---
-LABEL_CSV = 'informative_frames/old_workflow/split_info_full.csv' # Your new CSV
-INPUT_DIR = Path('data/informative_frames/frames_raw_extract')    # Your new image directory
+LABEL_CSV = 'informative_frames/split_info_full.csv'
+INPUT_DIR = Path('data/informative_frames/frames_raw_extract')
 OUTPUT_DIR = Path('data/informative_frames/frames_cropped')
 MODEL_FOLDER = Path('cropping/models')
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
