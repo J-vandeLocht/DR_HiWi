@@ -1,9 +1,7 @@
-import os
 import cv2
 import torch
 import argparse
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 import segmentation_models_pytorch as smp
 from torchvision import models, transforms
@@ -37,12 +35,10 @@ def main():
     args = parse_args()
     DEVICE = torch.device(f"cuda:{0}" if torch.cuda.is_available() else "cpu")
 
-    # --- Config ---
     VIDEO_DIR = Path('data/dr_videos')
     SEG_MODEL_DIR = Path('cropping/models')
     CLS_MODEL_DIR = Path('informative_frames/models')
 
-    # Output Folders
     OUT_BASE = Path('ensemble_results')
     TXT_DIR = OUT_BASE / 'txt_files'
     PLOT_DIR = OUT_BASE / 'plots'

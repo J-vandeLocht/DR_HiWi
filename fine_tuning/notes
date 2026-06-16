@@ -1,7 +1,9 @@
-Trains a B4 or DINO model on a public Kaggle dataset
+Trains a DINO model on a public Kaggle dataset
 (https://www.kaggle.com/datasets/ascanipek/eyepacs-aptos-messidor-diabetic-retinopathy) that combines a number of
 public DR datasets.
 
 Best model weight is saved based on Quadratic Weighted Kappa.
 
-Mostly legacy since DINO works best in the final experiments but does not profit from this fine-tuning
+Mostly legacy since DINO works best in the final experiments but does not profit from this fine-tuning.
+
+EfficientNet scripts are now only in the git repo

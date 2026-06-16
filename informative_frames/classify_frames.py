@@ -18,7 +18,6 @@ from sklearn.metrics import (accuracy_score, f1_score, roc_auc_score,
                              precision_score, recall_score)
 from misc.utils import apply_clahe_cv2
 
-# --- Configuration ---
 DATA_DIR = 'data/informative_frames/frames_cropped'
 MODEL_SAVE_PATH = 'informative_frames/models'
 IMG_SIZE = 512

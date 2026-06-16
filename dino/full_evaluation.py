@@ -1,21 +1,18 @@
-import os
 import cv2
 import json
 import re
 import torch
-import torch.nn as nn
 import numpy as np
 from PIL import Image
 from pathlib import Path
-from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, roc_auc_score, \
-    precision_recall_curve, auc
+from sklearn.metrics import accuracy_score, f1_score, precision_recall_curve, auc
 from .utils import make_val_transform_dino
 from .train_dino_mil import DinoMIL
 
 
 @torch.no_grad()
 def get_all_video_features(vid_path, model, transform, device, chunk_size=16):
-    """ Reads all frames, applies transform, and extracts DINO features in chunks to prevent OOM. """
+    # Reads all frames, applies transform, and extracts DINO features in chunks to prevent OOM. """
     cap = cv2.VideoCapture(vid_path)
     frames = []
     h_list = []

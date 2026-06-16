@@ -3,11 +3,9 @@ import os
 import pandas as pd
 from pathlib import Path
 
-# --- Configuration ---
 INPUT_DIR = 'data/frames_raw_extract_2'
 WINDOW_NAME = 'Retina Labeler'
 
-# --- Modes ---
 MODE_BINARY = "binary"
 MODE_THREE_CLASS = "three_class"
 

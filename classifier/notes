@@ -16,15 +16,10 @@ Additionally trained fine-tuned cls DINOv3 version with same pre-processing as t
 created by using the rotations and flips and so on is not needed for good results on the val set and therefore performance is slightly worse
     -> However, in the end the performance for the MIL model is the most important and not the one of the classifier in isolation
 
-misc contains vis of some train and val images and the GradCam result from some model (just for vis of idea of GC).
-
 models now contains the 5 runs for the 5 splits of DINOv3 without Kaggle fine-tuning, with the complex augmentations,
 un-frozen backbone and trained with the cls token
 
-train_classifier.py:
-(not modified for the new 5-split setting and the final classifier is also simpler than the DINO one,
-needs to be changed before next use)
-train B4 classifier on the cropped frames
+scripts regarding the EfficientNet classifier are gone and can only be found in the git repo
 
 utils.py:
-some utils used for training both the B4 and DINO classifier
+some utils used for training the classifier

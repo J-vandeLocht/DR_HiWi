@@ -95,7 +95,7 @@ def generate_analysis(csv_path, output_dir):
 
 
 def main():
-    INPUT_FOLDER = "."  # <--- UPDATE THIS
+    INPUT_FOLDER = "."
     OUTPUT_FOLDER = "split_analysis_results"
 
     os.makedirs(OUTPUT_FOLDER, exist_ok=True)

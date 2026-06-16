@@ -3,21 +3,20 @@ import json
 import re
 
 frame_dir = "data/2024_Paxos_Frames/cropped_frames"
-clip_dir = "ensemble_results/cleaned_videos"
+clip_dir = "data/ensemble_results/cleaned_videos"
 
 
 def get_core_id_from_video(filename):
-    """Removes extension and 'CLEAN_' prefix to get the base ID."""
+    # Removes extension and 'CLEAN_' prefix to get the base ID.
     name = os.path.splitext(filename)[0]
     return re.sub(r'^CLEAN_', '', name)
 
 
 def get_core_id_from_image(filename):
-    """
-    Extracts the base ID from frame names like:
-    'R008R.MOV-00001.png' -> 'R008R'
-    '2024_IMG_5029.mp4-00040.png' -> '2024_IMG_5029'
-    """
+    # Extracts the base ID from frame names like:
+    # 'R008R.MOV-00001.png' -> 'R008R'
+    # '2024_IMG_5029.mp4-00040.png' -> '2024_IMG_5029'
+
     # Split by common video extensions and take the first part
     base = re.split(r'\.MOV|\.mp4|\.avi|\.mpeg', filename, flags=re.IGNORECASE)[0]
     return base
@@ -39,7 +38,7 @@ matched_images = set()
 for img in images:
     img_core = get_core_id_from_image(img)
 
-    # Check for an EXACT match in our video dictionary
+    # Check for an exact match in the video dictionary
     if img_core in video_lookup:
         full_clip_name = video_lookup[img_core]
         matches[full_clip_name].append(img)

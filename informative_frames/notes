@@ -16,4 +16,3 @@ results are saved in ensemble_results (at the moment, needs to be moved to data)
 that visualize the confidences for each frame
 
 split_info_full.csv contains the annotations for all of the 7x417=2919 frames (also an train/val column that can be removed)
-

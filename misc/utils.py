@@ -1,9 +1,5 @@
-from pytorch_grad_cam import GradCAMPlusPlus
-from pytorch_grad_cam.utils.model_targets import ClassifierOutputTarget
-from pytorch_grad_cam.utils.image import show_cam_on_image
 import os
 import torch
-import cv2
 import numpy as np
 from PIL import Image
 import cv2
@@ -105,80 +101,3 @@ def visualize_full_video_attention(model, video_path, transform, device, epoch, 
     save_subset(bot_idx, bot_vals, "BOT")
 
     print(f"--- Saved full video attention for {video_id} (Total frames: {len(all_frames)}) ---")
-
-
-def save_gradcam_plusplus_grid(model, loader, device, epoch, run_dir):
-    model.eval()
-    collected_images = []
-    with torch.no_grad():
-        for inputs, _ in loader:
-            for i in range(inputs.size(0)):
-                collected_images.append(inputs[i])
-                if len(collected_images) == 9: break
-            if len(collected_images) == 9: break
-
-    num_to_process = len(collected_images)
-    if num_to_process == 0: return
-
-    input_samples = torch.stack(collected_images).to(device).requires_grad_(True)
-    target_layers = [model.features[-1]]
-    cam = GradCAMPlusPlus(model=model, target_layers=target_layers)
-    targets = [ClassifierOutputTarget(0) for _ in range(num_to_process)]
-
-    grayscale_cams = cam(input_tensor=input_samples, targets=targets)
-    h, w = input_samples.shape[2], input_samples.shape[3]
-    grid_img = np.zeros((h * 3, w * 3, 3), dtype=np.uint8)
-
-    mean = np.array([0.485, 0.456, 0.406])
-    std = np.array([0.229, 0.224, 0.225])
-
-    for i in range(num_to_process):
-        img_np = input_samples[i].detach().permute(1, 2, 0).cpu().numpy()
-        img_np = (img_np * std) + mean
-        img_np = np.clip(img_np, 0, 1)
-        vis = show_cam_on_image(img_np, grayscale_cams[i], use_rgb=True)
-        row, col = i // 3, i % 3
-        grid_img[row * h:(row + 1) * h, col * w:(col + 1) * w, :] = vis
-
-    save_path = os.path.join(run_dir, f"gradcam_epoch_{epoch:03d}.png")
-    Image.fromarray(grid_img).save(save_path)
-
-
-def save_preprocessing_check(loader, output_name, num_images=9):
-    """
-    Saves a 3x3 grid of images from a loader to verify preprocessing/augmentations.
-    Reverses normalization so colors look correct.
-    """
-    collected = []
-    # 1. Collect images until we have enough
-    for images, labels in loader:
-        for i in range(images.size(0)):
-            collected.append(images[i])
-            if len(collected) == num_images:
-                break
-        if len(collected) == num_images:
-            break
-
-    # 2. Setup Grid Parameters
-    h, w = collected[0].shape[1], collected[0].shape[2]
-    grid_img = np.zeros((h * 3, w * 3, 3), dtype=np.uint8)
-
-    # ImageNet stats to reverse normalization
-    mean = np.array([0.485, 0.456, 0.406])
-    std = np.array([0.229, 0.224, 0.225])
-
-    # 3. Denormalize and stitch
-    for i in range(len(collected)):
-        # Convert (C, H, W) -> (H, W, C)
-        img_np = collected[i].permute(1, 2, 0).cpu().numpy()
-
-        # Reverse: (x * std) + mean
-        img_np = (img_np * std) + mean
-        img_np = np.clip(img_np, 0, 1) * 255
-        img_np = img_np.astype(np.uint8)
-
-        row, col = i // 3, i % 3
-        grid_img[row * h:(row + 1) * h, col * w:(col + 1) * w, :] = img_np
-
-    save_path = f"{output_name}.png"
-    Image.fromarray(grid_img).save(save_path)

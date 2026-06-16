@@ -3,26 +3,11 @@ import csv
 import os
 import re
 
-# Files
+from .match_grades import normalize_string
+
 matching_results_file = "data/matching_results_hd_new.json"
 csv_path = "data/DR_Grading_Summary_v3.csv"
 output_file = "data/unmatched_clip_labels.json"
-
-
-def normalize_string(s):
-    """
-    Standardizes names so 'CLEAN_IMG_5029' matches '09-05-2024\\IMG_5029.MOV'
-    """
-    if not s: return ""
-    # 1. Remove "CLEAN_" prefix
-    s = re.sub(r'^CLEAN_', '', s, flags=re.IGNORECASE)
-    # 2. Get filename only, handle mixed slashes
-    s = s.replace('\\', '/').split('/')[-1]
-    # 3. Strip extension
-    s = os.path.splitext(s)[0]
-    # 4. Remove all non-alphanumeric and lowercase
-    s = re.sub(r'[^a-zA-Z0-9]', '', s).lower()
-    return s
 
 
 # 1. Load the list of unmatched clips

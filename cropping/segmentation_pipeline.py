@@ -13,7 +13,6 @@ import matplotlib
 
 matplotlib.use('Agg')
 
-# --- Configuration ---
 IMG_DIR = Path('cropping/frames_to_annotate_larger')
 CSV_PATH = Path('cropping/annotations_video_frames_larger.csv')
 
@@ -22,11 +21,10 @@ EPOCHS = 20
 BATCH_SIZE = 16
 LR = 1e-4
 IMG_SIZE = 768
-N_SPLITS = 5  # 5-Fold Cross Validation
+N_SPLITS = 5
 SPLITS_JSON_PATH = 'cv_splits.json'
 
 
-# --- 1. The Dataset Class ---
 class FundusDataset(Dataset):
     def __init__(self, df, img_dir, transform=None):
         self.df = df.reset_index(drop=True)
@@ -46,13 +44,12 @@ class FundusDataset(Dataset):
             raise FileNotFoundError(f"Could not find {img_path}")
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-        # Generate Mask from CSV coordinates on the ORIGINAL image size
+        # Generate Mask from CSV coordinates on the original image size
         mask = np.zeros(image.shape[:2], dtype=np.float32)
         center = (int(row['center_x']), int(row['center_y']))
         axes = (int(row['radius_x']), int(row['radius_y']))
         cv2.ellipse(mask, center, axes, 0, 0, 360, 1.0, -1)
 
-        # Albumentations will handle resizing both the 1920x1920 and 1308x1308 images to 768x768
         if self.transform:
             augmented = self.transform(image=image, mask=mask)
             image = augmented['image']
@@ -61,15 +58,14 @@ class FundusDataset(Dataset):
         return image, mask
 
 
-# --- 2. Transformations ---
 def get_transforms(train=True):
     if train:
         return albu.Compose([
             # 1. Minor Crop & Rescale
             # Takes a random 80% to 100% chunk of the original image, keeps it square,
-            # and resizes it to 768x768.
+            # and resizes it to IMG_SIZE.
             albu.RandomResizedCrop(
-                size=(IMG_SIZE, IMG_SIZE),  # Use a tuple (height, width)
+                size=(IMG_SIZE, IMG_SIZE),
                 scale=(0.8, 1.0),
                 ratio=(1.0, 1.0),
                 p=1.0
@@ -102,7 +98,6 @@ def get_transforms(train=True):
         ])
 
 
-# --- 3. K-Fold Logic and Training Loop ---
 def run_training():
     if not CSV_PATH.exists():
         print(f"Error: {CSV_PATH} not found.")
@@ -111,7 +106,6 @@ def run_training():
     df = pd.read_csv(CSV_PATH)
     print(f"Total images found in CSV: {len(df)}")
 
-    # -- Create and Save 5-Fold Splits --
     kf = KFold(n_splits=N_SPLITS, shuffle=True, random_state=42)
     splits_dict = {}
 
@@ -123,12 +117,11 @@ def run_training():
 
     with open(SPLITS_JSON_PATH, 'w') as f:
         json.dump(splits_dict, f, indent=4)
-    print(f"✅ Saved cross-validation splits to {SPLITS_JSON_PATH}")
+    print(f"Saved cross-validation splits to {SPLITS_JSON_PATH}")
 
-    # -- Train 5 Models --
     for fold in range(N_SPLITS):
         print(f"\n{'=' * 30}")
-        print(f"🚀 Starting Training for FOLD {fold + 1}/{N_SPLITS}")
+        print(f"Starting Training for FOLD {fold + 1}/{N_SPLITS}")
         print(f"{'=' * 30}")
 
         # Extract data for current fold
@@ -197,9 +190,9 @@ def run_training():
             if iou > best_iou:
                 best_iou = iou
                 torch.save(model.state_dict(), model_save_path)
-                print(f"   -> 🌟 New Best IoU! Saved {model_save_path}")
+                print(f"   -> New Best IoU! Saved {model_save_path}")
 
-        print(f"🏁 Finished Fold {fold}. Best Val IoU: {best_iou:.4f}")
+        print(f"Finished Fold {fold}. Best Val IoU: {best_iou:.4f}")
 
 
 if __name__ == "__main__":

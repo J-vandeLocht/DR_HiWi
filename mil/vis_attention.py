@@ -1,13 +1,10 @@
 import os
 import cv2
-import json
 import torch
 import torch.nn as nn
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
-from PIL import Image
-from pathlib import Path
 from torchvision.transforms import v2
 from dino.utils import apply_clahe_cv2_dino
 
@@ -221,14 +218,11 @@ if __name__ == "__main__":
         "ensemble_results/cleaned_videos/CLEAN_2024_04_02_12_48_IMG_4883 RE SEV NPDR WITH DME.mp4",
         "ensemble_results/cleaned_videos/CLEAN_R058R2.mp4"
     ]
-    # split_paths = [
-    #     ("mil/models/dino_mil_complex_split_1_segmented_0512_1705", 1),
-    #     ("mil/models/dino_mil_complex_split_2_segmented_0512_1824", 2),
-    #     ("mil/models/dino_mil_complex_split_3_segmented_0512_1945", 3),
-    #     ("mil/models/dino_mil_complex_split_4_segmented_0512_2107", 4),
-    #     ("mil/models/dino_mil_complex_split_5_segmented_0514_1205", 5)
-    # ]
     split_paths = [
+        ("mil/models/dino_mil_complex_split_1_segmented_0512_1705", 1),
+        ("mil/models/dino_mil_complex_split_2_segmented_0512_1824", 2),
+        ("mil/models/dino_mil_complex_split_3_segmented_0512_1945", 3),
+        ("mil/models/dino_mil_complex_split_4_segmented_0512_2107", 4),
         ("mil/models/dino_mil_complex_split_5_segmented_0514_1205", 5)
     ]
 

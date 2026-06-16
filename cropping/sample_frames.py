@@ -9,7 +9,7 @@ OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def pad_to_square(image):
-    """Adds black padding to make the image 1:1 without stretching."""
+    # Adds black padding to make the image 1:1 without stretching.
     h, w = image.shape[:2]
     max_side = max(h, w)
     squared_img = np.zeros((max_side, max_side, 3), dtype=np.uint8)
@@ -49,7 +49,6 @@ def extract_and_pad_sequential():
         # 2. Read frames sequentially
         current_idx = 0
         while cap.isOpened():
-            # We use .read() every time instead of .set()
             ret, frame = cap.read()
             if not ret:
                 break
@@ -65,7 +64,6 @@ def extract_and_pad_sequential():
 
             current_idx += 1
 
-            # Optimization: Stop once we've passed our last target frame
             if current_idx > max_target:
                 break
 

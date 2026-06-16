@@ -3,18 +3,14 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.tensorboard import SummaryWriter
 from torchvision import transforms
-from tqdm import tqdm
 from datetime import datetime
-import cv2
 import os
 import argparse
 import numpy as np
-from PIL import Image
 
 from data.dataset import KaggleDRDataset
-from .eval_eff import evaluate_and_log
+from .utils import evaluate_and_log, train_one_epoch
 from misc.utils import apply_clahe_cv2
-from .train_eff import train_one_epoch
 from dino.train_dino_classifier import DinoClassifier
 
 

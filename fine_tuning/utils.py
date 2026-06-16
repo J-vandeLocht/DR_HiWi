@@ -1,63 +1,29 @@
 import torch
 import torch.nn as nn
+from tqdm import tqdm
+import os
 import numpy as np
 import matplotlib.pyplot as plt
-import os
-import cv2
 import seaborn as sns
-from PIL import Image
-from torch.utils.data import DataLoader
 from sklearn.metrics import (accuracy_score, f1_score, cohen_kappa_score,
                              precision_recall_curve, auc, confusion_matrix)
 from sklearn.preprocessing import label_binarize
-from pytorch_grad_cam import ScoreCAM
-from pytorch_grad_cam.utils.model_targets import ClassifierOutputTarget
 
 
-def save_scorecam_grid(model, loader, device, output_path):
-    model.eval()
-    collected_images = []
-
-    # Collect 9 random images from the shuffled loader
-    for inputs, _ in loader:
-        for i in range(inputs.size(0)):
-            collected_images.append(inputs[i])
-            if len(collected_images) == 9: break
-        if len(collected_images) == 9: break
-
-    if not collected_images: return
-
-    h, w = collected_images[0].shape[1], collected_images[0].shape[2]
-    grid_img = np.zeros((h * 3, w * 3, 3), dtype=np.uint8)
-    cam = ScoreCAM(model=model, target_layers=[model.features[-1]])
-
-    mean = np.array([0.485, 0.456, 0.406]).reshape(1, 1, 3)
-    std = np.array([0.229, 0.224, 0.225]).reshape(1, 1, 3)
-
-    for i in range(len(collected_images)):
-        input_tensor = collected_images[i].unsqueeze(0).to(device)
-        cam_input = torch.nn.functional.interpolate(input_tensor, size=(256, 256), mode='bilinear')
-
-        with torch.no_grad():
-            output = model(cam_input)
-            pred = torch.argmax(output, dim=1).item()
-
-        targets = [ClassifierOutputTarget(pred)]
-        cam_map = cam(input_tensor=cam_input, targets=targets)[0]
-        cam_map = cv2.resize(cam_map, (w, h))
-
-        # Denormalize image
-        img = input_tensor[0].detach().cpu().permute(1, 2, 0).numpy()
-        img = np.clip((img * std) + mean, 0, 1)
-
-        heatmap = cv2.applyColorMap(np.uint8(255 * cam_map), cv2.COLORMAP_TURBO)
-        heatmap = cv2.cvtColor(heatmap, cv2.COLOR_BGR2RGB) / 255.0
-
-        overlay = np.clip(0.6 * img + 0.4 * heatmap, 0, 1)
-        row, col = i // 3, i % 3
-        grid_img[row * h:(row + 1) * h, col * w:(col + 1) * w] = (overlay * 255).astype(np.uint8)
-
-    Image.fromarray(grid_img).save(output_path)
+def train_one_epoch(model, loader, criterion, optimizer, device):
+    model.train()
+    total_loss = 0
+    pbar = tqdm(loader, leave=False)
+    for i, (images, labels) in enumerate(pbar):
+        images, labels = images.to(device), labels.to(device).long()
+        optimizer.zero_grad()
+        outputs = model(images)
+        loss = criterion(outputs, labels)
+        loss.backward()
+        optimizer.step()
+        total_loss += loss.item()
+        pbar.set_postfix({'batch_loss': f"{loss.item():.4f}"})
+    return total_loss / len(loader)
 
 
 def evaluate_and_log(model, loader, device, epoch, run_dir):

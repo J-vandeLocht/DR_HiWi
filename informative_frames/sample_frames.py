@@ -1,7 +1,6 @@
 import cv2
 from pathlib import Path
 
-# --- Configuration ---
 VIDEO_DIR = Path('data/dr_videos')
 OUTPUT_DIR = Path('data/informative_frames/frames_raw_extract')
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)

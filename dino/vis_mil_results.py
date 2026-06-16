@@ -10,10 +10,9 @@ from .train_dino_mil import DinoMIL
 
 
 def run_inference(model, loader, device):
-    """
-    Inference loop that pulls video names directly from the dataset
-    object to avoid indexing errors in the DataLoader batch.
-    """
+    # Inference loop that pulls video names directly from the dataset
+    # object to avoid indexing errors in the DataLoader batch.
+
     model.eval()
     results = {}
 
@@ -44,33 +43,27 @@ def main(args):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     os.makedirs(args.output_dir, exist_ok=True)
     val_trans = make_val_transform_dino(args.img_size, args.complex_augs)
-    # for split in [1, 2, 3, 4, 5]:
-    for split in [5]:
+    for split in [1, 2, 3, 4, 5]:
         csv_path = os.path.join(args.output_dir, f"predictions_split_{split}.csv")
 
-        # --- Setup Data ---
         val_ds = MILVideoDatasetNew(
             json_path=f"data/stratified_splits/split_{split}/mil_val.json",
             num_frames=32,
             transform=val_trans
         )
-        # shuffle MUST be False for our index-based name retrieval to work
+
         val_loader = torch.utils.data.DataLoader(val_ds, batch_size=1, shuffle=False)
 
         run_name = f"split_{split}"
 
         print(f"\n>>> Evaluating Run: {run_name}")
 
-        # model = DinoMIL(
-        #     checkpoint_path=args.model_paths[split - 1]
-        # ).to(device)
         model = DinoMIL(
-            checkpoint_path=args.model_paths[0]
+            checkpoint_path=args.model_paths[split - 1]
         ).to(device)
 
         run_results = run_inference(model, val_loader, device)
 
-        # Convert to temp DF
         temp_df = pd.DataFrame.from_dict(run_results, orient='index')
         temp_df.index.name = 'video'
 

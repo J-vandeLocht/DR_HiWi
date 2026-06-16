@@ -1,21 +1,18 @@
 import cv2
 import torch
 import numpy as np
-import pandas as pd
 from pathlib import Path
 import segmentation_models_pytorch as smp
 import albumentations as albu
 from albumentations.pytorch import ToTensorV2
 
-# --- Configuration ---
 IMG_DIR = Path('data/2024_Paxos_Frames/frames')
 CROPPED_DIR = Path('data/2024_Paxos_Frames/cropped_frames')
-SEG_MODEL_DIR = Path('cropping/models')  # Directory containing the 5-fold models
+SEG_MODEL_DIR = Path('cropping/models')
 
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
-IMG_SIZE = 512  # Updated to match the ensemble from script 2
+IMG_SIZE = 512
 
-# Ensure directory exists
 CROPPED_DIR.mkdir(parents=True, exist_ok=True)
 
 
@@ -28,13 +25,12 @@ def get_transforms():
 
 
 def load_segmentation_ensemble():
-    """Loads the 5-Fold Unet++ ensemble."""
+    # Loads the 5-Fold Unet++ ensemble.
     print(f"Loading 5-Fold Unet++ (B4) ensemble on {DEVICE}...")
     seg_ensemble = []
     for fold in range(5):
         sm = smp.UnetPlusPlus(encoder_name="efficientnet-b4", in_channels=3, classes=1).to(DEVICE).eval()
 
-        # Find the specific fold model
         model_paths = list(SEG_MODEL_DIR.glob(f"*fold_{fold}*"))
         if not model_paths:
             raise FileNotFoundError(f"Could not find model for fold {fold} in {SEG_MODEL_DIR}")
@@ -45,10 +41,7 @@ def load_segmentation_ensemble():
 
 
 def save_cropped_images(seg_ensemble):
-    """
-    Performs ensemble inference and saves ONLY the masked (cropped) retina image
-    at its original resolution.
-    """
+    # Performs ensemble inference and saves only the masked (cropped) retina image at its original resolution.
     all_files = sorted([f for f in IMG_DIR.iterdir() if f.suffix.lower() in ['.png', '.jpg', '.jpeg']])
     print(f"Generating cropped frames for {len(all_files)} images...")
 
@@ -87,7 +80,5 @@ def save_cropped_images(seg_ensemble):
 
 
 if __name__ == "__main__":
-    # Load ensemble once to save memory and time
     ensemble = load_segmentation_ensemble()
-
     save_cropped_images(ensemble)

@@ -3,15 +3,12 @@ import csv
 import os
 import re
 
-# Files
 matching_file = "data/matching_results_hd_new.json"
 csv_path = "data/DR_Grading_Summary_v3.csv"
 
 
 def normalize_string(s):
-    """
-    Cleans a string to its core 'identity' for matching.
-    """
+    # Cleans a string to its core 'identity' for matching.
     if not s: return ""
     # 1. Remove "CLEAN_" prefix if it exists
     s = re.sub(r'^CLEAN_', '', s, flags=re.IGNORECASE)

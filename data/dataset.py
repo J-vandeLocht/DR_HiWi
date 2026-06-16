@@ -36,76 +36,6 @@ class FrameDataset(Dataset):
 
 
 class MILVideoDataset(Dataset):
-    def __init__(self, json_path, video_dir, num_frames=16, transform=None):
-        with open(json_path, 'r') as f:
-            self.label_map = json.load(f)
-
-        self.video_ids = list(self.label_map.keys())
-        self.video_dir = video_dir
-        self.num_frames = num_frames
-        self.transform = transform
-
-    def __len__(self):
-        return len(self.video_ids)
-
-    def __getitem__(self, idx):
-        vid_name = self.video_ids[idx]
-        vid_path = os.path.join(self.video_dir, vid_name)
-        grade = self.label_map[vid_name]
-
-        # Convert Grade to Binary Label (Referable >= 2)
-        label = 1.0 if grade >= 2 else 0.0
-
-        # Load and sample frames
-        bag = self._load_video_frames(vid_path)
-
-        return bag, torch.tensor(label, dtype=torch.float32)
-
-    def _load_video_frames(self, path):
-        frames = []
-        cap = cv2.VideoCapture(path)
-
-        if not cap.isOpened():
-            raise RuntimeError(f"Could not open video file: {path}")
-
-        total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-
-        # FAIL FAST: If the video is shorter than our required sample size,
-        # we don't want to pad/interpolate. We want to know about it.
-        if total_frames < self.num_frames:
-            cap.release()
-            raise RuntimeError(
-                f"Video {path} only has {total_frames} frames. "
-                f"Minimum required is {self.num_frames}."
-            )
-
-        # Sample N frames uniformly
-        indices = np.linspace(0, total_frames - 1, self.num_frames, dtype=int)
-
-        for i in range(total_frames):
-            ret, frame = cap.read()
-            if not ret:
-                break
-            if i in indices:
-                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                img = Image.fromarray(frame)
-                if self.transform:
-                    img = self.transform(img)
-                frames.append(img)
-
-        cap.release()
-
-        # Final check: Ensure we actually got the count we expected
-        if len(frames) != self.num_frames:
-            raise RuntimeError(
-                f"Frame extraction failed for {path}. "
-                f"Expected {self.num_frames}, got {len(frames)}."
-            )
-
-        return torch.stack(frames) # Shape: [Bag_Size, 3, 224, 224]
-
-
-class MILVideoDatasetNew(Dataset):
     def __init__(self, json_path, num_frames=32, transform=None, random_segment_sample=False):
         with open(json_path, 'r') as f:
             self.label_map = json.load(f)
@@ -114,7 +44,7 @@ class MILVideoDatasetNew(Dataset):
         self.transform = transform
         self.random_segment_sample = random_segment_sample
 
-        search_dir = Path('ensemble_results/cleaned_videos')
+        search_dir = Path('data/ensemble_results/cleaned_videos')
 
         all_video_paths = []
         if search_dir.exists():
@@ -137,6 +67,7 @@ class MILVideoDatasetNew(Dataset):
                     break
 
             if matched_path and matched_path.exists():
+                # Check if video is valid (has a certain size)
                 if matched_path.stat().st_size > 1000:
                     self.data.append({
                         'vid_name': vid_name,
@@ -175,9 +106,6 @@ class MILVideoDatasetNew(Dataset):
             cap.release()
             raise RuntimeError(f"Video {path} has 0 frames or unreadable metadata.")
 
-        # ==========================================
-        # INDEX GENERATION LOGIC
-        # ==========================================
         if not self.random_segment_sample:
             # 1. Uniform Sampling (Deterministic)
             target_indices = np.linspace(0, total_frames - 1, self.num_frames, dtype=int).tolist()

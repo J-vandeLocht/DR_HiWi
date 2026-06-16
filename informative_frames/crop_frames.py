@@ -7,7 +7,6 @@ import albumentations as albu
 from albumentations.pytorch import ToTensorV2
 from pathlib import Path
 
-# --- Configuration ---
 LABEL_CSV = 'informative_frames/split_info_full.csv'
 INPUT_DIR = Path('data/informative_frames/frames_raw_extract')
 OUTPUT_DIR = Path('data/informative_frames/frames_cropped')
@@ -16,7 +15,6 @@ DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 IMG_SIZE = 768
 N_FOLDS = 5
 
-# --- Setup Output Folders ---
 (OUTPUT_DIR / '1').mkdir(parents=True, exist_ok=True)
 (OUTPUT_DIR / '0').mkdir(parents=True, exist_ok=True)
 

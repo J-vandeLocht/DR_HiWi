@@ -6,30 +6,8 @@ from sklearn.metrics import (accuracy_score, f1_score, roc_auc_score,
                              precision_score, recall_score)
 
 
-def load_backbone_weights(mil_model, frame_model_path):
-    """
-    Loads weights from a pre-trained Frame Classifier (EfficientNet) into the MIL backbone.
-    """
-    frame_state_dict = torch.load(frame_model_path, map_location='cpu')
-    new_state_dict = {}
-    print(f"Loading backbone from {frame_model_path}...")
-
-    for key, value in frame_state_dict.items():
-        if key.startswith("features"):
-            new_key = key.replace("features", "feature_extractor.0")
-            new_state_dict[new_key] = value
-        elif key.startswith("avgpool"):
-            new_key = key.replace("avgpool", "feature_extractor.1")
-            new_state_dict[new_key] = value
-
-    mil_model.load_state_dict(new_state_dict, strict=False)
-    print("Backbone weights loaded successfully.")
-
-
 def validate_extended_mil(model, loader, criterion, device):
-    """
-    Extended validation for MIL to calculate PR-AUC, F1, etc.
-    """
+    # Extended validation for MIL to calculate PR-AUC, F1, etc.
     model.eval()
     running_loss = 0.0
     y_true, y_probs = [], []

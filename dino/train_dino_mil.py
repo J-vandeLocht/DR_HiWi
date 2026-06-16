@@ -6,7 +6,7 @@ from datetime import datetime
 import os
 import argparse
 
-from data.dataset import MILVideoDataset, MILVideoDatasetNew
+from data.dataset import MILVideoDataset
 from .utils import make_train_transform_dino, make_val_transform_dino
 from misc.utils import visualize_full_video_attention, save_confusion_matrix
 from mil.utils import train_one_epoch_mil, validate_extended_mil
@@ -86,10 +86,9 @@ class DinoMIL(nn.Module):
             nn.Linear(256, 1)
         )
 
-        # 1. ALWAYS initialize the MIL head randomly first (Preserves your training setup)
         self._init_weights()
 
-        # 2. Override with checkpoint weights if provided
+        # Override with checkpoint weights if provided
         if checkpoint_path is not None:
             print(f"Loading checkpoint from: {checkpoint_path}")
             state_dict = torch.load(checkpoint_path, map_location="cpu")
@@ -130,12 +129,12 @@ class DinoMIL(nn.Module):
     # MODULAR EVALUATION METHODS (For 4-way script)
     # ---------------------------------------------------------
     def extract_features(self, x):
-        """ Runs ONLY the DINO backbone to cache features. """
+        # Runs ONLY the DINO backbone to cache features.
         feats = self.backbone.forward_features(x)
         return feats["x_norm_clstoken"]
 
     def forward_head(self, h):
-        """ Runs ONLY the MIL Head on pre-computed features. """
+        # Runs ONLY the MIL Head on pre-computed features.
         a_v = self.attention_V(h)
         a_u = self.attention_U(h)
         a = self.attention_w(a_v * a_u)  # [N, K]
@@ -147,9 +146,6 @@ class DinoMIL(nn.Module):
         # Returns raw_a for the 'Max Attention' evaluation strategy
         return logits, weights, a.flatten()
 
-    # ---------------------------------------------------------
-    # STANDARD TRAINING FORWARD PASS (Unchanged)
-    # ---------------------------------------------------------
     def forward(self, x):
         """
         x: [num_frames, 3, H, W]
@@ -157,8 +153,6 @@ class DinoMIL(nn.Module):
         h = self.extract_features(x)
         logits, weights, _ = self.forward_head(h)
 
-        # We explicitly drop the raw_a here so your training script
-        # continues to receive exactly 2 items, preventing crashes.
         return logits, weights
 
 
@@ -182,13 +176,13 @@ def train_mil(args):
     val_trans = make_val_transform_dino(args.img_size, args.complex_augs)
 
     # --- Datasets ---
-    train_ds = MILVideoDatasetNew(os.path.join(args.split_path, "mil_train.json"),
-                                  num_frames=32,
-                                  transform=train_trans,
-                                  random_segment_sample=args.random_segment_sample)
-    val_ds = MILVideoDatasetNew(os.path.join(args.split_path, "mil_val.json"),
-                                num_frames=32,
-                                transform=val_trans)
+    train_ds = MILVideoDataset(os.path.join(args.split_path, "mil_train.json"),
+                               num_frames=32,
+                               transform=train_trans,
+                               random_segment_sample=args.random_segment_sample)
+    val_ds = MILVideoDataset(os.path.join(args.split_path, "mil_val.json"),
+                             num_frames=32,
+                             transform=val_trans)
 
     train_loader = torch.utils.data.DataLoader(train_ds, batch_size=1, shuffle=True)
     val_loader = torch.utils.data.DataLoader(val_ds, batch_size=1, shuffle=False)

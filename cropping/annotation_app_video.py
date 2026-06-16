@@ -1,22 +1,16 @@
 import cv2
-import numpy as np
 import csv
 import os
 from pathlib import Path
 
-# --- Configuration ---
-# This points to the folder created by your extraction script
 input_folder = Path('frames_to_annotate_larger')
 output_csv = 'annotations_video_frames_larger.csv'
 
-# UI PADDING: Extra space around the image in the window so you can click
-# "outside" the frame if the retina is partially off-screen.
 PADDING = 100
-BG_COLOR = [30, 30, 30]  # Dark grey background for the UI
+BG_COLOR = [30, 30, 30]
 GUIDE_COLOR = (80, 80, 80)
 window_name = "Retina Annotator - Square Frames"
 
-# --- State ---
 h_point, v_point = None, None
 
 
@@ -64,16 +58,13 @@ class AnnotationDB:
         return self.data.get(filename)
 
 
-# --- Helper Math ---
 def get_ellipse_params(p_horz, p_vert):
-    # p_vert defines the x-coordinate of center, p_horz defines the y-coordinate
     center_x, center_y = p_vert[0], p_horz[1]
     axis_x = abs(p_horz[0] - center_x)
     axis_y = abs(p_vert[1] - center_y)
     return (center_x, center_y), (axis_x, axis_y)
 
 
-# --- UI Drawing ---
 def draw_hud(img, current_idx, total, filename, is_done):
     h, w = img.shape[:2]
     color = (40, 60, 40) if is_done else (40, 40, 40)
@@ -128,7 +119,6 @@ def mouse_callback(event, x, y, flags, param):
         redraw(param['img'], param['name'], param['idx'], param['total'], param['db'])
 
 
-# --- Main App ---
 def main():
     global current_index, h_point, v_point, db
 
