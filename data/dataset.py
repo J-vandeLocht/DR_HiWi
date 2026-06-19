@@ -36,7 +36,8 @@ class FrameDataset(Dataset):
 
 
 class MILVideoDataset(Dataset):
-    def __init__(self, json_path, num_frames=32, transform=None, random_segment_sample=False):
+    def __init__(self, json_path, num_frames=32, transform=None, random_segment_sample=False,
+                 search_dir_path="data/ensemble_results/cleaned_videos"):
         with open(json_path, 'r') as f:
             self.label_map = json.load(f)
 
@@ -44,11 +45,12 @@ class MILVideoDataset(Dataset):
         self.transform = transform
         self.random_segment_sample = random_segment_sample
 
-        search_dir = Path('data/ensemble_results/cleaned_videos')
+        search_dir = Path(search_dir_path)
 
         all_video_paths = []
         if search_dir.exists():
             all_video_paths.extend(list(search_dir.glob('*.mp4')))
+            all_video_paths.extend(list(search_dir.glob('*.MOV')))
 
         self.data = []
         missing_count = 0
@@ -58,7 +60,7 @@ class MILVideoDataset(Dataset):
 
         for vid_name, grade in self.label_map.items():
             matched_path = None
-            base_name = vid_name.replace('.mp4', '').replace('.avi', '')
+            base_name = vid_name.replace('.mp4', '').replace('.MOV', '')
             pattern = re.compile(rf"{re.escape(base_name)}(?![a-zA-Z0-9])")
 
             for path in all_video_paths:
@@ -75,8 +77,10 @@ class MILVideoDataset(Dataset):
                         'label': 1.0 if grade >= 2 else 0.0
                     })
                 else:
+                    print(f"Corrupt: {matched_path}")
                     corrupt_count += 1
             else:
+                print(f"Missing: {vid_name}")
                 missing_count += 1
 
         print(f"Successfully mapped {len(self.data)} videos.")

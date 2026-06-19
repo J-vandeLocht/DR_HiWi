@@ -12,7 +12,7 @@ from albumentations.pytorch import ToTensorV2
 from tqdm import tqdm
 
 from misc.utils import apply_clahe_cv2
-from .crop_frames import crop_and_pad, get_largest_component_mask
+from informative_frames.crop_frames import crop_and_pad, get_largest_component_mask
 
 
 def parse_args():
@@ -35,11 +35,11 @@ def main():
     args = parse_args()
     DEVICE = torch.device(f"cuda:{0}" if torch.cuda.is_available() else "cpu")
 
-    VIDEO_DIR = Path('data/dr_videos')
+    VIDEO_DIR = Path('temp/data')
     SEG_MODEL_DIR = Path('cropping/models')
     CLS_MODEL_DIR = Path('informative_frames/models')
 
-    OUT_BASE = Path('data/ensemble_results')
+    OUT_BASE = Path('temp/data/ensemble_results')
     TXT_DIR = OUT_BASE / 'txt_files'
     PLOT_DIR = OUT_BASE / 'plots'
     VID_DIR = OUT_BASE / 'cleaned_videos'
@@ -75,7 +75,7 @@ def main():
     ])
 
     # --- File Discovery ---
-    all_vids = sorted(list(VIDEO_DIR.glob("*.mp4")))
+    all_vids = sorted(list(VIDEO_DIR.glob("*.MOV")))
     my_vids = [v for i, v in enumerate(all_vids) if i % args.total_gpus == args.gpu_id]
     if args.limit: my_vids = my_vids[:args.limit]
 

@@ -1,3 +1,9 @@
 analyse_runs.py:
 uses confidences in mil_multi_eval/predictions_split_{split}.csv to create results in split_analysis_results where we
 visualize the results
+
+There might be a small inconsistency here. Since training uses the segmented sampling and inference the uniform
+sampling it is suspicious that the results for split 2, 3 and 4 exactly match the ones from training. One explanation
+could be that the csv files for these splits have not been updated for the new model and split 5 was trained
+using the uniform sampling because of a missing space in the config file ('--complex_augs\' instead of '--complex_augs \')
+-> we will re-train with new data regardless so not that important

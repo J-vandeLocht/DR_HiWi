@@ -3,8 +3,8 @@ import pandas as pd
 import os
 from tqdm import tqdm
 from data.dataset import MILVideoDataset
-from .utils import make_val_transform_dino
-from .train_dino_mil import DinoMIL
+from dino.utils import make_val_transform_dino
+from dino.train_dino_mil import DinoMIL
 
 
 def run_inference(model, loader, device):
@@ -45,9 +45,10 @@ def main(args):
         csv_path = os.path.join(args.output_dir, f"predictions_split_{split}.csv")
 
         val_ds = MILVideoDataset(
-            json_path=f"data/stratified_splits/split_{split}/mil_val.json",
+            json_path=f"temp/Grading_Final.json",
             num_frames=32,
-            transform=val_trans
+            transform=val_trans,
+            search_dir_path="temp/data/ensemble_results/cleaned_videos",
         )
 
         val_loader = torch.utils.data.DataLoader(val_ds, batch_size=1, shuffle=False)
@@ -75,7 +76,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--model_paths', nargs='+', required=True)
-    parser.add_argument('--output_dir', type=str, default="mil_multi_eval")
+    parser.add_argument('--output_dir', type=str, default="temp/mil_multi_eval")
     parser.add_argument('--img_size', type=int, default=512)
     parser.add_argument('--complex_augs', action='store_true')
 

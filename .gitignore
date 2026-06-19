@@ -5,6 +5,7 @@ data/clips_hd/
 ensemble_results/
 data/informative_frames
 dino/dinov3/
+temp/data/
 *.pt
 *.pth
 *.ckpt

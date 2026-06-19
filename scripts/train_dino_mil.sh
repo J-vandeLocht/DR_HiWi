@@ -62,5 +62,5 @@ python -u -m dino.train_dino_mil \
   --lr 1e-4 \
   --epochs 5 \
   --lr_step 3 \
-  --complex_augs\
+  --complex_augs \
   --random_segment_sample
