@@ -60,7 +60,8 @@ def generate_analysis(csv_path, output_dir):
         0: "green",
         1: "yellow",
         2: "orange",
-        3: "red"
+        3: "red",
+        4: "black"
     }
 
     grades_sorted = df["grade"].values[sort_idx]

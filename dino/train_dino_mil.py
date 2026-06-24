@@ -8,44 +8,8 @@ import argparse
 
 from data.dataset import MILVideoDataset
 from .utils import make_train_transform_dino, make_val_transform_dino
-from misc.utils import visualize_full_video_attention, save_confusion_matrix
+from misc.utils import save_confusion_matrix
 from mil.utils import train_one_epoch_mil, validate_extended_mil
-
-
-class DinoBackbone(nn.Module):
-    def __init__(self, checkpoint_path=None, freeze=True):
-        super().__init__()
-
-        self.model = torch.hub.load(
-            "dino/dinov3",
-            "dinov3_vitl16",
-            source="local",
-            weights="dino/dinov3_vitl16_pretrain_lvd1689m-8aa4cbdd.pth"
-        )
-
-        self.embed_dim = self.model.embed_dim
-
-        # Load classifier checkpoint
-        if checkpoint_path is not None:
-            print(f"Loading classifier backbone from: {checkpoint_path}")
-            state_dict = torch.load(checkpoint_path, map_location="cpu")
-
-            backbone_state = {}
-            for k, v in state_dict.items():
-                if k.startswith("backbone."):
-                    new_k = k.replace("backbone.", "")
-                    backbone_state[new_k] = v
-
-            self.model.load_state_dict(backbone_state, strict=False)
-            print("Backbone weights loaded from classifier.")
-
-        if freeze:
-            for p in self.model.parameters():
-                p.requires_grad = False
-
-    def forward(self, x):
-        feats = self.model.forward_features(x)
-        return feats["x_norm_clstoken"]
 
 
 class DinoMIL(nn.Module):
@@ -204,20 +168,6 @@ def train_mil(args):
 
         # Save confusion matrix
         save_confusion_matrix(m['y_true'], m['y_pred'], epoch, run_dir)
-
-        # # --- Visualization ---
-        # try:
-        #     # We pass run_dir so you can modify this function to save inside the run folder
-        #     visualize_full_video_attention(
-        #         model,
-        #         "data/own_clips_hd/val_videos/cleaned_videos/CLEAN_2024_02_11_12_26_IMG_4608 LE MILD NPDR.mp4",
-        #         val_trans,
-        #         device,
-        #         epoch,
-        #         output_dir=run_dir
-        #     )
-        # except Exception as e:
-        #     print(f"Visualization skipped: {e}")
 
         # Save best model
         if m['pr_auc'] > best_pr_auc:

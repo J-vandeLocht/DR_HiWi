@@ -1,8 +1,45 @@
 import torch
+import torch.nn as nn
 import cv2
 import numpy as np
 from PIL import Image
 from torchvision.transforms import v2
+
+
+class DinoBackbone(nn.Module):
+    def __init__(self, checkpoint_path=None, freeze=True):
+        super().__init__()
+
+        self.model = torch.hub.load(
+            "dino/dinov3",
+            "dinov3_vitl16",
+            source="local",
+            weights="dino/dinov3_vitl16_pretrain_lvd1689m-8aa4cbdd.pth"
+        )
+
+        self.embed_dim = self.model.embed_dim
+
+        # Load classifier checkpoint
+        if checkpoint_path is not None:
+            print(f"Loading classifier backbone from: {checkpoint_path}")
+            state_dict = torch.load(checkpoint_path, map_location="cpu")
+
+            backbone_state = {}
+            for k, v in state_dict.items():
+                if k.startswith("backbone."):
+                    new_k = k.replace("backbone.", "")
+                    backbone_state[new_k] = v
+
+            self.model.load_state_dict(backbone_state, strict=False)
+            print("Backbone weights loaded from classifier.")
+
+        if freeze:
+            for p in self.model.parameters():
+                p.requires_grad = False
+
+    def forward(self, x):
+        feats = self.model.forward_features(x)
+        return feats["x_norm_clstoken"]
 
 
 def apply_clahe_cv2_dino(img):

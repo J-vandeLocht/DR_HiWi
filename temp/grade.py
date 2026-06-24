@@ -5,7 +5,8 @@ GRADE_MAP = {
     "No DR": 0,
     "Mild DR": 1,
     "Moderate DR": 2,
-    "Proliferative DR": 3
+    "Severe DR": 3,
+    "Proliferative DR": 4
 }
 
 def process_dr_grading(input_csv, output_csv, output_json):
