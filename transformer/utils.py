@@ -18,7 +18,7 @@ def train_one_epoch_trans(model, loader, criterion, optimizer, device):
     model.train()
     total_loss = 0
 
-    for sequence, label in tqdm(loader, desc="Training"):
+    for sequence, label, _ in tqdm(loader, desc="Training"):
         # sequence shape from loader: [1, num_frames, C, H, W] -> Squeeze out batch dim
         sequence = sequence.squeeze(0).to(device)
         label = label.to(device).unsqueeze(1)  # [1, 1]
@@ -47,7 +47,7 @@ def validate_extended_trans(model, loader, criterion, device):
     y_true, y_probs = [], []
 
     with torch.no_grad():
-        for inputs, labels in loader:
+        for inputs, labels, _ in loader:
             inputs = inputs.squeeze(0).to(device)
             labels = labels.to(device).float().unsqueeze(1)
 

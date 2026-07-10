@@ -13,7 +13,7 @@ def validate_extended_mil(model, loader, criterion, device):
     y_true, y_probs = [], []
 
     with torch.no_grad():
-        for inputs, labels in loader:
+        for inputs, labels, _ in loader:
             inputs = inputs.squeeze(0).to(device)
             labels = labels.to(device).float().unsqueeze(1)
 
@@ -52,7 +52,7 @@ def train_one_epoch_mil(model, loader, criterion, optimizer, device):
     model.train()
     total_loss = 0
 
-    for bag, label in tqdm(loader):
+    for bag, label, _ in tqdm(loader):
         # bag shape from loader: [1, Bag_Size, C, H, W] -> Need to squeeze batch dim
         bag = bag.squeeze(0).to(device)
         label = label.to(device).unsqueeze(1)  # [1, 1]

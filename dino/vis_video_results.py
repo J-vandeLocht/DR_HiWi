@@ -3,14 +3,14 @@ import pandas as pd
 import os
 from tqdm import tqdm
 import argparse
+from pathlib import Path
 
 from data.dataset import MILVideoDataset
-from .utils import make_val_transform_dino
-from .train_dino_mil import DinoMIL
-from .train_dino_transformer import DinoSelfAttention
+from dino.utils import make_val_transform_dino
+from dino.train_dino_mil import DinoMIL
+from dino.train_dino_transformer import DinoSelfAttention
 
-# Make sure to adjust this import to match your project structure
-from .train_dino_classifier import DinoClassifier
+from dino.train_dino_classifier import DinoClassifier
 
 
 def run_inference_mil(model, loader, device):
@@ -23,6 +23,7 @@ def run_inference_mil(model, loader, device):
         for i, batch in enumerate(tqdm(loader, desc="MIL Inference")):
             inputs = batch[0].squeeze(0).to(device)
             labels = batch[1]
+            grade = batch[2]
             video_name = dataset_samples[i]['vid_name']
 
             logits, _ = model(inputs)
@@ -30,7 +31,8 @@ def run_inference_mil(model, loader, device):
 
             results[video_name] = {
                 "label": int(labels.item()),
-                "prob": prob
+                "prob": prob,
+                "grade": int(grade.item())
             }
     return results
 
@@ -45,6 +47,7 @@ def run_inference_transformer(model, loader, device):
         for i, batch in enumerate(tqdm(loader, desc="Transformer Inference")):
             inputs = batch[0].squeeze(0).to(device)
             labels = batch[1]
+            grade = batch[2]
             video_name = dataset_samples[i]['vid_name']
 
             logits, _ = model(inputs)
@@ -52,7 +55,8 @@ def run_inference_transformer(model, loader, device):
 
             results[video_name] = {
                 "label": int(labels.item()),
-                "prob": prob
+                "prob": prob,
+                "grade": int(grade.item())
             }
     return results
 
@@ -68,6 +72,7 @@ def run_inference_classifier(model, loader, device):
             # inputs shape: (32, C, H, W)
             inputs = batch[0].squeeze(0).to(device)
             labels = batch[1]
+            grade = batch[2]
             video_name = dataset_samples[i]['vid_name']
 
             # Forward pass: 32 individual frames at once
@@ -79,7 +84,8 @@ def run_inference_classifier(model, loader, device):
 
             results[video_name] = {
                 "label": int(labels.item()),
-                "prob": avg_prob
+                "prob": avg_prob,
+                "grade": int(grade.item())
             }
     return results
 
@@ -95,7 +101,8 @@ def main(args):
         val_ds = MILVideoDataset(
             json_path=f"data/stratified_splits/split_{split}/mil_val.json",
             num_frames=32,
-            transform=val_trans
+            transform=val_trans,
+            search_dir_path=Path(args.output_dir).parent / "ensemble_results/cleaned_videos"
         )
 
         val_loader = torch.utils.data.DataLoader(val_ds, batch_size=1, shuffle=False)
@@ -129,16 +136,16 @@ def main(args):
         df_trans = pd.DataFrame.from_dict(trans_results, orient='index')
         df_trans = df_trans.rename(columns={'prob': f"Trans_{run_name}"})
 
-        # Drop the redundant 'label' column from the classifier dataframe before joining
-        df_clf = df_clf.drop(columns=['label'])
-        df_trans = df_trans.drop(columns=['label'])
+        # Drop the redundant 'label' and 'grade' columns from the classifier and transformer dataframe before joining
+        df_clf = df_clf.drop(columns=['label']).drop(columns=['grade'])
+        df_trans = df_trans.drop(columns=['label']).drop(columns=['grade'])
 
         # Join both frames on the video name index
         master_df = df_mil.join(df_clf).join(df_trans)
         master_df.index.name = 'video'
 
         # Reorder columns to look clean: [label, MIL_split_X, Clf_split_X]
-        master_df = master_df[['label', f"MIL_{run_name}", f"Clf_{run_name}", f"Trans_{run_name}"]]
+        master_df = master_df[['label', f"MIL_{run_name}", f"Clf_{run_name}", f"Trans_{run_name}", "grade"]]
         master_df.to_csv(csv_path)
 
 
@@ -152,7 +159,7 @@ if __name__ == "__main__":
     # Paths for Classifier models
     parser.add_argument('--classifier_paths', nargs='+', required=True, help="List of 5 Classifier checkpoint paths")
 
-    parser.add_argument('--output_dir', type=str, default="mil_multi_eval")
+    parser.add_argument('--output_dir', type=str, default="multi_eval")
     parser.add_argument('--img_size', type=int, default=512)
     parser.add_argument('--complex_augs', action='store_true')
 

@@ -74,7 +74,8 @@ class MILVideoDataset(Dataset):
                     self.data.append({
                         'vid_name': vid_name,
                         'path': str(matched_path),
-                        'label': 1.0 if grade >= 2 else 0.0
+                        'label': 1.0 if grade >= 2 else 0.0,
+                        'grade': grade
                     })
                 else:
                     print(f"Corrupt: {matched_path}")
@@ -95,7 +96,7 @@ class MILVideoDataset(Dataset):
     def __getitem__(self, idx):
         item = self.data[idx]
         bag = self._load_video_frames(item['path'])
-        return bag, torch.tensor(item['label'], dtype=torch.float32)
+        return bag, torch.tensor(item['label'], dtype=torch.float32), torch.tensor(item['grade'])
 
     def _load_video_frames(self, path):
         frames = []

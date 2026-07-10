@@ -1,11 +1,12 @@
-cropping/frames_to_annotate/
 cropping/frames_to_annotate_larger/
 data/2024_Paxos_Frames/
-data/clips_hd/
-ensemble_results/
+data/ensemble_results/cleaned_videos/
 data/informative_frames
 dino/dinov3/
-temp/data/
+occlusion_results/
+experiments/Nigeria/
+experiments/Paxos_2020/
+experiments/Paxos_New/
 *.pt
 *.pth
 *.ckpt

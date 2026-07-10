@@ -1,10 +1,10 @@
 #!/bin/bash
 #SBATCH --nodes=1
-#SBATCH --partition=A40devel
-#SBATCH --time=01:00:00
+#SBATCH --partition=A40short
+#SBATCH --time=08:00:00
 #SBATCH --gpus=1
 #SBATCH --ntasks=1
-#SBATCH --nodelist=node-04
+#SBATCH --nodelist=node-03
 #SBATCH --cpus-per-task=8
 
 source ~/.bashrc
@@ -36,6 +36,7 @@ TRANSFORMER_PATHS=(
 )
 
 python -u -m dino.vis_video_results \
+  --output_dir "data/multi_eval" \
   --mil_paths "${MIL_PATHS[@]}" \
   --classifier_paths "${CLASSIFIER_PATHS[@]}" \
   --trans_paths "${TRANSFORMER_PATHS[@]}" \
