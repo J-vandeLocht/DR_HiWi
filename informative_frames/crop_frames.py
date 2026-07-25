@@ -7,9 +7,12 @@ import albumentations as albu
 from albumentations.pytorch import ToTensorV2
 from pathlib import Path
 
-LABEL_CSV = 'informative_frames/split_info_full.csv'
-INPUT_DIR = Path('data/informative_frames/frames_raw_extract')
-OUTPUT_DIR = Path('data/informative_frames/frames_cropped')
+# LABEL_CSV = 'informative_frames/split_info_full.csv'
+LABEL_CSV = 'informative_frames/manual_labels_binary_paxos2020.csv'
+# INPUT_DIR = Path('data/informative_frames/frames_raw_extract')
+INPUT_DIR = Path('data/informative_frames/frames_raw_extract_paxos2020')
+# OUTPUT_DIR = Path('data/informative_frames/frames_cropped')
+OUTPUT_DIR = Path('data/informative_frames/frames_cropped_paxos2020')
 MODEL_FOLDER = Path('cropping/models')
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 IMG_SIZE = 768

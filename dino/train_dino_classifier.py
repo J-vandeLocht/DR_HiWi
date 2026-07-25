@@ -2,8 +2,10 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.tensorboard import SummaryWriter
+from torch.utils.data import DataLoader, WeightedRandomSampler
 from datetime import datetime
 import os
+import numpy as np
 import argparse
 
 from data.dataset import FrameDataset
@@ -95,14 +97,38 @@ def train_classifier(args):
     val_trans = make_val_transform_dino(args.img_size, args.complex_augs)
 
     train_dataset = FrameDataset(os.path.join(args.split_path, "frame_train.json"),
-                                 "data/2024_Paxos_Frames/cropped_frames",
+                                 ["data/2024_Paxos_Frames/cropped_frames", "classifier/cropped_classifier_frames"],
                                  transform=train_trans)
     val_dataset = FrameDataset(os.path.join(args.split_path, "frame_val.json"),
-                               "data/2024_Paxos_Frames/cropped_frames",
+                               ["data/2024_Paxos_Frames/cropped_frames", "classifier/cropped_classifier_frames"],
                                transform=val_trans)
 
-    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True)
-    val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=1, shuffle=False)
+    train_labels = np.array(train_dataset.labels)
+    class_counts = np.bincount(train_labels)
+
+    # Compute inverse class frequencies: weight per class = 1.0 / count
+    class_weights = 1.0 / class_counts
+
+    # Map each individual sample in the dataset to its class weight
+    sample_weights = class_weights[train_labels]
+
+    # Convert sample weights to a PyTorch DoubleTensor
+    sample_weights = torch.from_numpy(sample_weights).double()
+
+    # 3. Create the WeightedRandomSampler
+    sampler = WeightedRandomSampler(
+        weights=sample_weights, num_samples=len(sample_weights), replacement=True
+    )
+
+    # 4. Pass the sampler to DataLoader (Note: shuffle MUST be False)
+    train_loader = DataLoader(
+        train_dataset,
+        batch_size=args.batch_size,
+        sampler=sampler,  # Handles random sampling weighted by class distribution
+        shuffle=False,  # Set shuffle to False when using a custom sampler
+    )
+
+    val_loader = DataLoader(val_dataset, batch_size=1, shuffle=False)
 
     criterion = nn.BCEWithLogitsLoss()
     optimizer = optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=args.lr)

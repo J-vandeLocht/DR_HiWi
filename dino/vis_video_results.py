@@ -99,10 +99,10 @@ def main(args):
         csv_path = os.path.join(args.output_dir, f"predictions_split_{split}.csv")
 
         val_ds = MILVideoDataset(
-            json_path=f"data/stratified_splits/split_{split}/mil_val.json",
+            json_path=f"experiments/Paxos_2020/graded_videos.json",
             num_frames=32,
             transform=val_trans,
-            search_dir_path=Path(args.output_dir).parent / "ensemble_results/cleaned_videos"
+            search_dir_path=Path(args.output_dir).parent / "ensemble_results_paxos2020/cleaned_videos"
         )
 
         val_loader = torch.utils.data.DataLoader(val_ds, batch_size=1, shuffle=False)
@@ -110,13 +110,13 @@ def main(args):
         run_name = f"split_{split}"
         print(f"\n>>> Evaluating Run: {run_name}")
 
-        # --- 1. Evaluate Transformer Model ---
-        trans_model = DinoSelfAttention(checkpoint_path=args.trans_paths[split - 1]).to(device)
-        trans_results = run_inference_transformer(trans_model, val_loader, device)
-
-        # --- 2. Evaluate MIL Model ---
-        mil_model = DinoMIL(checkpoint_path=args.mil_paths[split - 1]).to(device)
-        mil_results = run_inference_mil(mil_model, val_loader, device)
+        # # --- 1. Evaluate Transformer Model ---
+        # trans_model = DinoSelfAttention(checkpoint_path=args.trans_paths[split - 1]).to(device)
+        # trans_results = run_inference_transformer(trans_model, val_loader, device)
+        #
+        # # --- 2. Evaluate MIL Model ---
+        # mil_model = DinoMIL(checkpoint_path=args.mil_paths[split - 1]).to(device)
+        # mil_results = run_inference_mil(mil_model, val_loader, device)
 
         # --- 3. Evaluate Classifier Model ---
         # Initialize with num_classes=1 so the architecture exactly matches the saved binary head
@@ -126,26 +126,28 @@ def main(args):
 
         clf_results = run_inference_classifier(classifier, val_loader, device)
 
-        # --- 4. Merge Results into a Single DataFrame ---
-        df_mil = pd.DataFrame.from_dict(mil_results, orient='index')
-        df_mil = df_mil.rename(columns={'prob': f"MIL_{run_name}"})
-
+        # # --- 4. Merge Results into a Single DataFrame ---
+        # df_mil = pd.DataFrame.from_dict(mil_results, orient='index')
+        # df_mil = df_mil.rename(columns={'prob': f"MIL_{run_name}"})
+        #
         df_clf = pd.DataFrame.from_dict(clf_results, orient='index')
         df_clf = df_clf.rename(columns={'prob': f"Clf_{run_name}"})
-
-        df_trans = pd.DataFrame.from_dict(trans_results, orient='index')
-        df_trans = df_trans.rename(columns={'prob': f"Trans_{run_name}"})
+        #
+        # df_trans = pd.DataFrame.from_dict(trans_results, orient='index')
+        # df_trans = df_trans.rename(columns={'prob': f"Trans_{run_name}"})
 
         # Drop the redundant 'label' and 'grade' columns from the classifier and transformer dataframe before joining
-        df_clf = df_clf.drop(columns=['label']).drop(columns=['grade'])
-        df_trans = df_trans.drop(columns=['label']).drop(columns=['grade'])
+        # df_clf = df_clf.drop(columns=['label']).drop(columns=['grade'])
+        # df_trans = df_trans.drop(columns=['label']).drop(columns=['grade'])
 
         # Join both frames on the video name index
-        master_df = df_mil.join(df_clf).join(df_trans)
+        # master_df = df_mil.join(df_clf).join(df_trans)
+        master_df = df_clf
         master_df.index.name = 'video'
 
-        # Reorder columns to look clean: [label, MIL_split_X, Clf_split_X]
-        master_df = master_df[['label', f"MIL_{run_name}", f"Clf_{run_name}", f"Trans_{run_name}", "grade"]]
+        # Reorder columns to look clean: [label, MIL_split_X, Clf_split_X, Trans_split_X]
+        # master_df = master_df[['label', f"MIL_{run_name}", f"Clf_{run_name}", f"Trans_{run_name}", "grade"]]
+        master_df = master_df[['label', f"Clf_{run_name}", "grade"]]
         master_df.to_csv(csv_path)
 
 

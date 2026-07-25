@@ -15,14 +15,16 @@ matplotlib.use('Agg')
 
 IMG_DIR = Path('cropping/frames_to_annotate_larger')
 CSV_PATH = Path('cropping/annotations_video_frames_larger.csv')
+OUTPUT_DIR = Path('cropping/models')
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 EPOCHS = 20
-BATCH_SIZE = 16
+BATCH_SIZE = 8
 LR = 1e-4
 IMG_SIZE = 768
 N_SPLITS = 5
-SPLITS_JSON_PATH = 'cv_splits.json'
+SPLITS_JSON_PATH = 'splits.json'
 
 
 class FundusDataset(Dataset):
@@ -149,7 +151,7 @@ def run_training():
         loss_fn = smp.losses.DiceLoss(smp.losses.BINARY_MODE, from_logits=True)
 
         best_iou = 0.0
-        model_save_path = f'best_model_fold_{fold}.pth'
+        model_save_path = f'cropping/models/best_model_fold_{fold}.pth'
 
         for epoch in range(EPOCHS):
             model.train()

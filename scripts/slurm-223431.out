@@ -1,0 +1,1087 @@
+Searching for videos in: ['/home/s6jovand/job/new/data/dr_videos', '/home/s6jovand/job/new/data/Paxos_2020_videos']
+GPU 1/3: assigned 190 video(s).
+
+[GPU 1] Processing: B005R.MOV (3614 frames) -- mode: threshold
+  Selected 3 frame(s): [108 | p=0.987], [1644 | p=0.966], [2878 | p=0.999]
+  -> Saved frame 108 (prob=0.987) -> B005R_frame_108_p0.987.png
+  -> Saved frame 1644 (prob=0.966) -> B005R_frame_1644_p0.966.png
+  -> Saved frame 2878 (prob=0.999) -> B005R_frame_2878_p0.999.png
+
+[GPU 1] Processing: C005L.MOV (5198 frames) -- mode: threshold
+  Selected 3 frame(s): [349 | p=0.999], [1689 | p=0.839], [3976 | p=0.939]
+  -> Saved frame 349 (prob=0.999) -> C005L_frame_349_p0.999.png
+  -> Saved frame 1689 (prob=0.839) -> C005L_frame_1689_p0.839.png
+  -> Saved frame 3976 (prob=0.939) -> C005L_frame_3976_p0.939.png
+
+[GPU 1] Processing: C007R.MOV (4820 frames) -- mode: fallback (max-confidence only)
+  Selected 1 frame(s): [651 | p=0.576]
+  -> Saved frame 651 (prob=0.576) -> C007R_frame_651_p0.576.png
+
+[GPU 1] Processing: C009R.MOV (3688 frames) -- mode: threshold
+  Selected 3 frame(s): [914 | p=0.992], [2311 | p=0.936], [3628 | p=0.923]
+  -> Saved frame 914 (prob=0.992) -> C009R_frame_914_p0.992.png
+  -> Saved frame 2311 (prob=0.936) -> C009R_frame_2311_p0.936.png
+  -> Saved frame 3628 (prob=0.923) -> C009R_frame_3628_p0.923.png
+
+[GPU 1] Processing: C014L.MOV (3193 frames) -- mode: threshold
+  Selected 2 frame(s): [397 | p=0.968], [2164 | p=0.883]
+  -> Saved frame 397 (prob=0.968) -> C014L_frame_397_p0.968.png
+  -> Saved frame 2164 (prob=0.883) -> C014L_frame_2164_p0.883.png
+
+[GPU 1] Processing: D001L.MOV (2420 frames) -- mode: threshold
+  Selected 2 frame(s): [292 | p=0.994], [1616 | p=0.890]
+  -> Saved frame 292 (prob=0.994) -> D001L_frame_292_p0.994.png
+  -> Saved frame 1616 (prob=0.890) -> D001L_frame_1616_p0.890.png
+
+[GPU 1] Processing: D004L.MOV (1401 frames) -- mode: threshold
+  Selected 3 frame(s): [368 | p=0.999], [783 | p=0.995], [1360 | p=0.971]
+  -> Saved frame 368 (prob=0.999) -> D004L_frame_368_p0.999.png
+  -> Saved frame 783 (prob=0.995) -> D004L_frame_783_p0.995.png
+  -> Saved frame 1360 (prob=0.971) -> D004L_frame_1360_p0.971.png
+
+[GPU 1] Processing: D006R.MOV (3019 frames) -- mode: threshold
+  Selected 3 frame(s): [306 | p=0.977], [1598 | p=0.937], [2654 | p=0.966]
+  -> Saved frame 306 (prob=0.977) -> D006R_frame_306_p0.977.png
+  -> Saved frame 1598 (prob=0.937) -> D006R_frame_1598_p0.937.png
+  -> Saved frame 2654 (prob=0.966) -> D006R_frame_2654_p0.966.png
+
+[GPU 1] Processing: D009R.MOV (3406 frames) -- mode: threshold
+  Selected 3 frame(s): [698 | p=0.999], [1583 | p=0.993], [2678 | p=0.936]
+  -> Saved frame 698 (prob=0.999) -> D009R_frame_698_p0.999.png
+  -> Saved frame 1583 (prob=0.993) -> D009R_frame_1583_p0.993.png
+  -> Saved frame 2678 (prob=0.936) -> D009R_frame_2678_p0.936.png
+
+[GPU 1] Processing: D012L.MOV (1694 frames) -- mode: threshold
+  Selected 3 frame(s): [301 | p=0.990], [752 | p=0.956], [1338 | p=0.987]
+  -> Saved frame 301 (prob=0.990) -> D012L_frame_301_p0.990.png
+  -> Saved frame 752 (prob=0.956) -> D012L_frame_752_p0.956.png
+  -> Saved frame 1338 (prob=0.987) -> D012L_frame_1338_p0.987.png
+
+[GPU 1] Processing: D014L.MOV (1908 frames) -- mode: threshold
+  Selected 3 frame(s): [563 | p=1.000], [1103 | p=0.994], [1845 | p=0.998]
+  -> Saved frame 563 (prob=1.000) -> D014L_frame_563_p1.000.png
+  -> Saved frame 1103 (prob=0.994) -> D014L_frame_1103_p0.994.png
+  -> Saved frame 1845 (prob=0.998) -> D014L_frame_1845_p0.998.png
+
+[GPU 1] Processing: D016L.MOV (1768 frames) -- mode: threshold
+  Selected 2 frame(s): [190 | p=0.976], [1452 | p=0.977]
+  -> Saved frame 190 (prob=0.976) -> D016L_frame_190_p0.976.png
+  -> Saved frame 1452 (prob=0.977) -> D016L_frame_1452_p0.977.png
+
+[GPU 1] Processing: D018R.MOV (2483 frames) -- mode: threshold
+  Selected 3 frame(s): [484 | p=0.997], [1244 | p=0.986], [2042 | p=0.997]
+  -> Saved frame 484 (prob=0.997) -> D018R_frame_484_p0.997.png
+  -> Saved frame 1244 (prob=0.986) -> D018R_frame_1244_p0.986.png
+  -> Saved frame 2042 (prob=0.997) -> D018R_frame_2042_p0.997.png
+
+[GPU 1] Processing: D020R.MOV (2687 frames) -- mode: threshold
+  Selected 2 frame(s): [657 | p=0.991], [2311 | p=0.932]
+  -> Saved frame 657 (prob=0.991) -> D020R_frame_657_p0.991.png
+  -> Saved frame 2311 (prob=0.932) -> D020R_frame_2311_p0.932.png
+
+[GPU 1] Processing: E002L.MOV (5111 frames) -- mode: threshold
+  Selected 3 frame(s): [531 | p=0.999], [2318 | p=0.985], [4110 | p=0.979]
+  -> Saved frame 531 (prob=0.999) -> E002L_frame_531_p0.999.png
+  -> Saved frame 2318 (prob=0.985) -> E002L_frame_2318_p0.985.png
+  -> Saved frame 4110 (prob=0.979) -> E002L_frame_4110_p0.979.png
+
+[GPU 1] Processing: E005L.MOV (1878 frames) -- mode: threshold
+  Selected 3 frame(s): [425 | p=1.000], [980 | p=0.994], [1578 | p=0.999]
+  -> Saved frame 425 (prob=1.000) -> E005L_frame_425_p1.000.png
+  -> Saved frame 980 (prob=0.994) -> E005L_frame_980_p0.994.png
+  -> Saved frame 1578 (prob=0.999) -> E005L_frame_1578_p0.999.png
+
+[GPU 1] Processing: F009L.MOV (2099 frames) -- mode: threshold
+  Selected 4 frame(s): [312 | p=0.992], [873 | p=0.948], [1399 | p=0.987], [2032 | p=0.987]
+  -> Saved frame 312 (prob=0.992) -> F009L_frame_312_p0.992.png
+  -> Saved frame 873 (prob=0.948) -> F009L_frame_873_p0.948.png
+  -> Saved frame 1399 (prob=0.987) -> F009L_frame_1399_p0.987.png
+  -> Saved frame 2032 (prob=0.987) -> F009L_frame_2032_p0.987.png
+
+[GPU 1] Processing: F014L.MOV (2565 frames) -- mode: threshold
+  Selected 3 frame(s): [460 | p=0.998], [1261 | p=0.993], [2275 | p=0.999]
+  -> Saved frame 460 (prob=0.998) -> F014L_frame_460_p0.998.png
+  -> Saved frame 1261 (prob=0.993) -> F014L_frame_1261_p0.993.png
+  -> Saved frame 2275 (prob=0.999) -> F014L_frame_2275_p0.999.png
+
+[GPU 1] Processing: G001R.MOV (3878 frames) -- mode: threshold
+  Selected 3 frame(s): [377 | p=0.999], [1540 | p=0.996], [3002 | p=0.999]
+  -> Saved frame 377 (prob=0.999) -> G001R_frame_377_p0.999.png
+  -> Saved frame 1540 (prob=0.996) -> G001R_frame_1540_p0.996.png
+  -> Saved frame 3002 (prob=0.999) -> G001R_frame_3002_p0.999.png
+
+[GPU 1] Processing: G003R.MOV (1529 frames) -- mode: threshold
+  Selected 4 frame(s): [52 | p=1.000], [436 | p=0.999], [952 | p=0.997], [1457 | p=1.000]
+  -> Saved frame 52 (prob=1.000) -> G003R_frame_52_p1.000.png
+  -> Saved frame 436 (prob=0.999) -> G003R_frame_436_p0.999.png
+  -> Saved frame 952 (prob=0.997) -> G003R_frame_952_p0.997.png
+  -> Saved frame 1457 (prob=1.000) -> G003R_frame_1457_p1.000.png
+
+[GPU 1] Processing: G007L.MOV (3055 frames) -- mode: threshold
+  Selected 3 frame(s): [522 | p=1.000], [1784 | p=0.997], [2703 | p=0.999]
+  -> Saved frame 522 (prob=1.000) -> G007L_frame_522_p1.000.png
+  -> Saved frame 1784 (prob=0.997) -> G007L_frame_1784_p0.997.png
+  -> Saved frame 2703 (prob=0.999) -> G007L_frame_2703_p0.999.png
+
+[GPU 1] Processing: G010L.MOV (7296 frames) -- mode: threshold
+  Selected 3 frame(s): [1400 | p=0.999], [4527 | p=0.999], [6621 | p=0.881]
+  -> Saved frame 1400 (prob=0.999) -> G010L_frame_1400_p0.999.png
+  -> Saved frame 4527 (prob=0.999) -> G010L_frame_4527_p0.999.png
+  -> Saved frame 6621 (prob=0.881) -> G010L_frame_6621_p0.881.png
+
+[GPU 1] Processing: H002L.MOV (2662 frames) -- mode: threshold
+  Selected 4 frame(s): [332 | p=0.996], [1151 | p=0.986], [1842 | p=0.988], [2623 | p=0.997]
+  -> Saved frame 332 (prob=0.996) -> H002L_frame_332_p0.996.png
+  -> Saved frame 1151 (prob=0.986) -> H002L_frame_1151_p0.986.png
+  -> Saved frame 1842 (prob=0.988) -> H002L_frame_1842_p0.988.png
+  -> Saved frame 2623 (prob=0.997) -> H002L_frame_2623_p0.997.png
+
+[GPU 1] Processing: H005L.MOV (2449 frames) -- mode: threshold
+  Selected 3 frame(s): [253 | p=0.998], [1178 | p=0.984], [2027 | p=0.992]
+  -> Saved frame 253 (prob=0.998) -> H005L_frame_253_p0.998.png
+  -> Saved frame 1178 (prob=0.984) -> H005L_frame_1178_p0.984.png
+  -> Saved frame 2027 (prob=0.992) -> H005L_frame_2027_p0.992.png
+
+[GPU 1] Processing: H008L.MOV (3242 frames) -- mode: threshold
+  Selected 3 frame(s): [557 | p=1.000], [1392 | p=0.992], [2974 | p=1.000]
+  -> Saved frame 557 (prob=1.000) -> H008L_frame_557_p1.000.png
+  -> Saved frame 1392 (prob=0.992) -> H008L_frame_1392_p0.992.png
+  -> Saved frame 2974 (prob=1.000) -> H008L_frame_2974_p1.000.png
+
+[GPU 1] Processing: I001L.MOV (2778 frames) -- mode: threshold
+  Selected 2 frame(s): [858 | p=0.974], [2708 | p=0.879]
+  -> Saved frame 858 (prob=0.974) -> I001L_frame_858_p0.974.png
+  -> Saved frame 2708 (prob=0.879) -> I001L_frame_2708_p0.879.png
+
+[GPU 1] Processing: I003L.MOV (1792 frames) -- mode: threshold
+  Selected 4 frame(s): [255 | p=0.998], [712 | p=0.986], [1204 | p=0.999], [1733 | p=0.998]
+  -> Saved frame 255 (prob=0.998) -> I003L_frame_255_p0.998.png
+  -> Saved frame 712 (prob=0.986) -> I003L_frame_712_p0.986.png
+  -> Saved frame 1204 (prob=0.999) -> I003L_frame_1204_p0.999.png
+  -> Saved frame 1733 (prob=0.998) -> I003L_frame_1733_p0.998.png
+
+[GPU 1] Processing: I006L.MOV (2595 frames) -- mode: threshold
+  Selected 3 frame(s): [252 | p=1.000], [1280 | p=0.999], [2200 | p=1.000]
+  -> Saved frame 252 (prob=1.000) -> I006L_frame_252_p1.000.png
+  -> Saved frame 1280 (prob=0.999) -> I006L_frame_1280_p0.999.png
+  -> Saved frame 2200 (prob=1.000) -> I006L_frame_2200_p1.000.png
+
+[GPU 1] Processing: I008R.MOV (4821 frames) -- mode: threshold
+  Selected 4 frame(s): [3 | p=0.992], [1295 | p=0.895], [2795 | p=0.956], [4750 | p=0.977]
+  -> Saved frame 3 (prob=0.992) -> I008R_frame_3_p0.992.png
+  -> Saved frame 1295 (prob=0.895) -> I008R_frame_1295_p0.895.png
+  -> Saved frame 2795 (prob=0.956) -> I008R_frame_2795_p0.956.png
+  -> Saved frame 4750 (prob=0.977) -> I008R_frame_4750_p0.977.png
+
+[GPU 1] Processing: I011L.MOV (4451 frames) -- mode: threshold
+  Selected 3 frame(s): [1343 | p=0.996], [3225 | p=0.880], [4378 | p=0.987]
+  -> Saved frame 1343 (prob=0.996) -> I011L_frame_1343_p0.996.png
+  -> Saved frame 3225 (prob=0.880) -> I011L_frame_3225_p0.880.png
+  -> Saved frame 4378 (prob=0.987) -> I011L_frame_4378_p0.987.png
+
+[GPU 1] Processing: I013L.MOV (1539 frames) -- mode: threshold
+  Selected 4 frame(s): [142 | p=1.000], [539 | p=0.997], [985 | p=0.992], [1490 | p=0.999]
+  -> Saved frame 142 (prob=1.000) -> I013L_frame_142_p1.000.png
+  -> Saved frame 539 (prob=0.997) -> I013L_frame_539_p0.997.png
+  -> Saved frame 985 (prob=0.992) -> I013L_frame_985_p0.992.png
+  -> Saved frame 1490 (prob=0.999) -> I013L_frame_1490_p0.999.png
+
+[GPU 1] Processing: I015L.MOV (1763 frames) -- mode: threshold
+  Selected 3 frame(s): [182 | p=1.000], [806 | p=0.998], [1590 | p=0.999]
+  -> Saved frame 182 (prob=1.000) -> I015L_frame_182_p1.000.png
+  -> Saved frame 806 (prob=0.998) -> I015L_frame_806_p0.998.png
+  -> Saved frame 1590 (prob=0.999) -> I015L_frame_1590_p0.999.png
+
+[GPU 1] Processing: I017L.MOV (2942 frames) -- mode: threshold
+  Selected 2 frame(s): [381 | p=0.934], [2867 | p=0.995]
+  -> Saved frame 381 (prob=0.934) -> I017L_frame_381_p0.934.png
+  -> Saved frame 2867 (prob=0.995) -> I017L_frame_2867_p0.995.png
+
+[GPU 1] Processing: I021L.MOV (4582 frames) -- mode: threshold
+  Selected 4 frame(s): [3 | p=0.899], [1304 | p=0.999], [3019 | p=0.999], [4526 | p=0.996]
+  -> Saved frame 3 (prob=0.899) -> I021L_frame_3_p0.899.png
+  -> Saved frame 1304 (prob=0.999) -> I021L_frame_1304_p0.999.png
+  -> Saved frame 3019 (prob=0.999) -> I021L_frame_3019_p0.999.png
+  -> Saved frame 4526 (prob=0.996) -> I021L_frame_4526_p0.996.png
+
+[GPU 1] Processing: J001L.MOV (3530 frames) -- mode: threshold
+  Selected 4 frame(s): [373 | p=1.000], [1294 | p=0.918], [2384 | p=0.981], [3361 | p=0.998]
+  -> Saved frame 373 (prob=1.000) -> J001L_frame_373_p1.000.png
+  -> Saved frame 1294 (prob=0.918) -> J001L_frame_1294_p0.918.png
+  -> Saved frame 2384 (prob=0.981) -> J001L_frame_2384_p0.981.png
+  -> Saved frame 3361 (prob=0.998) -> J001L_frame_3361_p0.998.png
+
+[GPU 1] Processing: J003L.MOV (2809 frames) -- mode: threshold
+  Selected 3 frame(s): [11 | p=0.997], [1159 | p=0.995], [2605 | p=0.997]
+  -> Saved frame 11 (prob=0.997) -> J003L_frame_11_p0.997.png
+  -> Saved frame 1159 (prob=0.995) -> J003L_frame_1159_p0.995.png
+  -> Saved frame 2605 (prob=0.997) -> J003L_frame_2605_p0.997.png
+
+[GPU 1] Processing: J005L.MOV (3276 frames) -- mode: threshold
+  Selected 1 frame(s): [14 | p=0.951]
+  -> Saved frame 14 (prob=0.951) -> J005L_frame_14_p0.951.png
+
+[GPU 1] Processing: K007L.MOV (4887 frames) -- mode: threshold
+  Selected 2 frame(s): [831 | p=0.998], [3699 | p=0.992]
+  -> Saved frame 831 (prob=0.998) -> K007L_frame_831_p0.998.png
+  -> Saved frame 3699 (prob=0.992) -> K007L_frame_3699_p0.992.png
+
+[GPU 1] Processing: K009L.MOV (1875 frames) -- mode: threshold
+  Selected 4 frame(s): [118 | p=0.998], [753 | p=0.997], [1252 | p=0.997], [1832 | p=0.998]
+  -> Saved frame 118 (prob=0.998) -> K009L_frame_118_p0.998.png
+  -> Saved frame 753 (prob=0.997) -> K009L_frame_753_p0.997.png
+  -> Saved frame 1252 (prob=0.997) -> K009L_frame_1252_p0.997.png
+  -> Saved frame 1832 (prob=0.998) -> K009L_frame_1832_p0.998.png
+
+[GPU 1] Processing: K011R.MOV (2967 frames) -- mode: threshold
+  Selected 3 frame(s): [407 | p=0.999], [1498 | p=0.876], [2288 | p=0.996]
+  -> Saved frame 407 (prob=0.999) -> K011R_frame_407_p0.999.png
+  -> Saved frame 1498 (prob=0.876) -> K011R_frame_1498_p0.876.png
+  -> Saved frame 2288 (prob=0.996) -> K011R_frame_2288_p0.996.png
+
+[GPU 1] Processing: K013R.MOV (2122 frames) -- mode: threshold
+  Selected 4 frame(s): [2 | p=0.994], [687 | p=0.973], [1307 | p=0.991], [2078 | p=0.968]
+  -> Saved frame 2 (prob=0.994) -> K013R_frame_2_p0.994.png
+  -> Saved frame 687 (prob=0.973) -> K013R_frame_687_p0.973.png
+  -> Saved frame 1307 (prob=0.991) -> K013R_frame_1307_p0.991.png
+  -> Saved frame 2078 (prob=0.968) -> K013R_frame_2078_p0.968.png
+
+[GPU 1] Processing: K016L.MOV (3961 frames) -- mode: threshold
+  Selected 3 frame(s): [257 | p=0.993], [1677 | p=0.916], [3026 | p=0.939]
+  -> Saved frame 257 (prob=0.993) -> K016L_frame_257_p0.993.png
+  -> Saved frame 1677 (prob=0.916) -> K016L_frame_1677_p0.916.png
+  -> Saved frame 3026 (prob=0.939) -> K016L_frame_3026_p0.939.png
+
+[GPU 1] Processing: K018R.MOV (1231 frames) -- mode: threshold
+  Selected 3 frame(s): [232 | p=0.997], [877 | p=0.993], [1211 | p=0.999]
+  -> Saved frame 232 (prob=0.997) -> K018R_frame_232_p0.997.png
+  -> Saved frame 877 (prob=0.993) -> K018R_frame_877_p0.993.png
+  -> Saved frame 1211 (prob=0.999) -> K018R_frame_1211_p0.999.png
+
+[GPU 1] Processing: K020R.MOV (2056 frames) -- mode: threshold
+  Selected 3 frame(s): [118 | p=1.000], [820 | p=0.999], [1727 | p=0.995]
+  -> Saved frame 118 (prob=1.000) -> K020R_frame_118_p1.000.png
+  -> Saved frame 820 (prob=0.999) -> K020R_frame_820_p0.999.png
+  -> Saved frame 1727 (prob=0.995) -> K020R_frame_1727_p0.995.png
+
+[GPU 1] Processing: K022R.MOV (5008 frames) -- mode: threshold
+  Selected 3 frame(s): [293 | p=0.998], [2574 | p=0.994], [4478 | p=0.998]
+  -> Saved frame 293 (prob=0.998) -> K022R_frame_293_p0.998.png
+  -> Saved frame 2574 (prob=0.994) -> K022R_frame_2574_p0.994.png
+  -> Saved frame 4478 (prob=0.998) -> K022R_frame_4478_p0.998.png
+
+[GPU 1] Processing: K024R.MOV (1643 frames) -- mode: threshold
+  Selected 3 frame(s): [236 | p=0.996], [935 | p=0.999], [1586 | p=0.993]
+  -> Saved frame 236 (prob=0.996) -> K024R_frame_236_p0.996.png
+  -> Saved frame 935 (prob=0.999) -> K024R_frame_935_p0.999.png
+  -> Saved frame 1586 (prob=0.993) -> K024R_frame_1586_p0.993.png
+
+[GPU 1] Processing: M003L.MOV (8057 frames) -- mode: threshold
+  Selected 4 frame(s): [1007 | p=0.999], [3039 | p=0.998], [5714 | p=0.999], [7979 | p=0.997]
+  -> Saved frame 1007 (prob=0.999) -> M003L_frame_1007_p0.999.png
+  -> Saved frame 3039 (prob=0.998) -> M003L_frame_3039_p0.998.png
+  -> Saved frame 5714 (prob=0.999) -> M003L_frame_5714_p0.999.png
+  -> Saved frame 7979 (prob=0.997) -> M003L_frame_7979_p0.997.png
+
+[GPU 1] Processing: M005L.MOV (8514 frames) -- mode: threshold
+  Selected 4 frame(s): [728 | p=0.998], [3080 | p=0.996], [5723 | p=0.996], [8294 | p=0.959]
+  -> Saved frame 728 (prob=0.998) -> M005L_frame_728_p0.998.png
+  -> Saved frame 3080 (prob=0.996) -> M005L_frame_3080_p0.996.png
+  -> Saved frame 5723 (prob=0.996) -> M005L_frame_5723_p0.996.png
+  -> Saved frame 8294 (prob=0.959) -> M005L_frame_8294_p0.959.png
+
+[GPU 1] Processing: M007L.MOV (5405 frames) -- mode: threshold
+  Selected 3 frame(s): [144 | p=0.998], [1893 | p=0.992], [4119 | p=0.999]
+  -> Saved frame 144 (prob=0.998) -> M007L_frame_144_p0.998.png
+  -> Saved frame 1893 (prob=0.992) -> M007L_frame_1893_p0.992.png
+  -> Saved frame 4119 (prob=0.999) -> M007L_frame_4119_p0.999.png
+
+[GPU 1] Processing: M009L.MOV (2924 frames) -- mode: threshold
+  Selected 4 frame(s): [65 | p=0.997], [1037 | p=0.983], [1868 | p=0.989], [2884 | p=0.998]
+  -> Saved frame 65 (prob=0.997) -> M009L_frame_65_p0.997.png
+  -> Saved frame 1037 (prob=0.983) -> M009L_frame_1037_p0.983.png
+  -> Saved frame 1868 (prob=0.989) -> M009L_frame_1868_p0.989.png
+  -> Saved frame 2884 (prob=0.998) -> M009L_frame_2884_p0.998.png
+
+[GPU 1] Processing: M011L.MOV (4829 frames) -- mode: threshold
+  Selected 4 frame(s): [324 | p=0.998], [1915 | p=0.976], [3131 | p=0.998], [4803 | p=0.993]
+  -> Saved frame 324 (prob=0.998) -> M011L_frame_324_p0.998.png
+  -> Saved frame 1915 (prob=0.976) -> M011L_frame_1915_p0.976.png
+  -> Saved frame 3131 (prob=0.998) -> M011L_frame_3131_p0.998.png
+  -> Saved frame 4803 (prob=0.993) -> M011L_frame_4803_p0.993.png
+
+[GPU 1] Processing: M013L.MOV (6656 frames) -- mode: threshold
+  Selected 3 frame(s): [1296 | p=0.998], [3255 | p=0.954], [5545 | p=0.999]
+  -> Saved frame 1296 (prob=0.998) -> M013L_frame_1296_p0.998.png
+  -> Saved frame 3255 (prob=0.954) -> M013L_frame_3255_p0.954.png
+  -> Saved frame 5545 (prob=0.999) -> M013L_frame_5545_p0.999.png
+
+[GPU 1] Processing: M015R.MOV (3068 frames) -- mode: threshold
+  Selected 4 frame(s): [378 | p=0.934], [1394 | p=0.812], [2163 | p=0.994], [2982 | p=0.998]
+  -> Saved frame 378 (prob=0.934) -> M015R_frame_378_p0.934.png
+  -> Saved frame 1394 (prob=0.812) -> M015R_frame_1394_p0.812.png
+  -> Saved frame 2163 (prob=0.994) -> M015R_frame_2163_p0.994.png
+  -> Saved frame 2982 (prob=0.998) -> M015R_frame_2982_p0.998.png
+
+[GPU 1] Processing: M017R.MOV (4674 frames) -- mode: threshold
+  Selected 2 frame(s): [1088 | p=0.998], [2567 | p=0.975]
+  -> Saved frame 1088 (prob=0.998) -> M017R_frame_1088_p0.998.png
+  -> Saved frame 2567 (prob=0.975) -> M017R_frame_2567_p0.975.png
+
+[GPU 1] Processing: M019R.MOV (3282 frames) -- mode: threshold
+  Selected 3 frame(s): [274 | p=0.903], [1132 | p=0.997], [2605 | p=0.993]
+  -> Saved frame 274 (prob=0.903) -> M019R_frame_274_p0.903.png
+  -> Saved frame 1132 (prob=0.997) -> M019R_frame_1132_p0.997.png
+  -> Saved frame 2605 (prob=0.993) -> M019R_frame_2605_p0.993.png
+
+[GPU 1] Processing: M021R.MOV (2067 frames) -- mode: threshold
+  Selected 4 frame(s): [286 | p=0.987], [878 | p=0.989], [1483 | p=0.952], [2005 | p=0.989]
+  -> Saved frame 286 (prob=0.987) -> M021R_frame_286_p0.987.png
+  -> Saved frame 878 (prob=0.989) -> M021R_frame_878_p0.989.png
+  -> Saved frame 1483 (prob=0.952) -> M021R_frame_1483_p0.952.png
+  -> Saved frame 2005 (prob=0.989) -> M021R_frame_2005_p0.989.png
+
+[GPU 1] Processing: M023R.MOV (6050 frames) -- mode: threshold
+  Selected 3 frame(s): [1310 | p=1.000], [2929 | p=0.996], [4533 | p=1.000]
+  -> Saved frame 1310 (prob=1.000) -> M023R_frame_1310_p1.000.png
+  -> Saved frame 2929 (prob=0.996) -> M023R_frame_2929_p0.996.png
+  -> Saved frame 4533 (prob=1.000) -> M023R_frame_4533_p1.000.png
+
+[GPU 1] Processing: N002R.MOV (3225 frames) -- mode: threshold
+  Selected 4 frame(s): [305 | p=0.998], [1116 | p=0.936], [2196 | p=0.952], [3176 | p=0.998]
+  -> Saved frame 305 (prob=0.998) -> N002R_frame_305_p0.998.png
+  -> Saved frame 1116 (prob=0.936) -> N002R_frame_1116_p0.936.png
+  -> Saved frame 2196 (prob=0.952) -> N002R_frame_2196_p0.952.png
+  -> Saved frame 3176 (prob=0.998) -> N002R_frame_3176_p0.998.png
+
+[GPU 1] Processing: N004R.MOV (2358 frames) -- mode: threshold
+  Selected 3 frame(s): [449 | p=0.999], [1396 | p=0.996], [2313 | p=0.998]
+  -> Saved frame 449 (prob=0.999) -> N004R_frame_449_p0.999.png
+  -> Saved frame 1396 (prob=0.996) -> N004R_frame_1396_p0.996.png
+  -> Saved frame 2313 (prob=0.998) -> N004R_frame_2313_p0.998.png
+
+[GPU 1] Processing: N006R.MOV (3593 frames) -- mode: threshold
+  Selected 3 frame(s): [830 | p=0.997], [2490 | p=0.950], [3567 | p=0.980]
+  -> Saved frame 830 (prob=0.997) -> N006R_frame_830_p0.997.png
+  -> Saved frame 2490 (prob=0.950) -> N006R_frame_2490_p0.950.png
+  -> Saved frame 3567 (prob=0.980) -> N006R_frame_3567_p0.980.png
+
+[GPU 1] Processing: N008R.MOV (3136 frames) -- mode: threshold
+  Selected 3 frame(s): [237 | p=0.998], [1136 | p=0.998], [2380 | p=0.999]
+  -> Saved frame 237 (prob=0.998) -> N008R_frame_237_p0.998.png
+  -> Saved frame 1136 (prob=0.998) -> N008R_frame_1136_p0.998.png
+  -> Saved frame 2380 (prob=0.999) -> N008R_frame_2380_p0.999.png
+
+[GPU 1] Processing: N010R.MOV (2980 frames) -- mode: threshold
+  Selected 3 frame(s): [366 | p=0.997], [1666 | p=0.984], [2935 | p=0.992]
+  -> Saved frame 366 (prob=0.997) -> N010R_frame_366_p0.997.png
+  -> Saved frame 1666 (prob=0.984) -> N010R_frame_1666_p0.984.png
+  -> Saved frame 2935 (prob=0.992) -> N010R_frame_2935_p0.992.png
+
+[GPU 1] Processing: N012R.MOV (1556 frames) -- mode: threshold
+  Selected 3 frame(s): [657 | p=0.998], [1083 | p=0.899], [1509 | p=0.990]
+  -> Saved frame 657 (prob=0.998) -> N012R_frame_657_p0.998.png
+  -> Saved frame 1083 (prob=0.899) -> N012R_frame_1083_p0.899.png
+  -> Saved frame 1509 (prob=0.990) -> N012R_frame_1509_p0.990.png
+
+[GPU 1] Processing: N014R.MOV (1574 frames) -- mode: threshold
+  Selected 3 frame(s): [205 | p=0.984], [857 | p=0.966], [1435 | p=0.993]
+  -> Saved frame 205 (prob=0.984) -> N014R_frame_205_p0.984.png
+  -> Saved frame 857 (prob=0.966) -> N014R_frame_857_p0.966.png
+  -> Saved frame 1435 (prob=0.993) -> N014R_frame_1435_p0.993.png
+
+[GPU 1] Processing: N016R.MOV (3174 frames) -- mode: threshold
+  Selected 4 frame(s): [155 | p=0.999], [1060 | p=0.999], [1867 | p=0.996], [3140 | p=0.999]
+  -> Saved frame 155 (prob=0.999) -> N016R_frame_155_p0.999.png
+  -> Saved frame 1060 (prob=0.999) -> N016R_frame_1060_p0.999.png
+  -> Saved frame 1867 (prob=0.996) -> N016R_frame_1867_p0.996.png
+  -> Saved frame 3140 (prob=0.999) -> N016R_frame_3140_p0.999.png
+
+[GPU 1] Processing: N019R.MOV (2208 frames) -- mode: threshold
+  Selected 3 frame(s): [448 | p=0.997], [1193 | p=0.994], [2103 | p=0.995]
+  -> Saved frame 448 (prob=0.997) -> N019R_frame_448_p0.997.png
+  -> Saved frame 1193 (prob=0.994) -> N019R_frame_1193_p0.994.png
+  -> Saved frame 2103 (prob=0.995) -> N019R_frame_2103_p0.995.png
+
+[GPU 1] Processing: P001R.MOV (6458 frames) -- mode: threshold
+  Selected 3 frame(s): [1530 | p=0.999], [3276 | p=0.997], [5697 | p=0.999]
+  -> Saved frame 1530 (prob=0.999) -> P001R_frame_1530_p0.999.png
+  -> Saved frame 3276 (prob=0.997) -> P001R_frame_3276_p0.997.png
+  -> Saved frame 5697 (prob=0.999) -> P001R_frame_5697_p0.999.png
+
+[GPU 1] Processing: P003R.MOV (3052 frames) -- mode: threshold
+  Selected 3 frame(s): [242 | p=1.000], [1258 | p=1.000], [2469 | p=1.000]
+  -> Saved frame 242 (prob=1.000) -> P003R_frame_242_p1.000.png
+  -> Saved frame 1258 (prob=1.000) -> P003R_frame_1258_p1.000.png
+  -> Saved frame 2469 (prob=1.000) -> P003R_frame_2469_p1.000.png
+
+[GPU 1] Processing: P006R.MOV (2887 frames) -- mode: threshold
+  Selected 4 frame(s): [193 | p=0.995], [945 | p=0.965], [1761 | p=0.997], [2608 | p=0.995]
+  -> Saved frame 193 (prob=0.995) -> P006R_frame_193_p0.995.png
+  -> Saved frame 945 (prob=0.965) -> P006R_frame_945_p0.965.png
+  -> Saved frame 1761 (prob=0.997) -> P006R_frame_1761_p0.997.png
+  -> Saved frame 2608 (prob=0.995) -> P006R_frame_2608_p0.995.png
+
+[GPU 1] Processing: P008R.MOV (2017 frames) -- mode: threshold
+  Selected 3 frame(s): [319 | p=0.988], [1328 | p=0.992], [1950 | p=0.998]
+  -> Saved frame 319 (prob=0.988) -> P008R_frame_319_p0.988.png
+  -> Saved frame 1328 (prob=0.992) -> P008R_frame_1328_p0.992.png
+  -> Saved frame 1950 (prob=0.998) -> P008R_frame_1950_p0.998.png
+
+[GPU 1] Processing: P010R.MOV (2680 frames) -- mode: threshold
+  Selected 4 frame(s): [180 | p=0.988], [989 | p=0.995], [1746 | p=0.987], [2493 | p=0.998]
+  -> Saved frame 180 (prob=0.988) -> P010R_frame_180_p0.988.png
+  -> Saved frame 989 (prob=0.995) -> P010R_frame_989_p0.995.png
+  -> Saved frame 1746 (prob=0.987) -> P010R_frame_1746_p0.987.png
+  -> Saved frame 2493 (prob=0.998) -> P010R_frame_2493_p0.998.png
+
+[GPU 1] Processing: P012R.MOV (1270 frames) -- mode: threshold
+  Selected 3 frame(s): [327 | p=0.999], [923 | p=0.996], [1241 | p=0.999]
+  -> Saved frame 327 (prob=0.999) -> P012R_frame_327_p0.999.png
+  -> Saved frame 923 (prob=0.996) -> P012R_frame_923_p0.996.png
+  -> Saved frame 1241 (prob=0.999) -> P012R_frame_1241_p0.999.png
+
+[GPU 1] Processing: P014R.MOV (2458 frames) -- mode: threshold
+  Selected 3 frame(s): [364 | p=0.998], [1359 | p=0.991], [2190 | p=0.997]
+  -> Saved frame 364 (prob=0.998) -> P014R_frame_364_p0.998.png
+  -> Saved frame 1359 (prob=0.991) -> P014R_frame_1359_p0.991.png
+  -> Saved frame 2190 (prob=0.997) -> P014R_frame_2190_p0.997.png
+
+[GPU 1] Processing: P017L.MOV (3088 frames) -- mode: threshold
+  Selected 2 frame(s): [999 | p=0.999], [2349 | p=0.998]
+  -> Saved frame 999 (prob=0.999) -> P017L_frame_999_p0.999.png
+  -> Saved frame 2349 (prob=0.998) -> P017L_frame_2349_p0.998.png
+
+[GPU 1] Processing: P019L.MOV (3697 frames) -- mode: threshold
+  Selected 3 frame(s): [271 | p=0.999], [1816 | p=0.989], [3214 | p=0.999]
+  -> Saved frame 271 (prob=0.999) -> P019L_frame_271_p0.999.png
+  -> Saved frame 1816 (prob=0.989) -> P019L_frame_1816_p0.989.png
+  -> Saved frame 3214 (prob=0.999) -> P019L_frame_3214_p0.999.png
+
+[GPU 1] Processing: P021L.MOV (1630 frames) -- mode: threshold
+  Selected 4 frame(s): [289 | p=0.999], [763 | p=0.995], [1171 | p=0.964], [1589 | p=1.000]
+  -> Saved frame 289 (prob=0.999) -> P021L_frame_289_p0.999.png
+  -> Saved frame 763 (prob=0.995) -> P021L_frame_763_p0.995.png
+  -> Saved frame 1171 (prob=0.964) -> P021L_frame_1171_p0.964.png
+  -> Saved frame 1589 (prob=1.000) -> P021L_frame_1589_p1.000.png
+
+[GPU 1] Processing: P023L.MOV (3429 frames) -- mode: threshold
+  Selected 3 frame(s): [857 | p=0.997], [2151 | p=0.981], [3076 | p=0.999]
+  -> Saved frame 857 (prob=0.997) -> P023L_frame_857_p0.997.png
+  -> Saved frame 2151 (prob=0.981) -> P023L_frame_2151_p0.981.png
+  -> Saved frame 3076 (prob=0.999) -> P023L_frame_3076_p0.999.png
+
+[GPU 1] Processing: P027L.MOV (2300 frames) -- mode: threshold
+  Selected 3 frame(s): [395 | p=0.999], [1200 | p=0.998], [1849 | p=0.999]
+  -> Saved frame 395 (prob=0.999) -> P027L_frame_395_p0.999.png
+  -> Saved frame 1200 (prob=0.998) -> P027L_frame_1200_p0.998.png
+  -> Saved frame 1849 (prob=0.999) -> P027L_frame_1849_p0.999.png
+
+[GPU 1] Processing: P029L.MOV (3955 frames) -- mode: threshold
+  Selected 3 frame(s): [593 | p=0.999], [2608 | p=0.999], [3740 | p=0.996]
+  -> Saved frame 593 (prob=0.999) -> P029L_frame_593_p0.999.png
+  -> Saved frame 2608 (prob=0.999) -> P029L_frame_2608_p0.999.png
+  -> Saved frame 3740 (prob=0.996) -> P029L_frame_3740_p0.996.png
+
+[GPU 1] Processing: P032R.MOV (2324 frames) -- mode: threshold
+  Selected 3 frame(s): [266 | p=0.995], [903 | p=0.991], [1768 | p=0.995]
+  -> Saved frame 266 (prob=0.995) -> P032R_frame_266_p0.995.png
+  -> Saved frame 903 (prob=0.991) -> P032R_frame_903_p0.991.png
+  -> Saved frame 1768 (prob=0.995) -> P032R_frame_1768_p0.995.png
+
+[GPU 1] Processing: P034R.MOV (1440 frames) -- mode: threshold
+  Selected 3 frame(s): [251 | p=0.998], [858 | p=0.998], [1377 | p=0.997]
+  -> Saved frame 251 (prob=0.998) -> P034R_frame_251_p0.998.png
+  -> Saved frame 858 (prob=0.998) -> P034R_frame_858_p0.998.png
+  -> Saved frame 1377 (prob=0.997) -> P034R_frame_1377_p0.997.png
+
+[GPU 1] Processing: P037R.MOV (4184 frames) -- mode: threshold
+  Selected 4 frame(s): [403 | p=0.998], [1562 | p=0.837], [2625 | p=0.991], [4175 | p=1.000]
+  -> Saved frame 403 (prob=0.998) -> P037R_frame_403_p0.998.png
+  -> Saved frame 1562 (prob=0.837) -> P037R_frame_1562_p0.837.png
+  -> Saved frame 2625 (prob=0.991) -> P037R_frame_2625_p0.991.png
+  -> Saved frame 4175 (prob=1.000) -> P037R_frame_4175_p1.000.png
+
+[GPU 1] Processing: P041R.MOV (2276 frames) -- mode: threshold
+  Selected 3 frame(s): [449 | p=0.994], [1558 | p=0.997], [2212 | p=0.995]
+  -> Saved frame 449 (prob=0.994) -> P041R_frame_449_p0.994.png
+  -> Saved frame 1558 (prob=0.997) -> P041R_frame_1558_p0.997.png
+  -> Saved frame 2212 (prob=0.995) -> P041R_frame_2212_p0.995.png
+
+[GPU 1] Processing: P045R.MOV (5606 frames) -- mode: threshold
+  Selected 4 frame(s): [511 | p=0.998], [2410 | p=0.979], [3943 | p=0.980], [5543 | p=0.998]
+  -> Saved frame 511 (prob=0.998) -> P045R_frame_511_p0.998.png
+  -> Saved frame 2410 (prob=0.979) -> P045R_frame_2410_p0.979.png
+  -> Saved frame 3943 (prob=0.980) -> P045R_frame_3943_p0.980.png
+  -> Saved frame 5543 (prob=0.998) -> P045R_frame_5543_p0.998.png
+
+[GPU 1] Processing: Q001L.MOV (3988 frames) -- mode: threshold
+  Selected 3 frame(s): [419 | p=1.000], [2011 | p=0.997], [3606 | p=0.999]
+  -> Saved frame 419 (prob=1.000) -> Q001L_frame_419_p1.000.png
+  -> Saved frame 2011 (prob=0.997) -> Q001L_frame_2011_p0.997.png
+  -> Saved frame 3606 (prob=0.999) -> Q001L_frame_3606_p0.999.png
+
+[GPU 1] Processing: 2024_02_11_12_26_IMG_4608 LE MILD NPDR.mp4 (1201 frames) -- mode: threshold
+  Selected 2 frame(s): [289 | p=0.928], [841 | p=0.899]
+  -> Saved frame 289 (prob=0.928) -> 2024_02_11_12_26_IMG_4608 LE MILD NPDR_frame_289_p0.928.png
+  -> Saved frame 841 (prob=0.899) -> 2024_02_11_12_26_IMG_4608 LE MILD NPDR_frame_841_p0.899.png
+
+[GPU 1] Processing: 2024_02_12_14_58_IMG_4624 LE MOD NPDR.mp4 (3283 frames) -- mode: threshold
+  Selected 3 frame(s): [75 | p=0.993], [1463 | p=0.897], [3239 | p=0.987]
+  -> Saved frame 75 (prob=0.993) -> 2024_02_12_14_58_IMG_4624 LE MOD NPDR_frame_75_p0.993.png
+  -> Saved frame 1463 (prob=0.897) -> 2024_02_12_14_58_IMG_4624 LE MOD NPDR_frame_1463_p0.897.png
+  -> Saved frame 3239 (prob=0.987) -> 2024_02_12_14_58_IMG_4624 LE MOD NPDR_frame_3239_p0.987.png
+
+[GPU 1] Processing: 2024_02_15_14_19_IMG_4658 RE MILD NPDR.mp4 (2234 frames) -- mode: threshold
+  Selected 3 frame(s): [93 | p=0.949], [816 | p=0.978], [2044 | p=0.958]
+  -> Saved frame 93 (prob=0.949) -> 2024_02_15_14_19_IMG_4658 RE MILD NPDR_frame_93_p0.949.png
+  -> Saved frame 816 (prob=0.978) -> 2024_02_15_14_19_IMG_4658 RE MILD NPDR_frame_816_p0.978.png
+  -> Saved frame 2044 (prob=0.958) -> 2024_02_15_14_19_IMG_4658 RE MILD NPDR_frame_2044_p0.958.png
+
+[GPU 1] Processing: 2024_02_16_10_53_IMG_4666 LE MOD NPDR.mp4 (6469 frames) -- mode: threshold
+  Selected 4 frame(s): [320 | p=0.961], [1981 | p=0.952], [4224 | p=0.992], [5977 | p=0.954]
+  -> Saved frame 320 (prob=0.961) -> 2024_02_16_10_53_IMG_4666 LE MOD NPDR_frame_320_p0.961.png
+  -> Saved frame 1981 (prob=0.952) -> 2024_02_16_10_53_IMG_4666 LE MOD NPDR_frame_1981_p0.952.png
+  -> Saved frame 4224 (prob=0.992) -> 2024_02_16_10_53_IMG_4666 LE MOD NPDR_frame_4224_p0.992.png
+  -> Saved frame 5977 (prob=0.954) -> 2024_02_16_10_53_IMG_4666 LE MOD NPDR_frame_5977_p0.954.png
+
+[GPU 1] Processing: 2024_02_19_12_31_IMG_4679 RE MOD NPDR.mp4 (4867 frames) -- mode: threshold
+  Selected 3 frame(s): [1025 | p=0.896], [2293 | p=0.990], [4318 | p=0.953]
+  -> Saved frame 1025 (prob=0.896) -> 2024_02_19_12_31_IMG_4679 RE MOD NPDR_frame_1025_p0.896.png
+  -> Saved frame 2293 (prob=0.990) -> 2024_02_19_12_31_IMG_4679 RE MOD NPDR_frame_2293_p0.990.png
+  -> Saved frame 4318 (prob=0.953) -> 2024_02_19_12_31_IMG_4679 RE MOD NPDR_frame_4318_p0.953.png
+
+[GPU 1] Processing: 2024_02_26_15_30_IMG_4731 RE PDR WITH DME.mp4 (4667 frames) -- mode: threshold
+  Selected 2 frame(s): [761 | p=0.890], [3114 | p=0.980]
+  -> Saved frame 761 (prob=0.890) -> 2024_02_26_15_30_IMG_4731 RE PDR WITH DME_frame_761_p0.890.png
+  -> Saved frame 3114 (prob=0.980) -> 2024_02_26_15_30_IMG_4731 RE PDR WITH DME_frame_3114_p0.980.png
+
+[GPU 1] Processing: 2024_03_10_11_45_IMG_4785 LE MOD NPDR WIHT DME.mp4 (4696 frames) -- mode: threshold
+  Selected 3 frame(s): [335 | p=0.996], [2075 | p=0.987], [4511 | p=0.997]
+  -> Saved frame 335 (prob=0.996) -> 2024_03_10_11_45_IMG_4785 LE MOD NPDR WIHT DME_frame_335_p0.996.png
+  -> Saved frame 2075 (prob=0.987) -> 2024_03_10_11_45_IMG_4785 LE MOD NPDR WIHT DME_frame_2075_p0.987.png
+  -> Saved frame 4511 (prob=0.997) -> 2024_03_10_11_45_IMG_4785 LE MOD NPDR WIHT DME_frame_4511_p0.997.png
+
+[GPU 1] Processing: 2024_03_21_12_30_IMG_3044 RE SEV NPDR WITH CIDME.mp4 (5103 frames) -- mode: threshold
+  Selected 2 frame(s): [1414 | p=0.991], [4511 | p=0.994]
+  -> Saved frame 1414 (prob=0.991) -> 2024_03_21_12_30_IMG_3044 RE SEV NPDR WITH CIDME_frame_1414_p0.991.png
+  -> Saved frame 4511 (prob=0.994) -> 2024_03_21_12_30_IMG_3044 RE SEV NPDR WITH CIDME_frame_4511_p0.994.png
+
+[GPU 1] Processing: 2024_03_21_13_08_IMG_3050 RE MOD NPDR WITH DME.mp4 (1787 frames) -- mode: threshold
+  Selected 3 frame(s): [241 | p=0.904], [736 | p=0.984], [1339 | p=0.811]
+  -> Saved frame 241 (prob=0.904) -> 2024_03_21_13_08_IMG_3050 RE MOD NPDR WITH DME_frame_241_p0.904.png
+  -> Saved frame 736 (prob=0.984) -> 2024_03_21_13_08_IMG_3050 RE MOD NPDR WITH DME_frame_736_p0.984.png
+  -> Saved frame 1339 (prob=0.811) -> 2024_03_21_13_08_IMG_3050 RE MOD NPDR WITH DME_frame_1339_p0.811.png
+
+[GPU 1] Processing: 2024_03_28_14_08_IMG_4839 RE PDR.mp4 (2611 frames) -- mode: fallback (max-confidence only)
+  Selected 1 frame(s): [2595 | p=0.341]
+  -> Saved frame 2595 (prob=0.341) -> 2024_03_28_14_08_IMG_4839 RE PDR_frame_2595_p0.341.png
+
+[GPU 1] Processing: 2024_04_01_11_52_IMG_4866 RE MOD NPDR LASERED.mp4 (2302 frames) -- mode: threshold
+  Selected 3 frame(s): [63 | p=0.993], [929 | p=0.993], [2163 | p=0.996]
+  -> Saved frame 63 (prob=0.993) -> 2024_04_01_11_52_IMG_4866 RE MOD NPDR LASERED_frame_63_p0.993.png
+  -> Saved frame 929 (prob=0.993) -> 2024_04_01_11_52_IMG_4866 RE MOD NPDR LASERED_frame_929_p0.993.png
+  -> Saved frame 2163 (prob=0.996) -> 2024_04_01_11_52_IMG_4866 RE MOD NPDR LASERED_frame_2163_p0.996.png
+
+[GPU 1] Processing: 2024_04_01_12_59_IMG_4873 LE MOD NPDR.mp4 (6173 frames) -- mode: threshold
+  Selected 3 frame(s): [215 | p=0.836], [2587 | p=0.914], [5227 | p=0.980]
+  -> Saved frame 215 (prob=0.836) -> 2024_04_01_12_59_IMG_4873 LE MOD NPDR_frame_215_p0.836.png
+  -> Saved frame 2587 (prob=0.914) -> 2024_04_01_12_59_IMG_4873 LE MOD NPDR_frame_2587_p0.914.png
+  -> Saved frame 5227 (prob=0.980) -> 2024_04_01_12_59_IMG_4873 LE MOD NPDR_frame_5227_p0.980.png
+
+[GPU 1] Processing: 2024_04_03_11_53_IMG_4889 LE MOD NPDR.mp4 (2799 frames) -- mode: threshold
+  Selected 2 frame(s): [1704 | p=0.992], [2427 | p=0.823]
+  -> Saved frame 1704 (prob=0.992) -> 2024_04_03_11_53_IMG_4889 LE MOD NPDR_frame_1704_p0.992.png
+  -> Saved frame 2427 (prob=0.823) -> 2024_04_03_11_53_IMG_4889 LE MOD NPDR_frame_2427_p0.823.png
+
+[GPU 1] Processing: 2024_04_04_13_10_IMG_4899 LE MILD NPDR.mp4 (2983 frames) -- mode: threshold
+  Selected 3 frame(s): [74 | p=0.991], [1070 | p=0.997], [2034 | p=0.995]
+  -> Saved frame 74 (prob=0.991) -> 2024_04_04_13_10_IMG_4899 LE MILD NPDR_frame_74_p0.991.png
+  -> Saved frame 1070 (prob=0.997) -> 2024_04_04_13_10_IMG_4899 LE MILD NPDR_frame_1070_p0.997.png
+  -> Saved frame 2034 (prob=0.995) -> 2024_04_04_13_10_IMG_4899 LE MILD NPDR_frame_2034_p0.995.png
+
+[GPU 1] Processing: 2024_04_05_10_57_IMG_4922 RE PDR WITH FVP.mp4 (1754 frames) -- mode: threshold
+  Selected 1 frame(s): [1481 | p=0.827]
+  -> Saved frame 1481 (prob=0.827) -> 2024_04_05_10_57_IMG_4922 RE PDR WITH FVP_frame_1481_p0.827.png
+
+[GPU 1] Processing: 2024_04_05_12_54_IMG_4928 LE HEALTHY.mp4 (3150 frames) -- mode: threshold
+  Selected 2 frame(s): [117 | p=0.973], [2231 | p=0.970]
+  -> Saved frame 117 (prob=0.973) -> 2024_04_05_12_54_IMG_4928 LE HEALTHY_frame_117_p0.973.png
+  -> Saved frame 2231 (prob=0.970) -> 2024_04_05_12_54_IMG_4928 LE HEALTHY_frame_2231_p0.970.png
+
+[GPU 1] Processing: 2024_04_05_13_37_IMG_4934 LE HEALTHY.mp4 (2725 frames) -- mode: threshold
+  Selected 3 frame(s): [142 | p=0.976], [850 | p=0.984], [2021 | p=0.986]
+  -> Saved frame 142 (prob=0.976) -> 2024_04_05_13_37_IMG_4934 LE HEALTHY_frame_142_p0.976.png
+  -> Saved frame 850 (prob=0.984) -> 2024_04_05_13_37_IMG_4934 LE HEALTHY_frame_850_p0.984.png
+  -> Saved frame 2021 (prob=0.986) -> 2024_04_05_13_37_IMG_4934 LE HEALTHY_frame_2021_p0.986.png
+
+[GPU 1] Processing: 2024_04_06_10_39_IMG_4940 LE FTMH.mp4 (3483 frames) -- mode: threshold
+  Selected 3 frame(s): [656 | p=0.997], [1583 | p=0.990], [2682 | p=0.998]
+  -> Saved frame 656 (prob=0.997) -> 2024_04_06_10_39_IMG_4940 LE FTMH_frame_656_p0.997.png
+  -> Saved frame 1583 (prob=0.990) -> 2024_04_06_10_39_IMG_4940 LE FTMH_frame_1583_p0.990.png
+  -> Saved frame 2682 (prob=0.998) -> 2024_04_06_10_39_IMG_4940 LE FTMH_frame_2682_p0.998.png
+
+[GPU 1] Processing: 2024_04_06_11_50_IMG_4945 LE ASTEROID HYALOSIS.mp4 (1862 frames) -- mode: threshold
+  Selected 2 frame(s): [99 | p=0.947], [1285 | p=0.812]
+  -> Saved frame 99 (prob=0.947) -> 2024_04_06_11_50_IMG_4945 LE ASTEROID HYALOSIS_frame_99_p0.947.png
+  -> Saved frame 1285 (prob=0.812) -> 2024_04_06_11_50_IMG_4945 LE ASTEROID HYALOSIS_frame_1285_p0.812.png
+
+[GPU 1] Processing: 2024_04_11_15_12_IMG_4953 RE HEALTHY.mp4 (1405 frames) -- mode: threshold
+  Selected 3 frame(s): [84 | p=0.911], [552 | p=0.853], [970 | p=0.976]
+  -> Saved frame 84 (prob=0.911) -> 2024_04_11_15_12_IMG_4953 RE HEALTHY_frame_84_p0.911.png
+  -> Saved frame 552 (prob=0.853) -> 2024_04_11_15_12_IMG_4953 RE HEALTHY_frame_552_p0.853.png
+  -> Saved frame 970 (prob=0.976) -> 2024_04_11_15_12_IMG_4953 RE HEALTHY_frame_970_p0.976.png
+
+[GPU 1] Processing: 2024_04_11_15_29_IMG_4957 LE ERM.mp4 (2646 frames) -- mode: threshold
+  Selected 3 frame(s): [127 | p=0.938], [1407 | p=0.989], [2213 | p=0.903]
+  -> Saved frame 127 (prob=0.938) -> 2024_04_11_15_29_IMG_4957 LE ERM_frame_127_p0.938.png
+  -> Saved frame 1407 (prob=0.989) -> 2024_04_11_15_29_IMG_4957 LE ERM_frame_1407_p0.989.png
+  -> Saved frame 2213 (prob=0.903) -> 2024_04_11_15_29_IMG_4957 LE ERM_frame_2213_p0.903.png
+
+[GPU 1] Processing: 2024_04_12_12_03_IMG_4961 RE HEALTHY.mp4 (3098 frames) -- mode: fallback (max-confidence only)
+  Selected 1 frame(s): [1618 | p=0.661]
+  -> Saved frame 1618 (prob=0.661) -> 2024_04_12_12_03_IMG_4961 RE HEALTHY_frame_1618_p0.661.png
+
+[GPU 1] Processing: 2024_04_12_13_22_IMG_4969 RE HEALTHY.mp4 (3034 frames) -- mode: threshold
+  Selected 3 frame(s): [237 | p=0.988], [1362 | p=0.984], [2945 | p=0.979]
+  -> Saved frame 237 (prob=0.988) -> 2024_04_12_13_22_IMG_4969 RE HEALTHY_frame_237_p0.988.png
+  -> Saved frame 1362 (prob=0.984) -> 2024_04_12_13_22_IMG_4969 RE HEALTHY_frame_1362_p0.984.png
+  -> Saved frame 2945 (prob=0.979) -> 2024_04_12_13_22_IMG_4969 RE HEALTHY_frame_2945_p0.979.png
+
+[GPU 1] Processing: 2024_04_30_11_53_IMG_5009 RE HEALTHY.mp4 (2727 frames) -- mode: threshold
+  Selected 4 frame(s): [5 | p=0.968], [691 | p=0.987], [1462 | p=0.954], [2267 | p=0.991]
+  -> Saved frame 5 (prob=0.968) -> 2024_04_30_11_53_IMG_5009 RE HEALTHY_frame_5_p0.968.png
+  -> Saved frame 691 (prob=0.987) -> 2024_04_30_11_53_IMG_5009 RE HEALTHY_frame_691_p0.987.png
+  -> Saved frame 1462 (prob=0.954) -> 2024_04_30_11_53_IMG_5009 RE HEALTHY_frame_1462_p0.954.png
+  -> Saved frame 2267 (prob=0.991) -> 2024_04_30_11_53_IMG_5009 RE HEALTHY_frame_2267_p0.991.png
+
+[GPU 1] Processing: 2024_04_30_12_44_IMG_5014 RE SEV NPDR.mp4 (5022 frames) -- mode: threshold
+  Selected 4 frame(s): [467 | p=0.997], [1805 | p=0.998], [3351 | p=0.981], [4943 | p=0.999]
+  -> Saved frame 467 (prob=0.997) -> 2024_04_30_12_44_IMG_5014 RE SEV NPDR_frame_467_p0.997.png
+  -> Saved frame 1805 (prob=0.998) -> 2024_04_30_12_44_IMG_5014 RE SEV NPDR_frame_1805_p0.998.png
+  -> Saved frame 3351 (prob=0.981) -> 2024_04_30_12_44_IMG_5014 RE SEV NPDR_frame_3351_p0.981.png
+  -> Saved frame 4943 (prob=0.999) -> 2024_04_30_12_44_IMG_5014 RE SEV NPDR_frame_4943_p0.999.png
+
+[GPU 1] Processing: 2024_05_06_12_38_IMG_3271 RE MILD NPDR.mp4 (1934 frames) -- mode: threshold
+  Selected 4 frame(s): [170 | p=0.870], [679 | p=0.997], [1411 | p=0.996], [1916 | p=0.991]
+  -> Saved frame 170 (prob=0.870) -> 2024_05_06_12_38_IMG_3271 RE MILD NPDR_frame_170_p0.870.png
+  -> Saved frame 679 (prob=0.997) -> 2024_05_06_12_38_IMG_3271 RE MILD NPDR_frame_679_p0.997.png
+  -> Saved frame 1411 (prob=0.996) -> 2024_05_06_12_38_IMG_3271 RE MILD NPDR_frame_1411_p0.996.png
+  -> Saved frame 1916 (prob=0.991) -> 2024_05_06_12_38_IMG_3271 RE MILD NPDR_frame_1916_p0.991.png
+
+[GPU 1] Processing: 2024_05_07_12_33_IMG_5029 RE PDR, TRD.mp4 (2261 frames) -- mode: threshold
+  Selected 2 frame(s): [511 | p=0.970], [1173 | p=0.927]
+  -> Saved frame 511 (prob=0.970) -> 2024_05_07_12_33_IMG_5029 RE PDR, TRD_frame_511_p0.970.png
+  -> Saved frame 1173 (prob=0.927) -> 2024_05_07_12_33_IMG_5029 RE PDR, TRD_frame_1173_p0.927.png
+
+[GPU 1] Processing: 2024_05_07_12_59_IMG_5033 RE MOD NPDR.mp4 (2916 frames) -- mode: threshold
+  Selected 3 frame(s): [594 | p=0.992], [1461 | p=0.992], [2591 | p=0.996]
+  -> Saved frame 594 (prob=0.992) -> 2024_05_07_12_59_IMG_5033 RE MOD NPDR_frame_594_p0.992.png
+  -> Saved frame 1461 (prob=0.992) -> 2024_05_07_12_59_IMG_5033 RE MOD NPDR_frame_1461_p0.992.png
+  -> Saved frame 2591 (prob=0.996) -> 2024_05_07_12_59_IMG_5033 RE MOD NPDR_frame_2591_p0.996.png
+
+[GPU 1] Processing: 2024_05_08_11_04_IMG_5037 RE SEV NPDR.mp4 (4292 frames) -- mode: threshold
+  Selected 3 frame(s): [161 | p=0.917], [1314 | p=0.999], [3291 | p=0.992]
+  -> Saved frame 161 (prob=0.917) -> 2024_05_08_11_04_IMG_5037 RE SEV NPDR_frame_161_p0.917.png
+  -> Saved frame 1314 (prob=0.999) -> 2024_05_08_11_04_IMG_5037 RE SEV NPDR_frame_1314_p0.999.png
+  -> Saved frame 3291 (prob=0.992) -> 2024_05_08_11_04_IMG_5037 RE SEV NPDR_frame_3291_p0.992.png
+
+[GPU 1] Processing: 2024_05_08_11_59_IMG_5042 LE HEALTHY.mp4 (2699 frames) -- mode: threshold
+  Selected 4 frame(s): [113 | p=0.943], [799 | p=0.940], [1634 | p=0.923], [2691 | p=0.835]
+  -> Saved frame 113 (prob=0.943) -> 2024_05_08_11_59_IMG_5042 LE HEALTHY_frame_113_p0.943.png
+  -> Saved frame 799 (prob=0.940) -> 2024_05_08_11_59_IMG_5042 LE HEALTHY_frame_799_p0.940.png
+  -> Saved frame 1634 (prob=0.923) -> 2024_05_08_11_59_IMG_5042 LE HEALTHY_frame_1634_p0.923.png
+  -> Saved frame 2691 (prob=0.835) -> 2024_05_08_11_59_IMG_5042 LE HEALTHY_frame_2691_p0.835.png
+
+[GPU 1] Processing: 2024_05_09_12_34_IMG_5048 RE HEALTHY.mp4 (3028 frames) -- mode: threshold
+  Selected 3 frame(s): [131 | p=0.914], [1194 | p=0.995], [2446 | p=0.997]
+  -> Saved frame 131 (prob=0.914) -> 2024_05_09_12_34_IMG_5048 RE HEALTHY_frame_131_p0.914.png
+  -> Saved frame 1194 (prob=0.995) -> 2024_05_09_12_34_IMG_5048 RE HEALTHY_frame_1194_p0.995.png
+  -> Saved frame 2446 (prob=0.997) -> 2024_05_09_12_34_IMG_5048 RE HEALTHY_frame_2446_p0.997.png
+
+[GPU 1] Processing: 2024_05_09_12_59_IMG_5052 LE ERM.mp4 (4412 frames) -- mode: threshold
+  Selected 2 frame(s): [1063 | p=0.864], [3445 | p=0.878]
+  -> Saved frame 1063 (prob=0.864) -> 2024_05_09_12_59_IMG_5052 LE ERM_frame_1063_p0.864.png
+  -> Saved frame 3445 (prob=0.878) -> 2024_05_09_12_59_IMG_5052 LE ERM_frame_3445_p0.878.png
+
+[GPU 1] Processing: 2024_05_09_13_20_IMG_5056 LE RPE ALTERATIONS.mp4 (3253 frames) -- mode: threshold
+  Selected 3 frame(s): [454 | p=0.976], [1353 | p=0.992], [2519 | p=0.990]
+  -> Saved frame 454 (prob=0.976) -> 2024_05_09_13_20_IMG_5056 LE RPE ALTERATIONS_frame_454_p0.976.png
+  -> Saved frame 1353 (prob=0.992) -> 2024_05_09_13_20_IMG_5056 LE RPE ALTERATIONS_frame_1353_p0.992.png
+  -> Saved frame 2519 (prob=0.990) -> 2024_05_09_13_20_IMG_5056 LE RPE ALTERATIONS_frame_2519_p0.990.png
+
+[GPU 1] Processing: 2024_05_09_13_38_IMG_5060 LE ERM.mp4 (2324 frames) -- mode: threshold
+  Selected 3 frame(s): [155 | p=0.988], [1429 | p=0.999], [2278 | p=0.997]
+  -> Saved frame 155 (prob=0.988) -> 2024_05_09_13_38_IMG_5060 LE ERM_frame_155_p0.988.png
+  -> Saved frame 1429 (prob=0.999) -> 2024_05_09_13_38_IMG_5060 LE ERM_frame_1429_p0.999.png
+  -> Saved frame 2278 (prob=0.997) -> 2024_05_09_13_38_IMG_5060 LE ERM_frame_2278_p0.997.png
+
+[GPU 1] Processing: 2024_05_09_13_55_IMG_5064 LE HEALTHY.mp4 (3445 frames) -- mode: threshold
+  Selected 3 frame(s): [330 | p=0.996], [2297 | p=0.993], [3393 | p=0.989]
+  -> Saved frame 330 (prob=0.996) -> 2024_05_09_13_55_IMG_5064 LE HEALTHY_frame_330_p0.996.png
+  -> Saved frame 2297 (prob=0.993) -> 2024_05_09_13_55_IMG_5064 LE HEALTHY_frame_2297_p0.993.png
+  -> Saved frame 3393 (prob=0.989) -> 2024_05_09_13_55_IMG_5064 LE HEALTHY_frame_3393_p0.989.png
+
+[GPU 1] Processing: 2024_05_31_12_08_IMG_3429  RE WET AMD.mp4 (2640 frames) -- mode: threshold
+  Selected 2 frame(s): [345 | p=0.925], [2556 | p=0.822]
+  -> Saved frame 345 (prob=0.925) -> 2024_05_31_12_08_IMG_3429  RE WET AMD_frame_345_p0.925.png
+  -> Saved frame 2556 (prob=0.822) -> 2024_05_31_12_08_IMG_3429  RE WET AMD_frame_2556_p0.822.png
+
+[GPU 1] Processing: 2024_05_31_14_10_IMG_3433 RE HEALTHY.mp4 (3366 frames) -- mode: threshold
+  Selected 3 frame(s): [374 | p=0.988], [1602 | p=0.998], [2980 | p=0.997]
+  -> Saved frame 374 (prob=0.988) -> 2024_05_31_14_10_IMG_3433 RE HEALTHY_frame_374_p0.988.png
+  -> Saved frame 1602 (prob=0.998) -> 2024_05_31_14_10_IMG_3433 RE HEALTHY_frame_1602_p0.998.png
+  -> Saved frame 2980 (prob=0.997) -> 2024_05_31_14_10_IMG_3433 RE HEALTHY_frame_2980_p0.997.png
+
+[GPU 1] Processing: 2024_06_03_10_05_IMG_3440 RE PDR.mp4 (3857 frames) -- mode: threshold
+  Selected 1 frame(s): [1124 | p=0.988]
+  -> Saved frame 1124 (prob=0.988) -> 2024_06_03_10_05_IMG_3440 RE PDR_frame_1124_p0.988.png
+
+[GPU 1] Processing: 2024_06_03_11_12_IMG_3444 RE MOD NPDR.mp4 (5536 frames) -- mode: threshold
+  Selected 3 frame(s): [1025 | p=0.998], [3670 | p=0.997], [5143 | p=0.997]
+  -> Saved frame 1025 (prob=0.998) -> 2024_06_03_11_12_IMG_3444 RE MOD NPDR_frame_1025_p0.998.png
+  -> Saved frame 3670 (prob=0.997) -> 2024_06_03_11_12_IMG_3444 RE MOD NPDR_frame_3670_p0.997.png
+  -> Saved frame 5143 (prob=0.997) -> 2024_06_03_11_12_IMG_3444 RE MOD NPDR_frame_5143_p0.997.png
+
+[GPU 1] Processing: 2024_06_05_10_00_IMG_3450 PDR WITH DME.mp4 (2800 frames) -- mode: threshold
+  Selected 3 frame(s): [656 | p=0.998], [1412 | p=0.999], [2778 | p=0.998]
+  -> Saved frame 656 (prob=0.998) -> 2024_06_05_10_00_IMG_3450 PDR WITH DME_frame_656_p0.998.png
+  -> Saved frame 1412 (prob=0.999) -> 2024_06_05_10_00_IMG_3450 PDR WITH DME_frame_1412_p0.999.png
+  -> Saved frame 2778 (prob=0.998) -> 2024_06_05_10_00_IMG_3450 PDR WITH DME_frame_2778_p0.998.png
+
+[GPU 1] Processing: 2024_06_05_10_42_IMG_3456 LE PDR.mp4 (3487 frames) -- mode: threshold
+  Selected 3 frame(s): [91 | p=0.940], [1662 | p=0.995], [3302 | p=0.996]
+  -> Saved frame 91 (prob=0.940) -> 2024_06_05_10_42_IMG_3456 LE PDR_frame_91_p0.940.png
+  -> Saved frame 1662 (prob=0.995) -> 2024_06_05_10_42_IMG_3456 LE PDR_frame_1662_p0.995.png
+  -> Saved frame 3302 (prob=0.996) -> 2024_06_05_10_42_IMG_3456 LE PDR_frame_3302_p0.996.png
+
+[GPU 1] Processing: 2024_06_06_10_58_IMG_3460 LE MOD NPDR WITH CIDME.mp4 (3568 frames) -- mode: threshold
+  Selected 3 frame(s): [128 | p=0.993], [1736 | p=0.998], [3506 | p=0.953]
+  -> Saved frame 128 (prob=0.993) -> 2024_06_06_10_58_IMG_3460 LE MOD NPDR WITH CIDME_frame_128_p0.993.png
+  -> Saved frame 1736 (prob=0.998) -> 2024_06_06_10_58_IMG_3460 LE MOD NPDR WITH CIDME_frame_1736_p0.998.png
+  -> Saved frame 3506 (prob=0.953) -> 2024_06_06_10_58_IMG_3460 LE MOD NPDR WITH CIDME_frame_3506_p0.953.png
+
+[GPU 1] Processing: 2024_06_06_13_07_IMG_3464 LE PDR.mp4 (5891 frames) -- mode: threshold
+  Selected 3 frame(s): [1268 | p=0.999], [2834 | p=0.995], [4544 | p=0.995]
+  -> Saved frame 1268 (prob=0.999) -> 2024_06_06_13_07_IMG_3464 LE PDR_frame_1268_p0.999.png
+  -> Saved frame 2834 (prob=0.995) -> 2024_06_06_13_07_IMG_3464 LE PDR_frame_2834_p0.995.png
+  -> Saved frame 4544 (prob=0.995) -> 2024_06_06_13_07_IMG_3464 LE PDR_frame_4544_p0.995.png
+
+[GPU 1] Processing: 2024_06_07_11_04_IMG_3468 LE RVO TRACT ON DISC.mp4 (2630 frames) -- mode: threshold
+  Selected 3 frame(s): [347 | p=0.998], [1172 | p=0.998], [2543 | p=0.996]
+  -> Saved frame 347 (prob=0.998) -> 2024_06_07_11_04_IMG_3468 LE RVO TRACT ON DISC_frame_347_p0.998.png
+  -> Saved frame 1172 (prob=0.998) -> 2024_06_07_11_04_IMG_3468 LE RVO TRACT ON DISC_frame_1172_p0.998.png
+  -> Saved frame 2543 (prob=0.996) -> 2024_06_07_11_04_IMG_3468 LE RVO TRACT ON DISC_frame_2543_p0.996.png
+
+[GPU 1] Processing: 2024_06_07_11_34_IMG_3472 LE HEALTHY.mp4 (2247 frames) -- mode: threshold
+  Selected 3 frame(s): [140 | p=0.998], [866 | p=0.996], [1753 | p=0.995]
+  -> Saved frame 140 (prob=0.998) -> 2024_06_07_11_34_IMG_3472 LE HEALTHY_frame_140_p0.998.png
+  -> Saved frame 866 (prob=0.996) -> 2024_06_07_11_34_IMG_3472 LE HEALTHY_frame_866_p0.996.png
+  -> Saved frame 1753 (prob=0.995) -> 2024_06_07_11_34_IMG_3472 LE HEALTHY_frame_1753_p0.995.png
+
+[GPU 1] Processing: 2024_06_07_11_52_IMG_3476 LE PDR ISCHEMIC MACULA.mp4 (4340 frames) -- mode: threshold
+  Selected 3 frame(s): [707 | p=0.996], [2841 | p=0.996], [4275 | p=0.946]
+  -> Saved frame 707 (prob=0.996) -> 2024_06_07_11_52_IMG_3476 LE PDR ISCHEMIC MACULA_frame_707_p0.996.png
+  -> Saved frame 2841 (prob=0.996) -> 2024_06_07_11_52_IMG_3476 LE PDR ISCHEMIC MACULA_frame_2841_p0.996.png
+  -> Saved frame 4275 (prob=0.946) -> 2024_06_07_11_52_IMG_3476 LE PDR ISCHEMIC MACULA_frame_4275_p0.946.png
+
+[GPU 1] Processing: 2024_06_13_12_31_IMG_3481 LE HEALTHY.mp4 (3358 frames) -- mode: threshold
+  Selected 3 frame(s): [69 | p=0.996], [1824 | p=0.984], [2849 | p=0.997]
+  -> Saved frame 69 (prob=0.996) -> 2024_06_13_12_31_IMG_3481 LE HEALTHY_frame_69_p0.996.png
+  -> Saved frame 1824 (prob=0.984) -> 2024_06_13_12_31_IMG_3481 LE HEALTHY_frame_1824_p0.984.png
+  -> Saved frame 2849 (prob=0.997) -> 2024_06_13_12_31_IMG_3481 LE HEALTHY_frame_2849_p0.997.png
+
+[GPU 1] Processing: 2024_06_13_12_58_IMG_3487 LE MOD NPDR.mp4 (4264 frames) -- mode: threshold
+  Selected 4 frame(s): [354 | p=0.999], [1952 | p=0.996], [3081 | p=0.999], [4184 | p=0.996]
+  -> Saved frame 354 (prob=0.999) -> 2024_06_13_12_58_IMG_3487 LE MOD NPDR_frame_354_p0.999.png
+  -> Saved frame 1952 (prob=0.996) -> 2024_06_13_12_58_IMG_3487 LE MOD NPDR_frame_1952_p0.996.png
+  -> Saved frame 3081 (prob=0.999) -> 2024_06_13_12_58_IMG_3487 LE MOD NPDR_frame_3081_p0.999.png
+  -> Saved frame 4184 (prob=0.996) -> 2024_06_13_12_58_IMG_3487 LE MOD NPDR_frame_4184_p0.996.png
+
+[GPU 1] Processing: 2024_06_14_11_45_IMG_3491.mp4 (5720 frames) -- mode: threshold
+  Selected 3 frame(s): [775 | p=0.996], [3139 | p=0.991], [4980 | p=0.993]
+  -> Saved frame 775 (prob=0.996) -> 2024_06_14_11_45_IMG_3491_frame_775_p0.996.png
+  -> Saved frame 3139 (prob=0.991) -> 2024_06_14_11_45_IMG_3491_frame_3139_p0.991.png
+  -> Saved frame 4980 (prob=0.993) -> 2024_06_14_11_45_IMG_3491_frame_4980_p0.993.png
+
+[GPU 1] Processing: 2024_06_14_11_59_IMG_3495.mp4 (3421 frames) -- mode: threshold
+  Selected 3 frame(s): [400 | p=0.997], [1776 | p=0.980], [3375 | p=0.993]
+  -> Saved frame 400 (prob=0.997) -> 2024_06_14_11_59_IMG_3495_frame_400_p0.997.png
+  -> Saved frame 1776 (prob=0.980) -> 2024_06_14_11_59_IMG_3495_frame_1776_p0.980.png
+  -> Saved frame 3375 (prob=0.993) -> 2024_06_14_11_59_IMG_3495_frame_3375_p0.993.png
+
+[GPU 1] Processing: 2024_06_14_12_29_IMG_3499.mp4 (5610 frames) -- mode: threshold
+  Selected 4 frame(s): [438 | p=0.992], [1906 | p=0.981], [3508 | p=0.933], [5079 | p=0.968]
+  -> Saved frame 438 (prob=0.992) -> 2024_06_14_12_29_IMG_3499_frame_438_p0.992.png
+  -> Saved frame 1906 (prob=0.981) -> 2024_06_14_12_29_IMG_3499_frame_1906_p0.981.png
+  -> Saved frame 3508 (prob=0.933) -> 2024_06_14_12_29_IMG_3499_frame_3508_p0.933.png
+  -> Saved frame 5079 (prob=0.968) -> 2024_06_14_12_29_IMG_3499_frame_5079_p0.968.png
+
+[GPU 1] Processing: 2024_06_14_13_21_IMG_3503.mp4 (3036 frames) -- mode: threshold
+  Selected 3 frame(s): [605 | p=1.000], [1789 | p=0.998], [2997 | p=0.999]
+  -> Saved frame 605 (prob=1.000) -> 2024_06_14_13_21_IMG_3503_frame_605_p1.000.png
+  -> Saved frame 1789 (prob=0.998) -> 2024_06_14_13_21_IMG_3503_frame_1789_p0.998.png
+  -> Saved frame 2997 (prob=0.999) -> 2024_06_14_13_21_IMG_3503_frame_2997_p0.999.png
+
+[GPU 1] Processing: IMG_2503 LE ERM+.mp4 (1796 frames) -- mode: threshold
+  Selected 2 frame(s): [44 | p=0.891], [1006 | p=0.946]
+  -> Saved frame 44 (prob=0.891) -> IMG_2503 LE ERM+_frame_44_p0.891.png
+  -> Saved frame 1006 (prob=0.946) -> IMG_2503 LE ERM+_frame_1006_p0.946.png
+
+[GPU 1] Processing: IMG_2516 RE PDR WITH FVP.mp4 (2631 frames) -- mode: threshold
+  Selected 1 frame(s): [465 | p=0.910]
+  -> Saved frame 465 (prob=0.910) -> IMG_2516 RE PDR WITH FVP_frame_465_p0.910.png
+
+[GPU 1] Processing: IMG_2524 RE SEV NPDR.mp4 (2317 frames) -- mode: threshold
+  Selected 2 frame(s): [11 | p=0.812], [1765 | p=0.842]
+  -> Saved frame 11 (prob=0.812) -> IMG_2524 RE SEV NPDR_frame_11_p0.812.png
+  -> Saved frame 1765 (prob=0.842) -> IMG_2524 RE SEV NPDR_frame_1765_p0.842.png
+
+[GPU 1] Processing: IMG_2542 RE MOD NPDR.mp4 (2535 frames) -- mode: threshold
+  Selected 3 frame(s): [62 | p=0.992], [1566 | p=0.887], [2366 | p=0.968]
+  -> Saved frame 62 (prob=0.992) -> IMG_2542 RE MOD NPDR_frame_62_p0.992.png
+  -> Saved frame 1566 (prob=0.887) -> IMG_2542 RE MOD NPDR_frame_1566_p0.887.png
+  -> Saved frame 2366 (prob=0.968) -> IMG_2542 RE MOD NPDR_frame_2366_p0.968.png
+
+[GPU 1] Processing: IMG_2552 RE HEALTHY.mp4 (1453 frames) -- mode: threshold
+  Selected 2 frame(s): [191 | p=0.954], [1184 | p=0.907]
+  -> Saved frame 191 (prob=0.954) -> IMG_2552 RE HEALTHY_frame_191_p0.954.png
+  -> Saved frame 1184 (prob=0.907) -> IMG_2552 RE HEALTHY_frame_1184_p0.907.png
+
+[GPU 1] Processing: IMG_2581 LE MILD NPDR.mp4 (1143 frames) -- mode: fallback (max-confidence only)
+  Selected 1 frame(s): [3 | p=0.682]
+  -> Saved frame 3 (prob=0.682) -> IMG_2581 LE MILD NPDR_frame_3_p0.682.png
+
+[GPU 1] Processing: IMG_2590 LE HEALTHY.mp4 (1719 frames) -- mode: threshold
+  Selected 2 frame(s): [162 | p=0.971], [967 | p=0.989]
+  -> Saved frame 162 (prob=0.971) -> IMG_2590 LE HEALTHY_frame_162_p0.971.png
+  -> Saved frame 967 (prob=0.989) -> IMG_2590 LE HEALTHY_frame_967_p0.989.png
+
+[GPU 1] Processing: IMG_2595 RE MACULA SCAR.mp4 (2275 frames) -- mode: threshold
+  Selected 2 frame(s): [195 | p=0.875], [882 | p=0.859]
+  -> Saved frame 195 (prob=0.875) -> IMG_2595 RE MACULA SCAR_frame_195_p0.875.png
+  -> Saved frame 882 (prob=0.859) -> IMG_2595 RE MACULA SCAR_frame_882_p0.859.png
+
+[GPU 1] Processing: IMG_2600 LE HEALTHY.mp4 (2084 frames) -- mode: threshold
+  Selected 3 frame(s): [244 | p=0.979], [919 | p=0.980], [1913 | p=0.973]
+  -> Saved frame 244 (prob=0.979) -> IMG_2600 LE HEALTHY_frame_244_p0.979.png
+  -> Saved frame 919 (prob=0.980) -> IMG_2600 LE HEALTHY_frame_919_p0.980.png
+  -> Saved frame 1913 (prob=0.973) -> IMG_2600 LE HEALTHY_frame_1913_p0.973.png
+
+[GPU 1] Processing: IMG_2606 RE TRD+ FVP.mp4 (403 frames) -- mode: fallback (max-confidence only)
+  Selected 1 frame(s): [52 | p=0.633]
+  -> Saved frame 52 (prob=0.633) -> IMG_2606 RE TRD+ FVP_frame_52_p0.633.png
+
+[GPU 1] Processing: IMG_2611 RE  NO DR CHANGES.mp4 (1537 frames) -- mode: threshold
+  Selected 3 frame(s): [219 | p=0.980], [720 | p=0.990], [1533 | p=0.979]
+  -> Saved frame 219 (prob=0.980) -> IMG_2611 RE  NO DR CHANGES_frame_219_p0.980.png
+  -> Saved frame 720 (prob=0.990) -> IMG_2611 RE  NO DR CHANGES_frame_720_p0.990.png
+  -> Saved frame 1533 (prob=0.979) -> IMG_2611 RE  NO DR CHANGES_frame_1533_p0.979.png
+
+[GPU 1] Processing: IMG_2616 RE LASER SCAR + PHERIPHERAL.mp4 (2541 frames) -- mode: fallback (max-confidence only)
+  Selected 1 frame(s): [1944 | p=0.774]
+  -> Saved frame 1944 (prob=0.774) -> IMG_2616 RE LASER SCAR + PHERIPHERAL_frame_1944_p0.774.png
+
+[GPU 1] Processing: IMG_2623 LE HEALTHY.mp4 (1815 frames) -- mode: fallback (max-confidence only)
+  Selected 1 frame(s): [859 | p=0.536]
+  -> Saved frame 859 (prob=0.536) -> IMG_2623 LE HEALTHY_frame_859_p0.536.png
+
+[GPU 1] Processing: IMG_2638 RE NO DR CHANGES.mp4 (1835 frames) -- mode: threshold
+  Selected 1 frame(s): [388 | p=0.845]
+  -> Saved frame 388 (prob=0.845) -> IMG_2638 RE NO DR CHANGES_frame_388_p0.845.png
+
+[GPU 1] Processing: IMG_2705 RE NO DR CHANGES.mp4 (1106 frames) -- mode: fallback (max-confidence only)
+  Selected 1 frame(s): [403 | p=0.766]
+  -> Saved frame 403 (prob=0.766) -> IMG_2705 RE NO DR CHANGES_frame_403_p0.766.png
+
+[GPU 1] Processing: IMG_2716 LE NO DR CHANGES.mp4 (1006 frames) -- mode: fallback (max-confidence only)
+  Selected 1 frame(s): [770 | p=0.063]
+  -> Saved frame 770 (prob=0.063) -> IMG_2716 LE NO DR CHANGES_frame_770_p0.063.png
+
+[GPU 1] Processing: IMG_2722 RE HEALTHY.mp4 (2414 frames) -- mode: threshold
+  Selected 2 frame(s): [467 | p=0.977], [2392 | p=0.971]
+  -> Saved frame 467 (prob=0.977) -> IMG_2722 RE HEALTHY_frame_467_p0.977.png
+  -> Saved frame 2392 (prob=0.971) -> IMG_2722 RE HEALTHY_frame_2392_p0.971.png
+
+[GPU 1] Processing: IMG_2869 RE NO DR CHANGES.mp4 (3665 frames) -- mode: threshold
+  Selected 1 frame(s): [3602 | p=0.943]
+  -> Saved frame 3602 (prob=0.943) -> IMG_2869 RE NO DR CHANGES_frame_3602_p0.943.png
+
+[GPU 1] Processing: IMG_2889 RE ASTERIOD SCLEROSIS.mp4 (2090 frames) -- mode: threshold
+  Selected 3 frame(s): [259 | p=0.877], [1088 | p=0.978], [2037 | p=0.985]
+  -> Saved frame 259 (prob=0.877) -> IMG_2889 RE ASTERIOD SCLEROSIS_frame_259_p0.877.png
+  -> Saved frame 1088 (prob=0.978) -> IMG_2889 RE ASTERIOD SCLEROSIS_frame_1088_p0.978.png
+  -> Saved frame 2037 (prob=0.985) -> IMG_2889 RE ASTERIOD SCLEROSIS_frame_2037_p0.985.png
+
+[GPU 1] Processing: IMG_4166 LE MOD NPDR WITH DME.mp4 (1414 frames) -- mode: threshold
+  Selected 3 frame(s): [0 | p=0.984], [498 | p=0.993], [984 | p=0.997]
+  -> Saved frame 0 (prob=0.984) -> IMG_4166 LE MOD NPDR WITH DME_frame_0_p0.984.png
+  -> Saved frame 498 (prob=0.993) -> IMG_4166 LE MOD NPDR WITH DME_frame_498_p0.993.png
+  -> Saved frame 984 (prob=0.997) -> IMG_4166 LE MOD NPDR WITH DME_frame_984_p0.997.png
+
+[GPU 1] Processing: IMG_4419 RE MILD NPDR.mp4 (2109 frames) -- mode: threshold
+  Selected 4 frame(s): [252 | p=0.993], [839 | p=0.995], [1423 | p=0.979], [1972 | p=0.982]
+  -> Saved frame 252 (prob=0.993) -> IMG_4419 RE MILD NPDR_frame_252_p0.993.png
+  -> Saved frame 839 (prob=0.995) -> IMG_4419 RE MILD NPDR_frame_839_p0.995.png
+  -> Saved frame 1423 (prob=0.979) -> IMG_4419 RE MILD NPDR_frame_1423_p0.979.png
+  -> Saved frame 1972 (prob=0.982) -> IMG_4419 RE MILD NPDR_frame_1972_p0.982.png
+
+[GPU 1] Processing: R003R.mp4 (317 frames) -- mode: fallback (max-confidence only)
+  Selected 1 frame(s): [60 | p=0.556]
+  -> Saved frame 60 (prob=0.556) -> R003R_frame_60_p0.556.png
+
+[GPU 1] Processing: R007R.mp4 (675 frames) -- mode: fallback (max-confidence only)
+  Selected 1 frame(s): [145 | p=0.528]
+  -> Saved frame 145 (prob=0.528) -> R007R_frame_145_p0.528.png
+
+[GPU 1] Processing: R009L.mp4 (3924 frames) -- mode: threshold
+  Selected 2 frame(s): [142 | p=0.802], [2343 | p=0.939]
+  -> Saved frame 142 (prob=0.802) -> R009L_frame_142_p0.802.png
+  -> Saved frame 2343 (prob=0.939) -> R009L_frame_2343_p0.939.png
+
+[GPU 1] Processing: R012L.mp4 (395 frames) -- mode: threshold
+  Selected 2 frame(s): [83 | p=0.836], [200 | p=0.988]
+  -> Saved frame 83 (prob=0.836) -> R012L_frame_83_p0.836.png
+  -> Saved frame 200 (prob=0.988) -> R012L_frame_200_p0.988.png
+
+[GPU 1] Processing: R014R.mp4 (659 frames) -- mode: threshold
+  Selected 1 frame(s): [87 | p=0.972]
+  -> Saved frame 87 (prob=0.972) -> R014R_frame_87_p0.972.png
+
+[GPU 1] Processing: R017R.mp4 (641 frames) -- mode: fallback (max-confidence only)
+  Selected 1 frame(s): [456 | p=0.782]
+  -> Saved frame 456 (prob=0.782) -> R017R_frame_456_p0.782.png
+
+[GPU 1] Processing: R018R.mp4 (908 frames) -- mode: fallback (max-confidence only)
+  Selected 1 frame(s): [383 | p=0.787]
+  -> Saved frame 383 (prob=0.787) -> R018R_frame_383_p0.787.png
+
+[GPU 1] Processing: R020R.mp4 (2618 frames) -- mode: threshold
+  Selected 1 frame(s): [535 | p=0.924]
+  -> Saved frame 535 (prob=0.924) -> R020R_frame_535_p0.924.png
+
+[GPU 1] Processing: R023L.mp4 (751 frames) -- mode: fallback (max-confidence only)
+  Selected 1 frame(s): [112 | p=0.735]
+  -> Saved frame 112 (prob=0.735) -> R023L_frame_112_p0.735.png
+
+[GPU 1] Processing: R025R.mp4 (61 frames) -- mode: fallback (max-confidence only)
+  Selected 1 frame(s): [60 | p=0.006]
+  -> Saved frame 60 (prob=0.006) -> R025R_frame_60_p0.006.png
+
+[GPU 1] Processing: R027L.mp4 (3795 frames) -- mode: threshold
+  Selected 3 frame(s): [31 | p=0.978], [1073 | p=0.978], [3338 | p=0.810]
+  -> Saved frame 31 (prob=0.978) -> R027L_frame_31_p0.978.png
+  -> Saved frame 1073 (prob=0.978) -> R027L_frame_1073_p0.978.png
+  -> Saved frame 3338 (prob=0.810) -> R027L_frame_3338_p0.810.png
+
+[GPU 1] Processing: R028R2.mp4 (1453 frames) -- mode: threshold
+  Selected 2 frame(s): [191 | p=0.960], [1167 | p=0.884]
+  -> Saved frame 191 (prob=0.960) -> R028R2_frame_191_p0.960.png
+  -> Saved frame 1167 (prob=0.884) -> R028R2_frame_1167_p0.884.png
+
+[GPU 1] Processing: R030R.mp4 (6272 frames) -- mode: threshold
+  Selected 3 frame(s): [67 | p=0.875], [1695 | p=0.994], [5372 | p=0.994]
+  -> Saved frame 67 (prob=0.875) -> R030R_frame_67_p0.875.png
+  -> Saved frame 1695 (prob=0.994) -> R030R_frame_1695_p0.994.png
+  -> Saved frame 5372 (prob=0.994) -> R030R_frame_5372_p0.994.png
+
+[GPU 1] Processing: R033L.mp4 (1143 frames) -- mode: fallback (max-confidence only)
+  Selected 1 frame(s): [3 | p=0.767]
+  -> Saved frame 3 (prob=0.767) -> R033L_frame_3_p0.767.png
+
+[GPU 1] Processing: R034L2.mp4 (1719 frames) -- mode: threshold
+  Selected 2 frame(s): [350 | p=0.969], [966 | p=0.990]
+  -> Saved frame 350 (prob=0.969) -> R034L2_frame_350_p0.969.png
+  -> Saved frame 966 (prob=0.990) -> R034L2_frame_966_p0.990.png
+
+[GPU 1] Processing: R035L.mp4 (2491 frames) -- mode: threshold
+  Selected 3 frame(s): [309 | p=0.974], [1130 | p=0.903], [1868 | p=0.995]
+  -> Saved frame 309 (prob=0.974) -> R035L_frame_309_p0.974.png
+  -> Saved frame 1130 (prob=0.903) -> R035L_frame_1130_p0.903.png
+  -> Saved frame 1868 (prob=0.995) -> R035L_frame_1868_p0.995.png
+
+[GPU 1] Processing: R036R2.mp4 (937 frames) -- mode: threshold
+  Selected 2 frame(s): [85 | p=0.852], [352 | p=0.948]
+  -> Saved frame 85 (prob=0.852) -> R036R2_frame_85_p0.852.png
+  -> Saved frame 352 (prob=0.948) -> R036R2_frame_352_p0.948.png
+
+[GPU 1] Processing: R037R2.mp4 (1843 frames) -- mode: threshold
+  Selected 3 frame(s): [37 | p=0.892], [517 | p=0.938], [1246 | p=0.876]
+  -> Saved frame 37 (prob=0.892) -> R037R2_frame_37_p0.892.png
+  -> Saved frame 517 (prob=0.938) -> R037R2_frame_517_p0.938.png
+  -> Saved frame 1246 (prob=0.876) -> R037R2_frame_1246_p0.876.png
+
+[GPU 1] Processing: R040R.mp4 (403 frames) -- mode: fallback (max-confidence only)
+  Selected 1 frame(s): [50 | p=0.671]
+  -> Saved frame 50 (prob=0.671) -> R040R_frame_50_p0.671.png
+
+[GPU 1] Processing: R041R2.mp4 (1537 frames) -- mode: threshold
+  Selected 3 frame(s): [252 | p=0.978], [719 | p=0.992], [1532 | p=0.987]
+  -> Saved frame 252 (prob=0.978) -> R041R2_frame_252_p0.978.png
+  -> Saved frame 719 (prob=0.992) -> R041R2_frame_719_p0.992.png
+  -> Saved frame 1532 (prob=0.987) -> R041R2_frame_1532_p0.987.png
+
+[GPU 1] Processing: R044R.mp4 (4204 frames) -- mode: threshold
+  Selected 3 frame(s): [337 | p=0.847], [2022 | p=0.955], [4151 | p=0.954]
+  -> Saved frame 337 (prob=0.847) -> R044R_frame_337_p0.847.png
+  -> Saved frame 2022 (prob=0.955) -> R044R_frame_2022_p0.955.png
+  -> Saved frame 4151 (prob=0.954) -> R044R_frame_4151_p0.954.png
+
+[GPU 1] Processing: R046R.mp4 (324 frames) -- mode: fallback (max-confidence only)
+  Selected 1 frame(s): [301 | p=0.064]
+  -> Saved frame 301 (prob=0.064) -> R046R_frame_301_p0.064.png
+
+[GPU 1] Processing: R047R3.mp4 (602 frames) -- mode: threshold
+  Selected 1 frame(s): [230 | p=0.805]
+  -> Saved frame 230 (prob=0.805) -> R047R3_frame_230_p0.805.png
+
+[GPU 1] Processing: R049R.mp4 (1835 frames) -- mode: threshold
+  Selected 1 frame(s): [386 | p=0.815]
+  -> Saved frame 386 (prob=0.815) -> R049R_frame_386_p0.815.png
+
+[GPU 1] Processing: R052L.mp4 (2736 frames) -- mode: threshold
+  Selected 3 frame(s): [24 | p=0.967], [1615 | p=0.960], [2575 | p=0.979]
+  -> Saved frame 24 (prob=0.967) -> R052L_frame_24_p0.967.png
+  -> Saved frame 1615 (prob=0.960) -> R052L_frame_1615_p0.960.png
+  -> Saved frame 2575 (prob=0.979) -> R052L_frame_2575_p0.979.png
+
+[GPU 1] Processing: R054R.mp4 (3610 frames) -- mode: threshold
+  Selected 2 frame(s): [658 | p=0.959], [1853 | p=0.916]
+  -> Saved frame 658 (prob=0.959) -> R054R_frame_658_p0.959.png
+  -> Saved frame 1853 (prob=0.916) -> R054R_frame_1853_p0.916.png
+
+[GPU 1] Processing: R057L.mp4 (2414 frames) -- mode: threshold
+  Selected 2 frame(s): [467 | p=0.971], [1880 | p=0.966]
+  -> Saved frame 467 (prob=0.971) -> R057L_frame_467_p0.971.png
+  -> Saved frame 1880 (prob=0.966) -> R057L_frame_1880_p0.966.png
+
+[GPU 1] Processing: R058R.mp4 (2607 frames) -- mode: threshold
+  Selected 3 frame(s): [570 | p=0.993], [1871 | p=0.931], [2569 | p=0.985]
+  -> Saved frame 570 (prob=0.993) -> R058R_frame_570_p0.993.png
+  -> Saved frame 1871 (prob=0.931) -> R058R_frame_1871_p0.931.png
+  -> Saved frame 2569 (prob=0.985) -> R058R_frame_2569_p0.985.png
+
+[GPU 1] Processing: R059R.mp4 (3521 frames) -- mode: threshold
+  Selected 2 frame(s): [153 | p=0.986], [1111 | p=0.890]
+  -> Saved frame 153 (prob=0.986) -> R059R_frame_153_p0.986.png
+  -> Saved frame 1111 (prob=0.890) -> R059R_frame_1111_p0.890.png
+
+[GPU 1] Processing: R062R.mp4 (2109 frames) -- mode: threshold
+  Selected 4 frame(s): [252 | p=0.988], [840 | p=0.994], [1423 | p=0.964], [2035 | p=0.981]
+  -> Saved frame 252 (prob=0.988) -> R062R_frame_252_p0.988.png
+  -> Saved frame 840 (prob=0.994) -> R062R_frame_840_p0.994.png
+  -> Saved frame 1423 (prob=0.964) -> R062R_frame_1423_p0.964.png
+  -> Saved frame 2035 (prob=0.981) -> R062R_frame_2035_p0.981.png
+
+[GPU 1] Processing: R066R.mp4 (2945 frames) -- mode: fallback (max-confidence only)
+  Selected 1 frame(s): [2853 | p=0.730]
+  -> Saved frame 2853 (prob=0.730) -> R066R_frame_2853_p0.730.png
+
+[GPU 1] Processing: R069R.mp4 (1123 frames) -- mode: threshold
+  Selected 2 frame(s): [332 | p=0.971], [913 | p=0.978]
+  -> Saved frame 332 (prob=0.971) -> R069R_frame_332_p0.971.png
+  -> Saved frame 913 (prob=0.978) -> R069R_frame_913_p0.978.png
+
+============================================================
+GPU 1 done. Processed 190 video(s). Frames saved in: '/home/s6jovand/job/new/classifier/frames_sampled'
+Note: 19 video(s) used the fallback (no frame cleared the 0.8 threshold) -- worth reviewing these.

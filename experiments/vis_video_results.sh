@@ -36,7 +36,7 @@ TRANSFORMER_PATHS=(
 )
 
 python -u -m experiments.vis_video_results \
-  --output_dir "experiments/Paxos_2020/multi_eval" \
+  --output_dir "experiments/Paxos_2020/multi_eval_better" \
   --mil_paths "${MIL_PATHS[@]}" \
   --classifier_paths "${CLASSIFIER_PATHS[@]}" \
   --trans_paths "${TRANSFORMER_PATHS[@]}" \

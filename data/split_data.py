@@ -120,4 +120,4 @@ def generate_plots(df, output_dir):
 
 
 if __name__ == '__main__':
-    create_kfold_splits("data/matching_results_hd.json", "data/final_clip_labels_hd.json")
+    create_kfold_splits("data/matching_results.json", "data/clip_labels.json")

@@ -3,7 +3,7 @@ import os
 import pandas as pd
 from pathlib import Path
 
-INPUT_DIR = 'data/frames_raw_extract_2'
+INPUT_DIR = 'data/informative_frames/frames_raw_extract_paxos2020'
 WINDOW_NAME = 'Retina Labeler'
 
 MODE_BINARY = "binary"
@@ -13,7 +13,7 @@ MODE_THREE_CLASS = "three_class"
 def get_mode_config(mode):
     if mode == MODE_BINARY:
         return {
-            "output_file": "manual_labels_binary_2.csv",
+            "output_file": "manual_labels_binary_paxos2020.csv",
             "key_map": {
                 ord('1'): ("INFORMATIVE", 1),
                 ord('0'): ("JUNK", 0),

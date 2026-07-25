@@ -2,8 +2,14 @@ import os
 import json
 import re
 
-frame_dir = "data/2024_Paxos_Frames/cropped_frames"
-clip_dir = "data/ensemble_results/cleaned_videos"
+FRAME_DIRS = [
+    "classifier/cropped_classifier_frames",
+]
+
+CLIP_DIRS = [
+    "data/ensemble_results/cleaned_videos",
+    "data/ensemble_results_paxos2020/cleaned_videos",
+]
 
 
 def get_core_id_from_video(filename):
@@ -13,29 +19,47 @@ def get_core_id_from_video(filename):
 
 
 def get_core_id_from_image(filename):
-    # Extracts the base ID from frame names like:
-    # 'R008R.MOV-00001.png' -> 'R008R'
-    # '2024_IMG_5029.mp4-00040.png' -> '2024_IMG_5029'
-
-    # Split by common video extensions and take the first part
-    base = re.split(r'\.MOV|\.mp4|\.avi|\.mpeg', filename, flags=re.IGNORECASE)[0]
-    return base
+    # Extracts the base ID from frame names produced by sample_frames.py, e.g.:
+    # 'B005L_frame_2121_p0.997.png' -> 'B005L'
+    # 'IMG_2708 LE HEALTHY_frame_2614_p0.980.png' -> 'IMG_2708 LE HEALTHY'
+    return re.sub(r'_frame_\d+_p[0-9.]+\.png$', '', filename)
 
 
-# 1. Get all files
-clips = [f for f in os.listdir(clip_dir) if f.endswith('.mp4')]
-images = [f for f in os.listdir(frame_dir) if f.endswith('.png')]
+# 1. Get all files across all provided dirs
+# clips/images become (filename, source_dir) pairs so we know where each file lives
+clips = []
+for d in CLIP_DIRS:
+    clips.extend((f, d) for f in os.listdir(d) if f.endswith('.mp4'))
+
+images = []
+for d in FRAME_DIRS:
+    images.extend((f, d) for f in os.listdir(d) if f.endswith('.png'))
+
+# Sanity check: warn if the same clip/image filename shows up in more than one dir
+clip_names_seen = {}
+for name, d in clips:
+    clip_names_seen.setdefault(name, []).append(d)
+duplicate_clips = {name: dirs for name, dirs in clip_names_seen.items() if len(dirs) > 1}
+if duplicate_clips:
+    print(f"WARNING: {len(duplicate_clips)} clip filename(s) found in multiple CLIP_DIRS: {duplicate_clips}")
+
+image_names_seen = {}
+for name, d in images:
+    image_names_seen.setdefault(name, []).append(d)
+duplicate_images = {name: dirs for name, dirs in image_names_seen.items() if len(dirs) > 1}
+if duplicate_images:
+    print(f"WARNING: {len(duplicate_images)} image filename(s) found in multiple FRAME_DIRS: {duplicate_images}")
 
 # 2. Map Core IDs to their full video filename
 # This creates a lookup like: {"R008R2": "CLEAN_R008R2.mp4"}
-video_lookup = {get_core_id_from_video(c): c for c in clips}
+video_lookup = {get_core_id_from_video(c): c for c, _ in clips}
 
 # 3. Initialize results
-matches = {c: [] for c in clips}
+matches = {c: [] for c, _ in clips}
 matched_images = set()
 
 # 4. Perform Strict Matching
-for img in images:
+for img, _ in images:
     img_core = get_core_id_from_image(img)
 
     # Check for an exact match in the video dictionary
@@ -50,12 +74,12 @@ final_matches = {os.path.splitext(k)[0]: v for k, v in matches.items() if v}
 
 results = {
     "matches": final_matches,
-    "unmatched_clips": [os.path.splitext(c)[0] for c in clips if not matches[c]],
-    "unmatched_images": [img for img in images if img not in matched_images]
+    "unmatched_clips": [os.path.splitext(c)[0] for c, _ in clips if not matches[c]],
+    "unmatched_images": [img for img, _ in images if img not in matched_images],
 }
 
 # 6. Save
-output_path = "data/matching_results_hd_new.json"
+output_path = "data/matching_results.json"
 with open(output_path, "w") as f:
     json.dump(results, f, indent=4)
 

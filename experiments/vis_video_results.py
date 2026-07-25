@@ -102,7 +102,7 @@ def main(args):
             json_path=Path(args.output_dir).parent / "graded_videos.json",
             num_frames=32,
             transform=val_trans,
-            search_dir_path=Path(args.output_dir).parent / "ensemble_results/cleaned_videos"
+            search_dir_path=Path(args.output_dir).parent / "data/ensemble_results/cleaned_videos"
         )
 
         val_loader = torch.utils.data.DataLoader(val_ds, batch_size=1, shuffle=False)

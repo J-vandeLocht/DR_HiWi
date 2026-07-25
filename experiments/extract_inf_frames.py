@@ -1,6 +1,5 @@
 import cv2
 import torch
-import os
 import argparse
 import pandas as pd
 import numpy as np

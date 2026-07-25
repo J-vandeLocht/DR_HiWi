@@ -1,14 +1,15 @@
 import cv2
 from pathlib import Path
 
-VIDEO_DIR = Path('data/dr_videos')
-OUTPUT_DIR = Path('data/informative_frames/frames_raw_extract')
+# VIDEO_DIR = Path('data/dr_videos')
+VIDEO_DIR = Path('data/Paxos_2020_videos')
+OUTPUT_DIR = Path('data/informative_frames/frames_raw_extract_paxos2020')
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def extract_fast_lossless():
     print(f"Searching for videos in: {VIDEO_DIR.resolve()}")
-    video_files = list(VIDEO_DIR.glob('*.mp4'))
+    video_files = [f for f in VIDEO_DIR.iterdir() if f.is_file() and f.suffix.lower() in {".mp4", ".mov"}]
 
     if not video_files:
         print(f"Error: No videos found at {VIDEO_DIR}")
@@ -25,7 +26,7 @@ def extract_fast_lossless():
             cap.release()
             continue
 
-        targets = [int(total_frames * f) for f in [0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875]]
+        targets = [int(total_frames * f) for f in [0.2, 0.4, 0.6, 0.8]]
 
         print(f"Processing: {video_path.name}")
 

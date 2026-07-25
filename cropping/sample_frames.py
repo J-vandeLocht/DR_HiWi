@@ -3,6 +3,7 @@ import numpy as np
 from pathlib import Path
 
 VIDEO_DIR = Path('data/dr_videos')
+# VIDEO_DIR = Path('experiments/Paxos_2020/data')
 OUTPUT_DIR = Path('cropping/frames_to_annotate_larger')
 
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -59,7 +60,7 @@ def extract_and_pad_sequential():
                 filename = f"{video_path.stem}_frame_{current_idx}.png"
                 save_path = OUTPUT_DIR / filename
 
-                cv2.imwrite(str(save_path), square_frame, [cv2.IMWRITE_PNG_COMPRESSION, 0])
+                cv2.imwrite(str(save_path), square_frame, [cv2.IMWRITE_PNG_COMPRESSION, 3])
                 print(f"  -> Extracted frame {current_idx}")
 
             current_idx += 1

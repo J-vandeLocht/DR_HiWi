@@ -1,0 +1,6 @@
+Searching for videos in: ['/home/s6jovand/job/new/data/dr_videos', '/home/s6jovand/job/new/data/Paxos_2020_videos']
+GPU 0/3: assigned 190 video(s).
+
+[GPU 0] Processing: B005L.MOV (7233 frames) -- mode: threshold
+  Selected 2 frame(s): [2121 | p=0.997], [5797 | p=0.998]
+[2026-07-23T15:11:05.791] error: *** JOB 223360 ON node-04 CANCELLED AT 2026-07-23T15:11:05 DUE to SIGNAL Terminated ***

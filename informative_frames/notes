@@ -7,12 +7,10 @@ crop_frames.py: Use the 5 trained cropping models to crop the extracted frames (
 and move them to 0 and 1 folders in data/informative_frames/frames_cropped
 
 classify_frames.py: Use images in data/informative_frames/frames_cropped to train 5 EfficientNets for classifying frames
-into informative and not with 5 splits. Models are saved in models. The split_info_5fold_{timestamp}.csv that saves the
-mapping seems to be lost unfortunately
+into informative and not with 5 splits. Models are saved in models. split_info_5fold_{timestamp}.csv saves the
+mapping
 
 extract_inf_frames.py: Use trained cropping model ensemble and trained informative frames model ensemble to both crop
 and filter all videos in data/dr_videos;
 results are saved in ensemble_results (at the moment, needs to be moved to data) and contains the clips and txts/plots
 that visualize the confidences for each frame
-
-split_info_full.csv contains the annotations for all of the 7x417=2919 frames (also an train/val column that can be removed)

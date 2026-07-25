@@ -10,17 +10,38 @@ import re
 
 
 class FrameDataset(Dataset):
-    def __init__(self, json_path, img_dir, transform=None):
+    def __init__(self, json_path, img_dirs, transform=None):
         with open(json_path, 'r') as f:
             label_data = json.load(f)
 
+        self.filename_to_path = {}
+        for img_dir in img_dirs:
+            for fname in os.listdir(img_dir):
+                full_path = os.path.join(img_dir, fname)
+                if fname in self.filename_to_path:
+                    print(f"WARNING: '{fname}' found in multiple img_dirs -- "
+                          f"keeping '{self.filename_to_path[fname]}', "
+                          f"ignoring '{full_path}'.")
+                    continue
+                self.filename_to_path[fname] = full_path
+
         self.image_paths = []
         self.labels = []
+        missing = []
 
         for img_name, grade in label_data.items():
-            self.image_paths.append(os.path.join(img_dir, img_name))
+            if img_name not in self.filename_to_path:
+                missing.append(img_name)
+                continue
+
+            self.image_paths.append(self.filename_to_path[img_name])
             # Convert 0-4 to binary: 0-1 is non-referable (0), 2-4 is referable (1)
             self.labels.append(1 if grade >= 2 else 0)
+
+        if missing:
+            print(f"WARNING: {len(missing)} image(s) from {json_path} were not "
+                  f"found in any of img_dirs and were skipped. "
+                  f"First few: {missing[:5]}")
 
         self.transform = transform
 
@@ -36,8 +57,7 @@ class FrameDataset(Dataset):
 
 
 class MILVideoDataset(Dataset):
-    def __init__(self, json_path, num_frames=32, transform=None, random_segment_sample=False,
-                 search_dir_path="data/ensemble_results/cleaned_videos"):
+    def __init__(self, json_path, num_frames=32, transform=None, random_segment_sample=False, search_dir_paths=None):
         with open(json_path, 'r') as f:
             self.label_map = json.load(f)
 
@@ -45,12 +65,16 @@ class MILVideoDataset(Dataset):
         self.transform = transform
         self.random_segment_sample = random_segment_sample
 
-        search_dir = Path(search_dir_path)
+        if search_dir_paths is None:
+            search_dir_paths = ["data/ensemble_results/cleaned_videos"]
 
         all_video_paths = []
-        if search_dir.exists():
-            all_video_paths.extend(list(search_dir.glob('*.mp4')))
-            all_video_paths.extend(list(search_dir.glob('*.MOV')))
+        for search_dir_path in search_dir_paths:
+            search_dir = Path(search_dir_path)
+
+            if search_dir.exists():
+                all_video_paths.extend(search_dir.glob("*.mp4"))
+                all_video_paths.extend(search_dir.glob("*.MOV"))
 
         self.data = []
         missing_count = 0

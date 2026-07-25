@@ -6,8 +6,13 @@ import segmentation_models_pytorch as smp
 import albumentations as albu
 from albumentations.pytorch import ToTensorV2
 
-IMG_DIR = Path('data/2024_Paxos_Frames/frames')
-CROPPED_DIR = Path('data/2024_Paxos_Frames/cropped_frames')
+# Assuming get_largest_component_mask is located in your local cropping module/utils
+from informative_frames.crop_frames import get_largest_component_mask
+
+# IMG_DIR = Path('data/2024_Paxos_Frames/frames')
+# CROPPED_DIR = Path('data/2024_Paxos_Frames/cropped_frames')
+IMG_DIR = Path('classifier/frames_sampled')
+CROPPED_DIR = Path('classifier/cropped_classifier_frames')
 SEG_MODEL_DIR = Path('cropping/models')
 
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -64,10 +69,26 @@ def save_cropped_images(seg_ensemble):
 
             # Resize mask back to ORIGINAL resolution
             full_mask = cv2.resize(mean_mask, (w, h), interpolation=cv2.INTER_LINEAR)
-            binary_mask = (full_mask > 0.5).astype(np.uint8)
 
-            # Apply mask to original image
-            cropped_img = cv2.bitwise_and(img_bgr, img_bgr, mask=binary_mask)
+            # Clean noise & find bounding info on largest component
+            clean_mask, mw, mh, cx, cy = get_largest_component_mask(full_mask > 0.5)
+
+            if clean_mask is None:
+                print(f"Warning: No valid retina component found for {img_path.name}. Skipping...")
+                continue
+
+            # Apply mask to original image to remove non-retina background
+            binary_mask = (clean_mask > 0).astype(np.uint8)
+            masked_img = cv2.bitwise_and(img_bgr, img_bgr, mask=binary_mask)
+
+            # Calculate 5% padding and crop boundaries centered on (cx, cy)
+            p = int(max(mw, mh) * 0.05)
+            x1 = int(max(0, cx - mw // 2 - p))
+            y1 = int(max(0, cy - mh // 2 - p))
+            x2 = int(min(w, x1 + mw + 2 * p))
+            y2 = int(min(h, y1 + mh + 2 * p))
+
+            cropped_img = masked_img[y1:y2, x1:x2]
 
             # Save to the new directory
             save_path = CROPPED_DIR / img_path.name

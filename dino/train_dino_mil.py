@@ -140,13 +140,20 @@ def train_mil(args):
     val_trans = make_val_transform_dino(args.img_size, args.complex_augs)
 
     # --- Datasets ---
+    if args.fused_dataset:
+        search_dir_paths = ["data/ensemble_results/cleaned_videos", "data/ensemble_results_paxos2020/cleaned_videos"]
+    else:
+        search_dir_paths = ["data/ensemble_results/cleaned_videos"]
+
     train_ds = MILVideoDataset(os.path.join(args.split_path, "mil_train.json"),
                                num_frames=32,
                                transform=train_trans,
-                               random_segment_sample=args.random_segment_sample)
+                               random_segment_sample=args.random_segment_sample,
+                               search_dir_paths = search_dir_paths)
     val_ds = MILVideoDataset(os.path.join(args.split_path, "mil_val.json"),
                              num_frames=32,
-                             transform=val_trans)
+                             transform=val_trans,
+                             search_dir_paths=search_dir_paths)
 
     train_loader = torch.utils.data.DataLoader(train_ds, batch_size=1, shuffle=True)
     val_loader = torch.utils.data.DataLoader(val_ds, batch_size=1, shuffle=False)
@@ -214,6 +221,7 @@ if __name__ == "__main__":
     parser.add_argument('--lr', type=float, default=1e-5)
     parser.add_argument('--complex_augs', action='store_true')
     parser.add_argument('--random_segment_sample', action='store_true')
+    parser.add_argument('--fused_dataset', action='store_true')
 
     args = parser.parse_args()
 

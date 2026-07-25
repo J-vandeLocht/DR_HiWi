@@ -3,8 +3,9 @@ import csv
 import os
 import re
 
-matching_file = "data/matching_results_hd_new.json"
+matching_file = "data/matching_results.json"
 csv_path = "data/DR_Grading_Summary_v3.csv"
+graded_videos_json_path = "data/graded_videos.json"
 
 
 def normalize_string(s):
@@ -26,15 +27,48 @@ def normalize_string(s):
 with open(matching_file, "r") as f:
     matches_data = json.load(f)["matches"]
 
-# 2. Load CSV grades into a dict with normalized keys
-# We store: { 'img2708lehealthy': grade }
+# 2. Load groundtruth from BOTH sources into one combined, normalized dict.
+# We track which source each key came from so we can warn on conflicts.
 csv_grades = {}
+grade_sources = {}  # normalized_key -> source label, for conflict reporting
+
+# 2a. CSV source
 with open(csv_path, mode='r') as f:
     reader = csv.DictReader(f)
     for row in reader:
         path_raw = row['Path'].strip()
         normalized_key = normalize_string(path_raw)
-        csv_grades[normalized_key] = int(row['Grading'])
+        grade = int(row['Grading'])
+
+        if normalized_key in csv_grades and csv_grades[normalized_key] != grade:
+            print(f"WARNING: conflicting grade for {normalized_key!r} -- "
+                  f"CSV says {grade}, but {grade_sources[normalized_key]} already "
+                  f"set {csv_grades[normalized_key]}. Keeping the first value.")
+            continue
+
+        csv_grades[normalized_key] = grade
+        grade_sources[normalized_key] = f"CSV ({path_raw!r})"
+
+# 2b. graded_videos.json source, e.g. {"I019R.MOV": 0, ...}
+with open(graded_videos_json_path, "r") as f:
+    graded_videos = json.load(f)
+
+for path_raw, grade in graded_videos.items():
+    normalized_key = normalize_string(path_raw)
+    grade = int(grade)
+
+    if normalized_key in csv_grades and csv_grades[normalized_key] != grade:
+        print(f"WARNING: conflicting grade for {normalized_key!r} -- "
+              f"graded_videos.json says {grade}, but {grade_sources[normalized_key]} "
+              f"already set {csv_grades[normalized_key]}. Keeping the first value.")
+        continue
+
+    if normalized_key not in csv_grades:
+        csv_grades[normalized_key] = grade
+        grade_sources[normalized_key] = f"graded_videos.json ({path_raw!r})"
+
+print(f"Loaded {len(csv_grades)} unique groundtruth entries "
+      f"(CSV + graded_videos.json combined).\n")
 
 # 3. Create the two label maps
 final_clip_labels = {}
@@ -65,10 +99,10 @@ for clip_id, image_list in matches_data.items():
             print(f"Warning: No grade found for: {clip_id} (Normalized as: {query_id})")
 
 # 4. Save
-with open("data/final_clip_labels_hd.json", "w") as f:
+with open("data/clip_labels.json", "w") as f:
     json.dump(final_clip_labels, f, indent=4)
 
-with open("data/final_image_labels_hd.json", "w") as f:
+with open("data/image_labels.json", "w") as f:
     json.dump(final_image_labels, f, indent=4)
 
 print(f"\nSuccess!")

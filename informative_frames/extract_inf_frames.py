@@ -1,5 +1,6 @@
 import cv2
 import torch
+import numpy as np
 import argparse
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -20,6 +21,10 @@ def parse_args():
     parser.add_argument('--gpu_id', type=int, default=0)
     parser.add_argument('--total_gpus', type=int, default=1)
     parser.add_argument('--limit', type=int, default=None, help="Max videos per worker.")
+    parser.add_argument('--video_dir', type=str, default='data/dr_videos')
+    parser.add_argument('--seg_model_dir', type=str, default='cropping/models')
+    parser.add_argument('--cls_model_dir', type=str, default='informative_frames/models')
+    parser.add_argument('--out_base', type=str, default='data/ensemble_results')
     return parser.parse_args()
 
 
@@ -31,15 +36,45 @@ def get_seg_transforms(size=512):
     ])
 
 
+def select_informative_frames(probs, start_threshold, min_threshold, step, min_frames):
+    """
+    Select informative frame indices by thresholding the ensemble probability.
+    If the starting threshold doesn't yield enough frames, step the threshold
+    down (never below min_threshold) until min_frames is reached. If even
+    min_threshold isn't enough, fall back to the top-`min_frames` frames by
+    probability so the clip is never shorter than min_frames (as long as the
+    video itself has that many frames).
+
+    Returns: (sorted_indices, threshold_used, used_fallback)
+    """
+    probs = np.asarray(probs)
+    n_total = len(probs)
+
+    threshold = start_threshold
+    idx = np.where(probs >= threshold)[0]
+
+    while len(idx) < min_frames and threshold > min_threshold:
+        threshold = round(max(threshold - step, min_threshold), 4)
+        idx = np.where(probs >= threshold)[0]
+
+    used_fallback = False
+    if len(idx) < min_frames:
+        n_take = min(min_frames, n_total)
+        idx = np.sort(np.argsort(probs)[::-1][:n_take])
+        used_fallback = True
+
+    return idx, threshold, used_fallback
+
+
 def main():
     args = parse_args()
     DEVICE = torch.device(f"cuda:{0}" if torch.cuda.is_available() else "cpu")
 
-    VIDEO_DIR = Path('data/dr_videos')
-    SEG_MODEL_DIR = Path('cropping/models')
-    CLS_MODEL_DIR = Path('informative_frames/models')
+    VIDEO_DIR = Path(args.video_dir)
+    SEG_MODEL_DIR = Path(args.seg_model_dir)
+    CLS_MODEL_DIR = Path(args.cls_model_dir)
 
-    OUT_BASE = Path('data/ensemble_results')
+    OUT_BASE = Path(args.out_base)
     TXT_DIR = OUT_BASE / 'txt_files'
     PLOT_DIR = OUT_BASE / 'plots'
     VID_DIR = OUT_BASE / 'cleaned_videos'
@@ -48,7 +83,10 @@ def main():
         d.mkdir(parents=True, exist_ok=True)
 
     IMG_SIZE = 512
-    CONF_THRESHOLD = 0.5
+    CONF_THRESHOLD = 0.5  # starting / preferred threshold
+    MIN_CONF_THRESHOLD = 0.2  # floor - never go below this
+    THRESHOLD_STEP = 0.05  # how much to relax the threshold per attempt
+    MIN_INFORMATIVE_FRAMES = 32  # guaranteed minimum length of the cleaned clip
 
     # 1. Load Ensembles
     print(f"Loading 5-Fold Unet++ (B4) and Classification (B4) on {DEVICE}...")
@@ -75,7 +113,7 @@ def main():
     ])
 
     # --- File Discovery ---
-    all_vids = sorted(list(VIDEO_DIR.glob("*.mp4")))
+    all_vids = sorted([p for p in VIDEO_DIR.glob("*") if p.is_file() and p.suffix.lower() in {".mp4", ".avi", ".mov"}])
     my_vids = [v for i, v in enumerate(all_vids) if i % args.total_gpus == args.gpu_id]
     if args.limit: my_vids = my_vids[:args.limit]
 
@@ -84,9 +122,12 @@ def main():
     for v_path in tqdm(my_vids, desc=f"Overall GPU {args.gpu_id}"):
         vid_id = v_path.stem
         out_vid_path = VID_DIR / f"CLEAN_{vid_id}.mp4"
+        txt_path = TXT_DIR / f"{vid_id}.txt"
+        plot_path = PLOT_DIR / f"{vid_id}.png"
 
-        if out_vid_path.exists(): continue
-
+        if out_vid_path.exists() and txt_path.exists() and plot_path.exists():
+            print(f"Skipping {vid_id}")
+            continue
         cap = cv2.VideoCapture(str(v_path))
         fps = cap.get(cv2.CAP_PROP_FPS)
         total_f = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -131,30 +172,77 @@ def main():
                 f_idx += 1
                 pbar.update(1)
 
-        # PASS 2: Export Video
-        valid_f_count = sum(1 for r in frame_results if r['prob'] >= CONF_THRESHOLD and r['mask'] is not None)
-        if global_max_dim > 0 and valid_f_count > 0:
+        # --- Adaptive informative-frame selection ---
+        # Start at CONF_THRESHOLD and relax down to MIN_CONF_THRESHOLD until we
+        # have at least MIN_INFORMATIVE_FRAMES. If that's still not enough,
+        # fall back to the top-N frames by probability.
+        all_probs = [r['prob'] for r in frame_results]
+        informative_idx, threshold_used, used_fallback = select_informative_frames(
+            all_probs,
+            start_threshold=CONF_THRESHOLD,
+            min_threshold=MIN_CONF_THRESHOLD,
+            step=THRESHOLD_STEP,
+            min_frames=MIN_INFORMATIVE_FRAMES
+        )
+        informative_idx_set = set(int(i) for i in informative_idx)
+
+        status = "fallback top-N" if used_fallback else f"threshold={threshold_used}"
+        print(f"{vid_id}: {len(informative_idx_set)}/{len(frame_results)} informative frames ({status})")
+
+        # PASS 2: Export Cropped Video (informative frames only)
+        if global_max_dim > 0 and len(informative_idx_set) > 0:
             final_sz = int(global_max_dim * 1.05)
+
             fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-            out = cv2.VideoWriter(str(out_vid_path), fourcc, fps, (final_sz, final_sz))
+            out = cv2.VideoWriter(
+                str(out_vid_path),
+                fourcc,
+                fps,
+                (final_sz, final_sz)
+            )
 
             cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
+
             for res in frame_results:
                 ret, frame = cap.read()
-                if not ret: break
-                if res['prob'] >= CONF_THRESHOLD and res['mask'] is not None:
+                if not ret:
+                    break
+
+                # Skip frames that didn't make the informative cut
+                if res['f'] not in informative_idx_set:
+                    continue
+
+                # If segmentation exists, crop around it
+                if res['mask'] is not None:
                     masked = cv2.bitwise_and(frame, frame, mask=res['mask'])
-                    out.write(crop_and_pad(masked, res['cx'], res['cy'], final_sz))
+                    cropped = crop_and_pad(
+                        masked,
+                        res['cx'],
+                        res['cy'],
+                        final_sz
+                    )
+
+                # Otherwise output a black frame of the same size
+                else:
+                    cropped = np.zeros((final_sz, final_sz, 3), dtype=np.uint8)
+
+                out.write(cropped)
+
             out.release()
 
         # PASS 3: Txt & Plot
         df_res = pd.DataFrame([{'frame': r['f'], 'prob': r['prob']} for r in frame_results])
+        df_res['informative'] = df_res['frame'].isin(informative_idx_set)
         df_res.to_csv(TXT_DIR / f"{vid_id}.txt", sep='\t', index=False)
 
         plt.figure(figsize=(10, 4))
         plt.plot(df_res['frame'], df_res['prob'], label='Ensemble Prob')
-        plt.axhline(y=CONF_THRESHOLD, color='r', linestyle='--', label='Threshold')
-        plt.title(f"Informative Frames: {vid_id}")
+        plt.axhline(y=CONF_THRESHOLD, color='r', linestyle='--', alpha=0.5, label=f'Preferred ({CONF_THRESHOLD})')
+        if threshold_used != CONF_THRESHOLD and not used_fallback:
+            plt.axhline(y=threshold_used, color='orange', linestyle='--', label=f'Used ({threshold_used})')
+        plt.fill_between(df_res['frame'], 0, 1.1, where=df_res['informative'],
+                         color='green', alpha=0.1, label='Informative')
+        plt.title(f"Informative Frames: {vid_id} ({len(informative_idx_set)} frames, {status})")
         plt.xlabel("Frame Index")
         plt.ylabel("Avg Probability")
         plt.ylim(0, 1.1)
