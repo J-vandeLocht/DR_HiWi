@@ -114,6 +114,10 @@ class MILVideoDataset(Dataset):
         if corrupt_count > 0:
             print(f"Skipped {corrupt_count} videos (found but appear empty/corrupt).")
 
+    @property
+    def labels(self):
+        return [int(item['label']) for item in self.data]
+
     def __len__(self):
         return len(self.data)
 

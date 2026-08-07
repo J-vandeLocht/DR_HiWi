@@ -5,6 +5,8 @@ from torch.utils.tensorboard import SummaryWriter
 from datetime import datetime
 import os
 import argparse
+import numpy as np
+from torch.utils.data import DataLoader, WeightedRandomSampler
 
 from data.dataset import MILVideoDataset
 from .utils import make_train_transform_dino, make_val_transform_dino
@@ -60,13 +62,15 @@ class DinoMIL(nn.Module):
             # Load backbone weights
             backbone_state = {k.replace("backbone.", ""): v for k, v in state_dict.items() if k.startswith("backbone.")}
             if backbone_state:
-                self.backbone.load_state_dict(backbone_state, strict=False)
+                result = self.backbone.load_state_dict(backbone_state, strict=False)
+                print("Missing:", result.missing_keys)
                 print("Backbone weights loaded.")
 
             # Load MIL Head weights (Only does something during evaluation)
             head_state = {k: v for k, v in state_dict.items() if not k.startswith("backbone.")}
             if head_state:
-                self.load_state_dict(head_state, strict=False)
+                result = self.load_state_dict(head_state, strict=False)
+                print("Missing:", result.missing_keys)
                 print("MIL Head weights loaded.")
 
         # Freeze backbone
@@ -155,8 +159,31 @@ def train_mil(args):
                              transform=val_trans,
                              search_dir_paths=search_dir_paths)
 
-    train_loader = torch.utils.data.DataLoader(train_ds, batch_size=1, shuffle=True)
-    val_loader = torch.utils.data.DataLoader(val_ds, batch_size=1, shuffle=False)
+    # --- Setup Oversampling ---
+    train_labels = np.array(train_ds.labels)
+    class_counts = np.bincount(train_labels)
+
+    # Compute inverse class frequencies
+    class_weights = 1.0 / class_counts
+
+    # Map each video in the dataset to its class weight
+    sample_weights = class_weights[train_labels]
+    sample_weights = torch.from_numpy(sample_weights).double()
+
+    sampler = WeightedRandomSampler(
+        weights=sample_weights,
+        num_samples=len(sample_weights),
+        replacement=True
+    )
+
+    # Use sampler in DataLoader (shuffle MUST be set to False)
+    train_loader = DataLoader(
+        train_ds,
+        batch_size=1,
+        sampler=sampler,
+        shuffle=False
+    )
+    val_loader = DataLoader(val_ds, batch_size=1, shuffle=False)
 
     criterion = nn.BCEWithLogitsLoss()
     optimizer = optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=args.lr)
