@@ -6,9 +6,12 @@ FRAME_DIRS = [
     "classifier/cropped_classifier_frames",
 ]
 
+# CLIP_DIRS = [
+#     "data/ensemble_results_paxos2020/cleaned_videos",
+# ]
+
 CLIP_DIRS = [
-    "data/ensemble_results/cleaned_videos",
-    "data/ensemble_results_paxos2020/cleaned_videos",
+    "data/ensemble_results_paxos2025/cleaned_videos",
 ]
 
 
@@ -79,7 +82,8 @@ results = {
 }
 
 # 6. Save
-output_path = "data/matching_results.json"
+# output_path = "data/matching_results_2020.json"
+output_path = "data/matching_results_2025.json"
 with open(output_path, "w") as f:
     json.dump(results, f, indent=4)
 

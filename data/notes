@@ -18,7 +18,3 @@ using matching_results_hd.json. The split is 0.8 to 0.2 video-wise and only appr
 Removed IMG_2581.mp4 from sciebo because 'IMG_2581 LE MILD NPDR.mp4' is the non-downscaled version (duplicate)
 Removed duplicate of 'IMG_2502 RE NO DR CHANGES.mp4' (there was the same video again but with an additional space in the name)
 R0742 is higher quality version of R072R and R069R is identical to R0742 (deleted R072R and R0742)
-
-----
-There are unmatched images innmatching_results.json since ensemble_results has a txt file for all but only a video for most. If we
-rerun wiht the new video creating logic (always 32 frames) this problem will go away. But at the moment only Paxos2020 was sampled like that

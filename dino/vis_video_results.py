@@ -61,6 +61,30 @@ def run_inference_transformer(model, loader, device):
     return results
 
 
+def run_inference_transformer_rope(model, loader, device):
+    model.eval()
+    results = {}
+    dataset_samples = loader.dataset.data
+
+    with torch.no_grad():
+        for i, batch in enumerate(tqdm(loader, desc="Transformer-Rope Inference")):
+            inputs = batch[0].squeeze(0).to(device)
+            labels = batch[1]
+            grade = batch[2]
+            frame_positions = batch[3]
+            video_name = dataset_samples[i]['vid_name']
+
+            logits, _ = model(inputs, frame_positions)
+            prob = torch.sigmoid(logits).item()
+
+            results[video_name] = {
+                "label": int(labels.item()),
+                "prob": prob,
+                "grade": int(grade.item())
+            }
+    return results
+
+
 def run_inference_classifier(model, loader, device):
     """Classifier inference: Predicts on each frame, then averages the probabilities."""
     model.eval()

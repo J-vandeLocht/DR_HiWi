@@ -264,7 +264,10 @@ def train_self_attention(args):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     timestamp = datetime.now().strftime('%m%d_%H%M')
-    run_name = f"dino_sa_{args.num_blocks}_{args.split_path.split('/')[-1]}_{args.use_pos_embedding}_{timestamp}"
+    run_name = (f"dino_sa"
+                f"{args.split_path.split('/')[-1]}_"
+                f"{timestamp}_"
+                f"{"full" if args.train_json == "mil_train.json" else args.train_json.split(".")[0].split("_")[-1]}")
 
     run_dir = os.path.join("transformer", "models", run_name)
     os.makedirs(run_dir, exist_ok=True)
@@ -284,17 +287,17 @@ def train_self_attention(args):
 
     # --- Datasets ---
     if args.fused_dataset:
-        search_dir_paths = ["data/ensemble_results/cleaned_videos", "data/ensemble_results_paxos2020/cleaned_videos"]
+        search_dir_paths = ["data/ensemble_results_paxos2025/cleaned_videos", "data/ensemble_results_paxos2020/cleaned_videos"]
     else:
-        search_dir_paths = ["data/ensemble_results/cleaned_videos"]
+        search_dir_paths = ["data/ensemble_results_paxos2025/cleaned_videos"]
 
     # --- Datasets ---
-    train_ds = MILVideoDataset(os.path.join(args.split_path, "mil_train.json"),
+    train_ds = MILVideoDataset(os.path.join(args.split_path, args.train_json),
                                num_frames=32,
                                transform=train_trans,
                                random_segment_sample=args.random_segment_sample,
                                search_dir_paths=search_dir_paths)
-    val_ds = MILVideoDataset(os.path.join(args.split_path, "mil_val.json"),
+    val_ds = MILVideoDataset(os.path.join(args.split_path, args.val_json),
                              num_frames=32,
                              transform=val_trans,
                              search_dir_paths=search_dir_paths)
@@ -346,7 +349,7 @@ def train_self_attention(args):
         # Save best model
         if m['pr_auc'] > best_pr_auc:
             best_pr_auc = m['pr_auc']
-            torch.save(model.state_dict(), os.path.join(run_dir, "best_mil_model.pth"))
+            torch.save(model.state_dict(), os.path.join(run_dir, "best_sa_model.pth"))
 
         writer.add_scalar('Meta/Learning_Rate', current_lr, epoch)
 
@@ -379,6 +382,8 @@ if __name__ == "__main__":
     parser.add_argument('--classifier_checkpoint', type=str, default=None,
                         help='Path to trained classifier model (.pth)')
     parser.add_argument('--split_path', type=str, required=True)
+    parser.add_argument('--train_json', type=str, default="mil_train.json")
+    parser.add_argument('--val_json', type=str, default="mil_val.json")
     parser.add_argument('--weight_path', type=str, default=None,
                         help='Path to pretrained DINO classifier weights')
     parser.add_argument('--freeze_backbone', action='store_true')

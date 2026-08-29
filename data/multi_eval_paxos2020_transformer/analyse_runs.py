@@ -115,13 +115,13 @@ def main():
     BASE_OUTPUT_FOLDER = "split_analysis_results"
 
     # Separate diagnostic output folders per archetype
-    TRANS_DIR_OLD = os.path.join(BASE_OUTPUT_FOLDER, "Transformer_Old")
-    TRANS_DIR_POS_ENC = os.path.join(BASE_OUTPUT_FOLDER, "Transformer_Pos_Enc")
-    TRANS_DIR_DEEPER = os.path.join(BASE_OUTPUT_FOLDER, "Transformer_Deeper")
+    TRANS_DIR = os.path.join(BASE_OUTPUT_FOLDER, "Transformer")
+    TRANS_ROPE_SMALL_DIR = os.path.join(BASE_OUTPUT_FOLDER, "Transformer_Rope_Small")
+    TRANS_ROPE_LARGE_DIR = os.path.join(BASE_OUTPUT_FOLDER, "Transformer_Rope_Large")
 
-    os.makedirs(TRANS_DIR_OLD, exist_ok=True)
-    os.makedirs(TRANS_DIR_POS_ENC, exist_ok=True)
-    os.makedirs(TRANS_DIR_DEEPER, exist_ok=True)
+    os.makedirs(TRANS_DIR, exist_ok=True)
+    os.makedirs(TRANS_ROPE_SMALL_DIR, exist_ok=True)
+    os.makedirs(TRANS_ROPE_LARGE_DIR, exist_ok=True)
 
     csv_files = sorted(glob.glob(os.path.join(INPUT_FOLDER, "*.csv")))
 
@@ -140,41 +140,30 @@ def main():
         split_name = os.path.basename(f).replace('.csv', '')
 
         # Isolate tracking columns dynamically
-        trans_old_col = next((col for col in df.columns if "Trans_split" in col), None)
-        trans_pe_col = next((col for col in df.columns if "Trans_Pos_Enc" in col), None)
-        trans_d_col = next((col for col in df.columns if "Trans_Deeper" in col), None)
+        trans_col = next((col for col in df.columns if "Trans_" in col), None)
+        trans_rope_small_col = next((col for col in df.columns if "Trans_Rope_Small" in col), None)
+        trans_rope_large_col = next((col for col in df.columns if "Trans_Rope_Large" in col), None)
 
-        if trans_old_col is not None:
-            trans_old_col_metrics = generate_analysis(df, split_name, trans_old_col, "Transformer_OLD", TRANS_DIR_OLD)
-            summary_list.append(trans_old_col_metrics)
-            print(f"Processed Transformer Old for {split_name}")
-
-        if trans_pe_col is not None:
-            trans_pe_col_metrics = generate_analysis(df, split_name, trans_pe_col, "Transformer_PE", TRANS_DIR_POS_ENC)
-            summary_list.append(trans_pe_col_metrics)
-            print(f"Processed Transformer Positional Encoding for {split_name}")
-
-        if trans_d_col is not None:
-            trans_d_metrics = generate_analysis(df, split_name, trans_d_col, "Transformer_D", TRANS_DIR_DEEPER)
-            summary_list.append(trans_d_metrics)
-            print(f"Processed Transformer Deeper for {split_name}")
+        if trans_col is not None:
+            trans_metrics = generate_analysis(df, split_name, trans_col, "Transformer", TRANS_DIR)
+            summary_list.append(trans_metrics)
+            print(f"Processed Transformer for {split_name}")
+        if trans_rope_small_col is not None:
+            trans_metrics = generate_analysis(df, split_name, trans_rope_small_col, "Transformer_Rope_Small", TRANS_ROPE_SMALL_DIR)
+            summary_list.append(trans_metrics)
+            print(f"Processed Transformer for {split_name}")
+        if trans_rope_large_col is not None:
+            trans_metrics = generate_analysis(df, split_name, trans_rope_large_col, "Transformer_Rope_Large", TRANS_ROPE_LARGE_DIR)
+            summary_list.append(trans_metrics)
+            print(f"Processed Transformer for {split_name}")
 
     if not summary_list:
-        print("No valid metrics were computed. Ensure CSV headers contain 'MIL', 'Clf', or 'Trans'.")
+        print("No valid metrics were computed. Ensure CSV headers contain the right name")
         return
 
     # Compile global tracking sheet
     summary_df = pd.DataFrame(summary_list)
-
-    # Force desired model order
-    model_order = ["Transformer_OLD", "Transformer_D", "Transformer_PE"]
-    summary_df["Model"] = pd.Categorical(
-        summary_df["Model"],
-        categories=model_order,
-        ordered=True
-    )
-
-    summary_df = summary_df.sort_values(by=["Split", "Model"])
+    summary_df = summary_df.sort_values(by=['Split', 'Model'])
     summary_df.to_csv(os.path.join(BASE_OUTPUT_FOLDER, "analysis_summary.csv"), index=False)
 
     # Output log tables straight to terminal context

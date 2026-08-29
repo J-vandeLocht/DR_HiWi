@@ -3,7 +3,8 @@ import csv
 import os
 import re
 
-matching_file = "data/matching_results.json"
+# matching_file = "data/matching_results_2020.json"
+matching_file = "data/matching_results_2025.json"
 csv_path = "data/DR_Grading_Summary_v3.csv"
 graded_videos_json_path = "data/graded_videos.json"
 
@@ -99,10 +100,16 @@ for clip_id, image_list in matches_data.items():
             print(f"Warning: No grade found for: {clip_id} (Normalized as: {query_id})")
 
 # 4. Save
-with open("data/clip_labels.json", "w") as f:
+# with open("data/clip_labels_2020.json", "w") as f:
+#     json.dump(final_clip_labels, f, indent=4)
+#
+# with open("data/image_labels_2020.json", "w") as f:
+#     json.dump(final_image_labels, f, indent=4)
+
+with open("data/clip_labels_2025.json", "w") as f:
     json.dump(final_clip_labels, f, indent=4)
 
-with open("data/image_labels.json", "w") as f:
+with open("data/image_labels_2025.json", "w") as f:
     json.dump(final_image_labels, f, indent=4)
 
 print(f"\nSuccess!")

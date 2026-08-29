@@ -60,7 +60,11 @@ def train_classifier(args):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     timestamp = datetime.now().strftime('%m%d_%H%M')
-    run_name = f"dino_{'complex' if args.complex_augs else 'simple'}_{args.split_path.split('/')[-1]}_{'kaggle' if args.weight_path else 'imagenet'}_{timestamp}"
+    # run_name = f"dino_{'complex' if args.complex_augs else 'simple'}_{args.split_path.split('/')[-1]}_{'kaggle' if args.weight_path else 'imagenet'}_{timestamp}"
+    run_name = (f"dino_"
+                f"{args.split_path.split('/')[-1]}_"
+                f"{timestamp}_"
+                f"{"full" if args.train_json == "frame_train.json" else args.train_json.split(".")[0].split("_")[-1]}")
 
     run_dir = os.path.join("classifier", "models", run_name)
     os.makedirs(run_dir, exist_ok=True)
@@ -96,11 +100,11 @@ def train_classifier(args):
     train_trans = make_train_transform_dino(args.img_size, args.complex_augs)
     val_trans = make_val_transform_dino(args.img_size, args.complex_augs)
 
-    train_dataset = FrameDataset(os.path.join(args.split_path, "frame_train.json"),
-                                 ["data/2024_Paxos_Frames/cropped_frames", "classifier/cropped_classifier_frames"],
+    train_dataset = FrameDataset(os.path.join(args.split_path, args.train_json),
+                                 ["classifier/cropped_classifier_frames"],
                                  transform=train_trans)
-    val_dataset = FrameDataset(os.path.join(args.split_path, "frame_val.json"),
-                               ["data/2024_Paxos_Frames/cropped_frames", "classifier/cropped_classifier_frames"],
+    val_dataset = FrameDataset(os.path.join(args.split_path, args.val_json),
+                               ["classifier/cropped_classifier_frames"],
                                transform=val_trans)
 
     train_labels = np.array(train_dataset.labels)
@@ -178,6 +182,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--split_path', type=str, required=True)
+    parser.add_argument('--train_json', type=str, default="frame_train.json")
+    parser.add_argument('--val_json', type=str, default="frame_val.json")
     parser.add_argument('--weight_path', type=str, default=None,
                         help='Path to pretrained DINO classifier weights')
     parser.add_argument('--freeze_backbone', action='store_true')
