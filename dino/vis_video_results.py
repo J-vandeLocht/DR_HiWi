@@ -61,6 +61,39 @@ def run_inference_transformer(model, loader, device):
     return results
 
 
+def run_inference_transformer_all(model, loader, device, num_classes=5):
+    """Transformer inference for the multi-class (5-grade) model.
+    Evaluates the entire bag of frames at once and returns per-class
+    softmax probabilities plus the argmax predicted grade for every video.
+    """
+    model.eval()
+    results = {}
+    dataset_samples = loader.dataset.data
+
+    with torch.no_grad():
+        for i, batch in enumerate(tqdm(loader, desc="Transformer Inference")):
+            inputs = batch[0].squeeze(0).to(device)
+            labels = batch[1]
+            grade = batch[2]
+            video_name = dataset_samples[i]['vid_name']
+
+            logits, _ = model(inputs)
+            probs = torch.softmax(logits, dim=1).squeeze(0)  # [num_classes]
+            pred_grade = int(torch.argmax(probs).item())
+
+            result = {
+                "label": int(labels.item()),
+                "grade": int(grade.item()),
+                "pred_grade": pred_grade,
+            }
+            for c in range(num_classes):
+                result[f"prob_{c}"] = probs[c].item()
+
+            results[video_name] = result
+
+    return results
+
+
 def run_inference_transformer_rope(model, loader, device):
     model.eval()
     results = {}

@@ -26,6 +26,7 @@ class FrameDataset(Dataset):
                 self.filename_to_path[fname] = full_path
 
         self.image_paths = []
+        self.grades = []
         self.labels = []
         missing = []
 
@@ -35,6 +36,7 @@ class FrameDataset(Dataset):
                 continue
 
             self.image_paths.append(self.filename_to_path[img_name])
+            self.grades.append(grade)
             # Convert 0-4 to binary: 0-1 is non-referable (0), 2-4 is referable (1)
             self.labels.append(1 if grade >= 2 else 0)
 
@@ -53,7 +55,7 @@ class FrameDataset(Dataset):
         if self.transform:
             img = self.transform(img)
 
-        return img, torch.tensor(self.labels[idx], dtype=torch.float32)
+        return img, torch.tensor(self.grades[idx], dtype=torch.int64), torch.tensor(self.labels[idx], dtype=torch.float32)
 
 
 class MILVideoDataset(Dataset):
@@ -117,6 +119,10 @@ class MILVideoDataset(Dataset):
     @property
     def labels(self):
         return [int(item['label']) for item in self.data]
+
+    @property
+    def grades(self):
+        return [int(item['grade']) for item in self.data]
 
     def __len__(self):
         return len(self.data)

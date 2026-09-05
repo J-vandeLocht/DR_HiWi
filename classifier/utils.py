@@ -1,22 +1,27 @@
 import numpy as np
 import torch
 from tqdm import tqdm
+from misc.utils import binary_metrics, multiclass_metrics
 
 from sklearn.metrics import (accuracy_score, f1_score, roc_auc_score,
-                             precision_recall_curve, auc,
-                             precision_score, recall_score)
+                             precision_recall_curve, auc, cohen_kappa_score,
+                             precision_score, recall_score, average_precision_score)
 
 
-def train_one_epoch_classifier(model, loader, criterion, optimizer, device):
+def train_one_epoch_classifier(model, loader, criterion, optimizer, binary_classification, device):
     model.train()
     total_loss = 0
 
-    for images, labels in tqdm(loader, leave=False, desc="Batch"):
-        images, labels = images.to(device), labels.to(device).float().unsqueeze(1)
+    for images, grades, labels in tqdm(loader, leave=False, desc="Batch"):
+        images = images.to(device)
+        if binary_classification:
+            targets = labels.to(device).float().unsqueeze(1)   # BCEWithLogitsLoss wants (N,1) float
+        else:
+            targets = grades.to(device).long()                  # CrossEntropyLoss wants (N,) long
 
         optimizer.zero_grad()
         outputs = model(images)
-        loss = criterion(outputs, labels)
+        loss = criterion(outputs, targets)
         loss.backward()
         optimizer.step()
 
@@ -25,36 +30,42 @@ def train_one_epoch_classifier(model, loader, criterion, optimizer, device):
     return total_loss / len(loader)
 
 
-def validate_classifier(model, loader, criterion, device):
+def validate_classifier(model, loader, criterion, binary_classification, device):
     model.eval()
     running_loss = 0.0
     y_true, y_probs = [], []
 
     with torch.no_grad():
-        for inputs, labels in loader:
-            inputs, labels = inputs.to(device), labels.to(device).float().unsqueeze(1)
-            outputs = model(inputs)
-            loss = criterion(outputs, labels)
+        for images, grades, labels in loader:
+            images = images.to(device)
+            if binary_classification:
+                targets = labels.to(device).float().unsqueeze(1)
+            else:
+                targets = grades.to(device).long()
+
+            outputs = model(images)
+            loss = criterion(outputs, targets)
             running_loss += loss.item()
 
-            y_probs.extend(torch.sigmoid(outputs).cpu().numpy())
-            y_true.extend(labels.cpu().numpy())
+            if binary_classification:
+                probs = torch.sigmoid(outputs)          # (N,1)
+            else:
+                probs = torch.softmax(outputs, dim=1)    # (N,5)
 
-    y_true = np.array(y_true)
+            y_probs.extend(probs.cpu().numpy())
+            y_true.extend(targets.cpu().numpy())
+
+    y_true = np.array(y_true).reshape(-1) if binary_classification else np.array(y_true)
     y_probs = np.array(y_probs)
-    y_pred = (y_probs > 0.5).astype(float)
 
-    # Metric Calculations
-    prec_curve, rec_curve, _ = precision_recall_curve(y_true, y_probs)
+    if binary_classification:
+        y_pred = (y_probs.reshape(-1) > 0.5).astype(float)
+        metrics = binary_metrics(y_true, y_pred, y_probs.reshape(-1))
+    else:
+        y_pred = y_probs.argmax(axis=1)
+        metrics = multiclass_metrics(y_true, y_pred, y_probs, num_classes=5)
 
-    return {
-        'loss': running_loss / len(loader),
-        'acc': accuracy_score(y_true, y_pred),
-        'f1': f1_score(y_true, y_pred, zero_division=0),
-        'precision': precision_score(y_true, y_pred, zero_division=0),
-        'recall': recall_score(y_true, y_pred, zero_division=0),
-        'roc_auc': roc_auc_score(y_true, y_probs) if len(np.unique(y_true)) > 1 else 0.5,
-        'pr_auc': auc(rec_curve, prec_curve),
-        'y_true': y_true,
-        'y_pred': y_pred
-    }
+    metrics['loss'] = running_loss / len(loader)
+    metrics['y_true'] = y_true
+    metrics['y_pred'] = y_pred
+    return metrics

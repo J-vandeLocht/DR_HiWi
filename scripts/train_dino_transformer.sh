@@ -10,27 +10,11 @@
 source ~/.bashrc
 conda activate job_new
 cd ..
-
-#CLASSIFIER_WEIGHTS=classifier/models/dino_split_1_0815_1421_2020/best_model.pth
+#
+#CLASSIFIER_WEIGHTS=classifier/models/dino_all_split_1_0829_2040_full/best_model.pth
 #python -u -m dino.train_dino_transformer \
 #  --classifier_checkpoint $CLASSIFIER_WEIGHTS \
 #  --split_path "data/stratified_splits/split_1" \
-#  --train_json "mil_train_2020.json" \
-#  --val_json "mil_val_2020.json" \
-#  --freeze_backbone \
-#  --lr 1e-4 \
-#  --epochs 5 \
-#  --lr_step 3 \
-#  --complex_augs \
-#  --random_segment_sample \
-#  --fused_dataset
-#
-#CLASSIFIER_WEIGHTS=classifier/models/dino_split_2_0815_1509_2020/best_model.pth
-#python -u -m dino.train_dino_transformer \
-#  --classifier_checkpoint $CLASSIFIER_WEIGHTS \
-#  --split_path "data/stratified_splits/split_2" \
-#  --train_json "mil_train_2020.json" \
-#  --val_json "mil_val_2020.json" \
 #  --freeze_backbone \
 #  --lr 1e-4 \
 #  --epochs 5 \
@@ -39,12 +23,10 @@ cd ..
 #  --random_segment_sample \
 #  --fused_dataset
 
-#CLASSIFIER_WEIGHTS=classifier/models/dino_split_3_0815_1556_2020/best_model.pth
+#CLASSIFIER_WEIGHTS=classifier/models/dino_all_split_2_0829_2158_full/best_model.pth
 #python -u -m dino.train_dino_transformer \
 #  --classifier_checkpoint $CLASSIFIER_WEIGHTS \
-#  --split_path "data/stratified_splits/split_3" \
-#  --train_json "mil_train_2020.json" \
-#  --val_json "mil_val_2020.json" \
+#  --split_path "data/stratified_splits/split_2" \
 #  --freeze_backbone \
 #  --lr 1e-4 \
 #  --epochs 5 \
@@ -53,12 +35,22 @@ cd ..
 #  --random_segment_sample \
 #  --fused_dataset
 #
-#CLASSIFIER_WEIGHTS=classifier/models/dino_split_4_0815_1719_2020/best_model.pth
+#CLASSIFIER_WEIGHTS=classifier/models/dino_all_split_3_0829_2316_full/best_model.pth
+#python -u -m dino.train_dino_transformer \
+#  --classifier_checkpoint $CLASSIFIER_WEIGHTS \
+#  --split_path "data/stratified_splits/split_3" \
+#  --freeze_backbone \
+#  --lr 1e-4 \
+#  --epochs 5 \
+#  --lr_step 3 \
+#  --complex_augs \
+#  --random_segment_sample \
+#  --fused_dataset
+#
+#CLASSIFIER_WEIGHTS=classifier/models/dino_all_split_4_0829_2040_full/best_model.pth
 #python -u -m dino.train_dino_transformer \
 #  --classifier_checkpoint $CLASSIFIER_WEIGHTS \
 #  --split_path "data/stratified_splits/split_4" \
-#  --train_json "mil_train_2020.json" \
-#  --val_json "mil_val_2020.json" \
 #  --freeze_backbone \
 #  --lr 1e-4 \
 #  --epochs 5 \
@@ -67,82 +59,10 @@ cd ..
 #  --random_segment_sample \
 #  --fused_dataset
 #
-#CLASSIFIER_WEIGHTS=classifier/models/dino_split_5_0815_1805_2020/best_model.pth
-#python -u -m dino.train_dino_transformer \
-#  --classifier_checkpoint $CLASSIFIER_WEIGHTS \
-#  --split_path "data/stratified_splits/split_5" \
-#  --train_json "mil_train_2020.json" \
-#  --val_json "mil_val_2020.json" \
-#  --freeze_backbone \
-#  --lr 1e-4 \
-#  --epochs 5 \
-#  --lr_step 3 \
-#  --complex_augs \
-#  --random_segment_sample \
-#  --fused_dataset
-#
-#CLASSIFIER_WEIGHTS=classifier/models/dino_split_1_0815_1719_2025/best_model.pth
-#python -u -m dino.train_dino_transformer \
-#  --classifier_checkpoint $CLASSIFIER_WEIGHTS \
-#  --split_path "data/stratified_splits/split_1" \
-#  --train_json "mil_train_2025.json" \
-#  --val_json "mil_val_2025.json" \
-#  --freeze_backbone \
-#  --lr 1e-4 \
-#  --epochs 5 \
-#  --lr_step 3 \
-#  --complex_augs \
-#  --random_segment_sample \
-#  --fused_dataset
-#
-#CLASSIFIER_WEIGHTS=classifier/models/dino_split_2_0815_1751_2025/best_model.pth
-#python -u -m dino.train_dino_transformer \
-#  --classifier_checkpoint $CLASSIFIER_WEIGHTS \
-#  --split_path "data/stratified_splits/split_2" \
-#  --train_json "mil_train_2025.json" \
-#  --val_json "mil_val_2025.json" \
-#  --freeze_backbone \
-#  --lr 1e-4 \
-#  --epochs 5 \
-#  --lr_step 3 \
-#  --complex_augs \
-#  --random_segment_sample \
-#  --fused_dataset
-#
-#CLASSIFIER_WEIGHTS=classifier/models/dino_split_3_0815_1720_2025/best_model.pth
-#python -u -m dino.train_dino_transformer \
-#  --classifier_checkpoint $CLASSIFIER_WEIGHTS \
-#  --split_path "data/stratified_splits/split_3" \
-#  --train_json "mil_train_2025.json" \
-#  --val_json "mil_val_2025.json" \
-#  --freeze_backbone \
-#  --lr 1e-4 \
-#  --epochs 5 \
-#  --lr_step 3 \
-#  --complex_augs \
-#  --random_segment_sample \
-#  --fused_dataset
-#
-CLASSIFIER_WEIGHTS=classifier/models/dino_split_4_0815_1751_2025/best_model.pth
-python -u -m dino.train_dino_transformer \
-  --classifier_checkpoint $CLASSIFIER_WEIGHTS \
-  --split_path "data/stratified_splits/split_4" \
-  --train_json "mil_train_2025.json" \
-  --val_json "mil_val_2025.json" \
-  --freeze_backbone \
-  --lr 1e-4 \
-  --epochs 5 \
-  --lr_step 3 \
-  --complex_augs \
-  --random_segment_sample \
-  --fused_dataset
-
-CLASSIFIER_WEIGHTS=classifier/models/dino_split_5_0815_1720_2025/best_model.pth
+CLASSIFIER_WEIGHTS=classifier/models/dino_all_split_5_0829_2158_full/best_model.pth
 python -u -m dino.train_dino_transformer \
   --classifier_checkpoint $CLASSIFIER_WEIGHTS \
   --split_path "data/stratified_splits/split_5" \
-  --train_json "mil_train_2025.json" \
-  --val_json "mil_val_2025.json" \
   --freeze_backbone \
   --lr 1e-4 \
   --epochs 5 \

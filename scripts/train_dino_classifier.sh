@@ -13,70 +13,25 @@ cd ..
 
 #python -u -m dino.train_dino_classifier \
 #  --split_path "data/stratified_splits/split_1" \
-#  --train_json "frame_train_2020.json" \
-#  --val_json "frame_val_2020.json" \
 #  --lr 5e-6 \
 #  --complex_augs
 #
 #python -u -m dino.train_dino_classifier \
 #  --split_path "data/stratified_splits/split_2" \
-#  --train_json "frame_train_2020.json" \
-#  --val_json "frame_val_2020.json" \
 #  --lr 5e-6 \
 #  --complex_augs
 #
 #python -u -m dino.train_dino_classifier \
 #  --split_path "data/stratified_splits/split_3" \
-#  --train_json "frame_train_2020.json" \
-#  --val_json "frame_val_2020.json" \
-#  --lr 5e-6 \
-#  --complex_augs
-
-#python -u -m dino.train_dino_classifier \
-#  --split_path "data/stratified_splits/split_4" \
-#  --train_json "frame_train_2020.json" \
-#  --val_json "frame_val_2020.json" \
-#  --lr 5e-6 \
-#  --complex_augs
-#
-#python -u -m dino.train_dino_classifier \
-#  --split_path "data/stratified_splits/split_5" \
-#  --train_json "frame_train_2020.json" \
-#  --val_json "frame_val_2020.json" \
-#  --lr 5e-6 \
-#  --complex_augs
-
-#python -u -m dino.train_dino_classifier \
-#  --split_path "data/stratified_splits/split_1" \
-#  --train_json "frame_train_2025.json" \
-#  --val_json "frame_val_2025.json" \
-#  --lr 5e-6 \
-#  --complex_augs
-#
-#python -u -m dino.train_dino_classifier \
-#  --split_path "data/stratified_splits/split_2" \
-#  --train_json "frame_train_2025.json" \
-#  --val_json "frame_val_2025.json" \
-#  --lr 5e-6 \
-#  --complex_augs
-
-#python -u -m dino.train_dino_classifier \
-#  --split_path "data/stratified_splits/split_3" \
-#  --train_json "frame_train_2025.json" \
-#  --val_json "frame_val_2025.json" \
-#  --lr 5e-6 \
-#  --complex_augs
-#
-#python -u -m dino.train_dino_classifier \
-#  --split_path "data/stratified_splits/split_4" \
-#  --train_json "frame_train_2025.json" \
-#  --val_json "frame_val_2025.json" \
 #  --lr 5e-6 \
 #  --complex_augs
 
 python -u -m dino.train_dino_classifier \
+  --split_path "data/stratified_splits/split_4" \
+  --lr 5e-6 \
+  --complex_augs
+
+python -u -m dino.train_dino_classifier \
   --split_path "data/stratified_splits/split_5" \
-  --train_json "frame_train_2025.json" \
-  --val_json "frame_val_2025.json" \
   --lr 5e-6 \
   --complex_augs

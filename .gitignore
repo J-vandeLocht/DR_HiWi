@@ -8,6 +8,8 @@ data/ensemble_results_paxos2020/
 data/ensemble_results_paxos2025/
 data/informative_frames/
 data/stratified_splits/split_*/
+data/matched_frames/
+data/results/
 dino/dinov3/
 informative_frames/models/
 mil/models/
