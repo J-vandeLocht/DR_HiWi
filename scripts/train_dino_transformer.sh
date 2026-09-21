@@ -10,20 +10,20 @@
 source ~/.bashrc
 conda activate job_new
 cd ..
-#
-#CLASSIFIER_WEIGHTS=classifier/models/dino_all_split_1_0829_2040_full/best_model.pth
-#python -u -m dino.train_dino_transformer \
-#  --classifier_checkpoint $CLASSIFIER_WEIGHTS \
-#  --split_path "data/stratified_splits/split_1" \
-#  --freeze_backbone \
-#  --lr 1e-4 \
-#  --epochs 5 \
-#  --lr_step 3 \
-#  --complex_augs \
-#  --random_segment_sample \
-#  --fused_dataset
 
-#CLASSIFIER_WEIGHTS=classifier/models/dino_all_split_2_0829_2158_full/best_model.pth
+CLASSIFIER_WEIGHTS=classifier/models/dino_binary_split_1_0906_2310_full/best_model.pth
+python -u -m dino.train_dino_transformer \
+  --classifier_checkpoint $CLASSIFIER_WEIGHTS \
+  --split_path "data/stratified_splits/split_1" \
+  --freeze_backbone \
+  --lr 1e-4 \
+  --epochs 5 \
+  --lr_step 3 \
+  --complex_augs \
+  --random_segment_sample \
+  --binary_classification
+
+#CLASSIFIER_WEIGHTS=classifier/models/dino_binary_split_2_0906_2340_full/best_model.pth
 #python -u -m dino.train_dino_transformer \
 #  --classifier_checkpoint $CLASSIFIER_WEIGHTS \
 #  --split_path "data/stratified_splits/split_2" \
@@ -33,9 +33,9 @@ cd ..
 #  --lr_step 3 \
 #  --complex_augs \
 #  --random_segment_sample \
-#  --fused_dataset
-#
-#CLASSIFIER_WEIGHTS=classifier/models/dino_all_split_3_0829_2316_full/best_model.pth
+#  --binary_classification
+
+#CLASSIFIER_WEIGHTS=classifier/models/dino_binary_split_3_0907_0010_full/best_model.pth
 #python -u -m dino.train_dino_transformer \
 #  --classifier_checkpoint $CLASSIFIER_WEIGHTS \
 #  --split_path "data/stratified_splits/split_3" \
@@ -45,9 +45,9 @@ cd ..
 #  --lr_step 3 \
 #  --complex_augs \
 #  --random_segment_sample \
-#  --fused_dataset
-#
-#CLASSIFIER_WEIGHTS=classifier/models/dino_all_split_4_0829_2040_full/best_model.pth
+#  --binary_classification
+
+#CLASSIFIER_WEIGHTS=classifier/models/dino_binary_split_4_0906_2208_full/best_model.pth
 #python -u -m dino.train_dino_transformer \
 #  --classifier_checkpoint $CLASSIFIER_WEIGHTS \
 #  --split_path "data/stratified_splits/split_4" \
@@ -57,16 +57,16 @@ cd ..
 #  --lr_step 3 \
 #  --complex_augs \
 #  --random_segment_sample \
-#  --fused_dataset
-#
-CLASSIFIER_WEIGHTS=classifier/models/dino_all_split_5_0829_2158_full/best_model.pth
-python -u -m dino.train_dino_transformer \
-  --classifier_checkpoint $CLASSIFIER_WEIGHTS \
-  --split_path "data/stratified_splits/split_5" \
-  --freeze_backbone \
-  --lr 1e-4 \
-  --epochs 5 \
-  --lr_step 3 \
-  --complex_augs \
-  --random_segment_sample \
-  --fused_dataset
+#  --binary_classification
+
+#CLASSIFIER_WEIGHTS=classifier/models/dino_binary_split_5_0906_2239_full/best_model.pth
+#python -u -m dino.train_dino_transformer \
+#  --classifier_checkpoint $CLASSIFIER_WEIGHTS \
+#  --split_path "data/stratified_splits/split_5" \
+#  --freeze_backbone \
+#  --lr 1e-4 \
+#  --epochs 5 \
+#  --lr_step 3 \
+#  --complex_augs \
+#  --random_segment_sample \
+#  --binary_classification

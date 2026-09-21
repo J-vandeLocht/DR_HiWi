@@ -104,10 +104,10 @@ def train_classifier(args):
     val_trans = make_val_transform_dino(args.img_size, args.complex_augs)
 
     train_dataset = FrameDataset(os.path.join(args.split_path, args.train_json),
-                                 ["classifier/cropped_classifier_frames"],
+                                 ["data/2024_Paxos_Frames/cropped_matched_frames"],
                                  transform=train_trans)
     val_dataset = FrameDataset(os.path.join(args.split_path, args.val_json),
-                               ["classifier/cropped_classifier_frames"],
+                               ["data/2024_Paxos_Frames/cropped_matched_frames"],
                                transform=val_trans)
 
     if args.binary_classification:

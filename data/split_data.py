@@ -205,11 +205,6 @@ if __name__ == '__main__':
     create_kfold_splits(
         dataset_configs=[
             {
-                "name": "2020",
-                "matching_path": "data/matching_results_2020.json",
-                "clip_labels_path": "data/clip_labels_2020.json",
-            },
-            {
                 "name": "2025",
                 "matching_path": "data/matching_results_2025.json",
                 "clip_labels_path": "data/clip_labels_2025.json",

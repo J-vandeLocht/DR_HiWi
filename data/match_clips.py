@@ -1,14 +1,11 @@
 import os
 import json
 import re
+from collections import defaultdict
 
 FRAME_DIRS = [
-    "classifier/cropped_classifier_frames",
+    "data/2024_Paxos_Frames/cropped_matched_frames",
 ]
-
-# CLIP_DIRS = [
-#     "data/ensemble_results_paxos2020/cleaned_videos",
-# ]
 
 CLIP_DIRS = [
     "data/ensemble_results_paxos2025/cleaned_videos",
@@ -16,16 +13,17 @@ CLIP_DIRS = [
 
 
 def get_core_id_from_video(filename):
-    # Removes extension and 'CLEAN_' prefix to get the base ID.
-    name = os.path.splitext(filename)[0]
-    return re.sub(r'^CLEAN_', '', name)
+    # Removes extension to get the base ID.
+    return os.path.splitext(filename)[0]
+
+
+# Frame naming convention, e.g.:
+#   '2024_02_11_12_26_IMG_4608 LE MILD NPDR_frame31_score0.9990.png' -> '2024_02_11_12_26_IMG_4608 LE MILD NPDR'
+FRAME_SUFFIX_RE = re.compile(r'_frame\d+_score[0-9.]+\.png$')
 
 
 def get_core_id_from_image(filename):
-    # Extracts the base ID from frame names produced by sample_frames.py, e.g.:
-    # 'B005L_frame_2121_p0.997.png' -> 'B005L'
-    # 'IMG_2708 LE HEALTHY_frame_2614_p0.980.png' -> 'IMG_2708 LE HEALTHY'
-    return re.sub(r'_frame_\d+_p[0-9.]+\.png$', '', filename)
+    return FRAME_SUFFIX_RE.sub('', filename)
 
 
 # 1. Get all files across all provided dirs
@@ -53,23 +51,51 @@ duplicate_images = {name: dirs for name, dirs in image_names_seen.items() if len
 if duplicate_images:
     print(f"WARNING: {len(duplicate_images)} image filename(s) found in multiple FRAME_DIRS: {duplicate_images}")
 
-# 2. Map Core IDs to their full video filename
-# This creates a lookup like: {"R008R2": "CLEAN_R008R2.mp4"}
-video_lookup = {get_core_id_from_video(c): c for c, _ in clips}
+# 2. Map Core IDs to their full video filename(s)
+# Build as core_id -> [full_clip_names...] first so we can detect collisions
+# (two different clip filenames reducing to the same core id), which the
+# original dict comprehension would have silently resolved by letting the
+# last one win.
+core_id_to_clips = defaultdict(list)
+for c, _ in clips:
+    core_id_to_clips[get_core_id_from_video(c)].append(c)
+
+ambiguous_core_ids = {cid: names for cid, names in core_id_to_clips.items() if len(names) > 1}
+if ambiguous_core_ids:
+    print(f"WARNING: {len(ambiguous_core_ids)} core id(s) map to multiple clip files; "
+          f"these will be treated as unmatchable (ambiguous): {ambiguous_core_ids}")
+
+# Only unambiguous core ids get a usable lookup entry
+video_lookup = {cid: names[0] for cid, names in core_id_to_clips.items() if len(names) == 1}
 
 # 3. Initialize results
 matches = {c: [] for c, _ in clips}
 matched_images = set()
 
+# Track which video(s) each image got assigned to, so we can catch any image
+# that ends up matched into more than one clip's list.
+image_match_targets = defaultdict(list)
+
 # 4. Perform Strict Matching
 for img, _ in images:
     img_core = get_core_id_from_image(img)
+
+    if img_core in ambiguous_core_ids:
+        # Core id exists but is ambiguous among multiple clip files; skip.
+        continue
 
     # Check for an exact match in the video dictionary
     if img_core in video_lookup:
         full_clip_name = video_lookup[img_core]
         matches[full_clip_name].append(img)
         matched_images.add(img)
+        image_match_targets[img].append(full_clip_name)
+
+# Sanity check: no image should ever be matched into more than one clip's list
+multiply_matched_images = {img: targets for img, targets in image_match_targets.items() if len(targets) > 1}
+if multiply_matched_images:
+    print(f"WARNING: {len(multiply_matched_images)} image(s) matched to multiple clips "
+          f"(this indicates a bug, not expected data): {multiply_matched_images}")
 
 # 5. Format for JSON output
 # We use the filename without extension as the key to stay consistent
@@ -82,7 +108,6 @@ results = {
 }
 
 # 6. Save
-# output_path = "data/matching_results_2020.json"
 output_path = "data/matching_results_2025.json"
 with open(output_path, "w") as f:
     json.dump(results, f, indent=4)

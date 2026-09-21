@@ -8,7 +8,6 @@ from PyQt6.QtWidgets import (
     QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QMessageBox,
     QFileDialog
 )
-# Fixed import: QShortcut is in QtGui, not QtWidgets
 from PyQt6.QtGui import QImage, QPixmap, QKeySequence, QShortcut
 from PyQt6.QtCore import Qt
 
@@ -32,33 +31,35 @@ class FullResWindow(QMainWindow):
 class ImageWidget(QLabel):
     """Custom QLabel handling clicks and selection states."""
 
-    def __init__(self, index: int, low_res_pixmap: QPixmap, full_res_pixmap: QPixmap, frame_idx: int):
+    def __init__(self, index: int, low_res_pixmap: QPixmap, full_res_pixmap: QPixmap, frame_idx: int,
+                 raw_frame: np.ndarray):
         super().__init__()
-        self.index = index  # Grid index (0-8)
+        self.index = index  # Grid index (0-24)
         self.frame_idx = frame_idx  # Original video frame number
         self.low_res_pixmap = low_res_pixmap
         self.full_res_pixmap = full_res_pixmap
+        self.raw_frame = raw_frame  # Keep original BGR image array for disk saving
         self.is_selected = False
 
         self.setPixmap(self.low_res_pixmap)
         self.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.setScaledContents(True)
-        self.setFixedSize(280, 280)
+        self.setFixedSize(160, 160)  # Reduced tile size to fit 5x5 grid smoothly
         self.update_style()
 
     def update_style(self):
         """Toggle styled border when selected."""
         if self.is_selected:
             self.setStyleSheet("""
-                border: 5px solid #ff4d4d;
-                border-radius: 8px;
+                border: 4px solid #ff4d4d;
+                border-radius: 5px;
                 padding: 0px;
                 background-color: #2a2a2a;
             """)
         else:
             self.setStyleSheet("""
                 border: 2px solid #3c3c3c;
-                border-radius: 8px;
+                border-radius: 5px;
                 padding: 0px;
                 background-color: #2a2a2a;
             """)
@@ -80,7 +81,7 @@ class ImageWidget(QLabel):
 class FrameSelectorApp(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Diabetic Retinopathy Frame Annotator")
+        self.setWindowTitle("Diabetic Retinopathy Frame Annotator (5x5)")
 
         # Start Maximized
         self.showMaximized()
@@ -117,6 +118,7 @@ class FrameSelectorApp(QMainWindow):
         self.annotations = {}
         self.image_widgets = []
         self.video_dir = None
+        self.output_dir = None
 
         # Quit Shortcut (Ctrl + Q)
         self.quit_shortcut = QShortcut(QKeySequence("Ctrl+Q"), self)
@@ -129,7 +131,7 @@ class FrameSelectorApp(QMainWindow):
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
         main_layout = QVBoxLayout(central_widget)
-        main_layout.setContentsMargins(30, 20, 30, 20)
+        main_layout.setContentsMargins(15, 10, 15, 10)
 
         # Header Info Banner
         header_layout = QHBoxLayout()
@@ -144,12 +146,12 @@ class FrameSelectorApp(QMainWindow):
         header_layout.addWidget(self.progress_label)
         main_layout.addLayout(header_layout)
 
-        main_layout.addSpacing(10)
+        main_layout.addSpacing(5)
 
-        # 3x3 Image Grid Container
+        # 5x5 Image Grid Container
         self.grid_container = QWidget()
         self.grid_layout = QGridLayout(self.grid_container)
-        self.grid_layout.setSpacing(20)
+        self.grid_layout.setSpacing(8)
         self.grid_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         main_layout.addWidget(self.grid_container, stretch=1)
@@ -159,7 +161,7 @@ class FrameSelectorApp(QMainWindow):
 
         self.submit_btn = QPushButton("Save & Next Video →")
         self.submit_btn.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.submit_btn.setFixedHeight(48)
+        self.submit_btn.setFixedHeight(44)
         self.submit_btn.clicked.connect(self.on_submit)
 
         btn_layout.addStretch()
@@ -181,12 +183,15 @@ class FrameSelectorApp(QMainWindow):
             QMessageBox.warning(self, "No Videos Found", "No .mp4 files found in the selected folder.")
             sys.exit(0)
 
+        # Create output directory for saving selected images
+        self.output_dir = self.video_dir / "annotated_frames"
+        self.output_dir.mkdir(parents=True, exist_ok=True)
+
         self.load_video(0)
 
     def cv_frame_to_pixmap(self, frame: np.ndarray, width: int = None, height: int = None) -> QPixmap:
         """Convert BGR OpenCV frame to QPixmap safely (WSL-friendly memory management)."""
         rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        # .copy() prevents memory segmentation faults across C++ Qt bindings
         rgb_frame = np.ascontiguousarray(rgb_frame)
 
         h, w, ch = rgb_frame.shape
@@ -200,7 +205,7 @@ class FrameSelectorApp(QMainWindow):
         return pixmap
 
     def load_video(self, idx: int):
-        """Extract 9 uniformly sampled frames and build grid."""
+        """Extract 25 uniformly sampled frames and build 5x5 grid."""
         # Clear existing grid widgets
         for widget in self.image_widgets:
             widget.deleteLater()
@@ -213,12 +218,12 @@ class FrameSelectorApp(QMainWindow):
         cap = cv2.VideoCapture(str(video_path))
         total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
-        if total_frames < 9:
-            QMessageBox.critical(self, "Error", f"Video {video_path.name} has fewer than 9 frames.")
+        if total_frames < 25:
+            QMessageBox.critical(self, "Error", f"Video {video_path.name} has fewer than 25 frames.")
             return
 
-        # Sample 9 uniformly spaced frame indices
-        frame_indices = np.linspace(0, total_frames - 1, 9, dtype=int)
+        # Sample 25 uniformly spaced frame indices
+        frame_indices = np.linspace(0, total_frames - 1, 25, dtype=int)
 
         for grid_idx, f_idx in enumerate(frame_indices):
             cap.set(cv2.CAP_PROP_POS_FRAMES, f_idx)
@@ -227,35 +232,49 @@ class FrameSelectorApp(QMainWindow):
                 continue
 
             # Convert to QPixmap for low-res tile and high-res pop-out
-            low_res_pixmap = self.cv_frame_to_pixmap(frame, 280, 280)
+            low_res_pixmap = self.cv_frame_to_pixmap(frame, 160, 160)
             full_res_pixmap = self.cv_frame_to_pixmap(frame)
 
-            img_widget = ImageWidget(grid_idx, low_res_pixmap, full_res_pixmap, frame_idx=int(f_idx))
+            img_widget = ImageWidget(
+                index=grid_idx,
+                low_res_pixmap=low_res_pixmap,
+                full_res_pixmap=full_res_pixmap,
+                frame_idx=int(f_idx),
+                raw_frame=frame
+            )
             self.image_widgets.append(img_widget)
 
-            row, col = divmod(grid_idx, 3)
+            row, col = divmod(grid_idx, 5)  # 5x5 Grid layout
             self.grid_layout.addWidget(img_widget, row, col)
 
         cap.release()
 
     def save_annotations_to_json(self):
-        """Save selection data to annotations.json in video folder."""
+        """Save selection metadata to annotations.json in video folder."""
         out_path = self.video_dir / "annotations.json"
         with open(out_path, "w") as f:
             json.dump(self.annotations, f, indent=4)
 
     def on_submit(self):
-        """Record selected frames and advance to next video."""
-        current_video_name = self.video_files[self.current_video_idx].name
+        """Record selected frames, save images to disk, and advance to next video."""
+        video_path = self.video_files[self.current_video_idx]
+        current_video_name = video_path.name
+        video_stem = video_path.stem
 
-        # Save selected frame numbers for the current video
-        selected_frames = [
-            w.frame_idx for w in self.image_widgets if w.is_selected
-        ]
+        selected_widgets = [w for w in self.image_widgets if w.is_selected]
+        selected_frames = []
+
+        # Save selected frame images to the annotated_frames directory
+        for w in selected_widgets:
+            selected_frames.append(w.frame_idx)
+            img_filename = f"{video_stem}_frame_{w.frame_idx}.png"
+            save_path = self.output_dir / img_filename
+            cv2.imwrite(str(save_path), w.raw_frame)
 
         self.annotations[current_video_name] = {
             "selected_frames": selected_frames,
-            "total_selected": len(selected_frames)
+            "total_selected": len(selected_frames),
+            "saved_folder": str(self.output_dir)
         }
 
         self.save_annotations_to_json()
@@ -268,9 +287,13 @@ class FrameSelectorApp(QMainWindow):
             QMessageBox.information(
                 self,
                 "Completed!",
-                f"All {len(self.video_files)} videos have been processed.\nAnnotations saved to annotations.json"
+                f"All {len(self.video_files)} videos have been processed.\n\n"
+                f"• Annotations JSON: {self.video_dir / 'annotations.json'}\n"
+                f"• Saved Images: {self.output_dir}"
             )
             self.close()
+
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = FrameSelectorApp()

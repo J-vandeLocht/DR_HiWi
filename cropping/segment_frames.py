@@ -9,10 +9,10 @@ from albumentations.pytorch import ToTensorV2
 # Assuming get_largest_component_mask is located in your local cropping module/utils
 from informative_frames.crop_frames import get_largest_component_mask
 
-# IMG_DIR = Path('data/2024_Paxos_Frames/frames')
-# CROPPED_DIR = Path('data/2024_Paxos_Frames/cropped_frames')
-IMG_DIR = Path('classifier/frames_sampled')
-CROPPED_DIR = Path('classifier/cropped_classifier_frames')
+IMG_DIR = Path('data/2024_Paxos_Frames/matched_frames')
+CROPPED_DIR = Path('data/2024_Paxos_Frames/cropped_matched_frames')
+# IMG_DIR = Path('classifier/frames_sampled')
+# CROPPED_DIR = Path('classifier/cropped_classifier_frames')
 SEG_MODEL_DIR = Path('cropping/models')
 
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
