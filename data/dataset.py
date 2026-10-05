@@ -145,6 +145,22 @@ class MILVideoDataset(Dataset):
             cap.release()
             raise RuntimeError(f"Video {path} has 0 frames or unreadable metadata.")
 
+        if self.num_frames == -1:
+            while True:
+                ret, frame = cap.read()
+                if not ret:
+                    break
+                frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                img = Image.fromarray(frame_rgb)
+                if self.transform:
+                    img = self.transform(img)
+                frames.append(img)
+            cap.release()
+
+            if len(frames) == 0:
+                raise RuntimeError(f"Video {path} yielded zero readable frames.")
+            return torch.stack(frames)
+
         if not self.random_segment_sample:
             # 1. Uniform Sampling (Deterministic)
             target_indices = np.linspace(0, total_frames - 1, self.num_frames, dtype=int).tolist()
@@ -456,29 +472,3 @@ class MILVideoDatasetRope(Dataset):
         )
 
         return torch.stack(frames), frame_positions
-
-
-
-class KaggleDRDataset(Dataset):
-    def __init__(self, split_dir, transform=None):
-        self.image_paths = []
-        self.labels = []
-        self.transform = transform
-
-        for grade_folder in sorted(os.listdir(split_dir)):
-            grade_path = os.path.join(split_dir, grade_folder)
-            if os.path.isdir(grade_path) and grade_folder.isdigit():
-                grade = int(grade_folder)
-                for img_name in os.listdir(grade_path):
-                    if img_name.lower().endswith(('.jpg', '.jpeg', '.png')):
-                        self.image_paths.append(os.path.join(grade_path, img_name))
-                        self.labels.append(grade) # Return 0, 1, 2, 3, or 4
-
-    def __len__(self):
-        return len(self.image_paths)
-
-    def __getitem__(self, idx):
-        img = Image.open(self.image_paths[idx]).convert('RGB')
-        if self.transform:
-            img = self.transform(img)
-        return img, torch.tensor(self.labels[idx], dtype=torch.long)

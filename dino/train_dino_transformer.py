@@ -33,8 +33,8 @@ class TransformerBlock(nn.Module):
         )
         self.dropout = nn.Dropout(dropout)
 
-    def forward(self, x):
-        attn_out, attn_weights = self.mha(x, x, x)
+    def forward(self, x, average_heads=True):
+        attn_out, attn_weights = self.mha(x, x, x, need_weights=True, average_attn_weights=average_heads)
         x = self.norm1(x + self.dropout(attn_out))
 
         ffn_out = self.ffn(x)
@@ -51,28 +51,10 @@ class DinoSelfAttention(nn.Module):
             ffn_dim=2048,
             dropout=0.1,
             num_blocks=1,
-            use_pos_embedding=False,
-            num_frames=32,
             num_classes=1,
             classifier_checkpoint_path=None,
             full_checkpoint_path=None,
     ):
-        """
-        Two independent, mutually exclusive, strict checkpoint-loading paths:
-
-        - classifier_checkpoint_path: path to a *DinoClassifier* state dict.
-          Only the backbone weights are extracted and loaded (strict=True
-          against the backbone's own key set). Use this when starting
-          Self-Attention training from a fine-tuned DinoClassifier backbone.
-
-        - full_checkpoint_path: path to a *DinoSelfAttention* state dict
-          (i.e. one saved from this exact class, with matching
-          num_blocks/use_pos_embedding/num_frames config). Loaded strictly
-          into the whole model. Use this for inference / resuming after
-          Self-Attention training has finished.
-
-        Passing both is an error - decide which stage you're in.
-        """
         super().__init__()
 
         if classifier_checkpoint_path is not None and full_checkpoint_path is not None:
@@ -81,8 +63,6 @@ class DinoSelfAttention(nn.Module):
             )
 
         self.num_blocks = num_blocks
-        self.use_pos_embedding = use_pos_embedding
-        self.num_frames = num_frames
         self.num_classes = num_classes
 
         self.backbone = torch.hub.load(
@@ -96,15 +76,6 @@ class DinoSelfAttention(nn.Module):
 
         # Learnable CLS token that will aggregate information across all frames
         self.cls_token = nn.Parameter(torch.zeros(1, 1, self.L))
-
-        # Optional learned positional embedding, one per frame slot.
-        # NOT applied to the CLS token, only to the frame tokens, since the
-        # frames form the "sequence" with potential ordering/position info
-        # and the CLS token is just an aggregation query.
-        if self.use_pos_embedding:
-            self.pos_embedding = nn.Parameter(torch.zeros(1, num_frames, self.L))
-        else:
-            self.pos_embedding = None
 
         # Stack of Self-Attention Blocks
         self.blocks = nn.ModuleList([
@@ -159,7 +130,7 @@ class DinoSelfAttention(nn.Module):
         """Load a full DinoSelfAttention checkpoint (backbone + cls_token +
         blocks + classifier). Strict: requires an exact key/shape match,
         i.e. the model must have been constructed with the same
-        num_blocks/use_pos_embedding/num_frames as when the checkpoint was
+        num_blocks/num_frames as when the checkpoint was
         saved."""
         print(f"Loading full DinoSelfAttention checkpoint: {path}")
         state_dict = torch.load(path, map_location="cpu")
@@ -192,15 +163,6 @@ class DinoSelfAttention(nn.Module):
         # Initialize CLS Token
         nn.init.normal_(self.cls_token, std=1e-6)
 
-        # Initialize positional embedding, if used
-        if self.pos_embedding is not None:
-            nn.init.trunc_normal_(self.pos_embedding, std=0.02)
-
-        print(
-            f"--- DINO Self-Attention [{self.L} features, {self.num_blocks} block(s), "
-            f"pos_embedding={self.use_pos_embedding}] weights initialized ---"
-        )
-
     # ---------------------------------------------------------
     # MODULAR EVALUATION METHODS
     # ---------------------------------------------------------
@@ -209,48 +171,36 @@ class DinoSelfAttention(nn.Module):
         feats = self.backbone.forward_features(x)
         return feats["x_norm_clstoken"]
 
-    def forward_head(self, h):
-        # h shape: [num_frames, L] -> e.g., [32, 1024]
-        # Expand to pseudo-batch format [batch_size=1, num_frames, L]
+    def _encode(self, h, average_heads=True):
+        """h: [num_frames, L]. Returns the final sequence [1, T+1, L] and a list with
+        one attention tensor per block (each [1, T+1, T+1] if average_heads,
+        else [1, heads, T+1, T+1]). Index 0 = CLS, 1: = frames."""
         h = h.unsqueeze(0)
+        cls_tokens = self.cls_token.expand(h.size(0), -1, -1)
+        x = torch.cat((cls_tokens, h), dim=1)
 
-        if self.pos_embedding is not None:
-            n = h.size(1)
-            if n != self.num_frames:
-                raise ValueError(
-                    f"Got {n} frames but positional embedding was initialized "
-                    f"for num_frames={self.num_frames}."
-                )
-            h = h + self.pos_embedding
-
-        # Expand CLS token to match batch size
-        cls_tokens = self.cls_token.expand(h.size(0), -1, -1)  # [1, 1, L]
-
-        # Prepend CLS token to the frame features sequence
-        x = torch.cat((cls_tokens, h), dim=1)  # [1, num_frames + 1, L]
-
-        # Run through the stack of self-attention blocks.
-        # Keep the attention weights from the LAST block only, since that's
-        # the one whose CLS-token attention best reflects what actually
-        # drove the final classification.
-        attn_weights = None
+        attn_per_layer = []
         for block in self.blocks:
-            x, attn_weights = block(x)
+            x, attn = block(x, average_heads=average_heads)
+            attn_per_layer.append(attn)
+        return x, attn_per_layer
 
-        # Extract the processed CLS token embedding for classification
-        bag_representation = x[:, 0, :]  # [1, L]
-        logits = self.classifier(bag_representation)  # [1, 1]
+    def forward_head(self, h):
+        x, attn_per_layer = self._encode(h)
+        logits = self.classifier(x[:, 0, :])  # [1, num_classes]
 
-        # Extract attention weights originating from the CLS token to all target video frames
-        # attn_weights shape: [batch_size, queries, keys] -> [1, num_frames+1, num_frames+1]
-        # Query 0 is the CLS token. Keys 1: are the video frames.
-        frame_weights = attn_weights[0, 0, 1:]  # [num_frames]
-
-        # Normalize weights over the frames to sum to 1 (preserves expected MIL downstream properties)
+        # CLS -> frame attention of the LAST block, renormalized over the frames
+        frame_weights = attn_per_layer[-1][0, 0, 1:]
         frame_weights = frame_weights / (frame_weights.sum() + 1e-12)
 
-        # Returns logits, frame weights, and raw attention vector for max-attention strategy compatibility
         return logits, frame_weights, frame_weights
+
+    def forward_with_attention(self, x, average_heads=True):
+        """x: [num_frames, 3, H, W]. Returns logits and the list of full per-layer
+        attention matrices."""
+        h = self.extract_features(x)
+        x, attn_per_layer = self._encode(h, average_heads=average_heads)
+        return self.classifier(x[:, 0, :]), attn_per_layer
 
     def forward(self, x):
         """
@@ -270,7 +220,8 @@ def train_self_attention(args):
                 f"{"binary" if args.binary_classification else "all"}_"
                 f"{args.split_path.split('/')[-1]}_"
                 f"{timestamp}_"
-                f"{"full" if args.train_json == "mil_train.json" else args.train_json.split(".")[0].split("_")[-1]}")
+                f"{"full" if args.train_json == "mil_train.json" else args.train_json.split(".")[0].split("_")[-1]}_"
+                f"{args.num_blocks}blocks")
 
     run_dir = os.path.join("transformer", "models", run_name)
     os.makedirs(run_dir, exist_ok=True)
@@ -282,7 +233,6 @@ def train_self_attention(args):
     model = DinoSelfAttention(classifier_checkpoint_path=args.classifier_checkpoint,
                               freeze_backbone=args.freeze_backbone,
                               num_blocks=args.num_blocks,
-                              use_pos_embedding=args.use_pos_embedding,
                               num_classes=1 if args.binary_classification else 5).to(device)
 
     # --- Transforms ---
@@ -297,12 +247,12 @@ def train_self_attention(args):
 
     # --- Datasets ---
     train_ds = MILVideoDataset(os.path.join(args.split_path, args.train_json),
-                               num_frames=32,
+                               num_frames=args.num_frames,
                                transform=train_trans,
                                random_segment_sample=args.random_segment_sample,
                                search_dir_paths=search_dir_paths)
     val_ds = MILVideoDataset(os.path.join(args.split_path, args.val_json),
-                             num_frames=32,
+                             num_frames=args.num_frames,
                              transform=val_trans,
                              search_dir_paths=search_dir_paths)
 
@@ -405,8 +355,8 @@ if __name__ == "__main__":
     parser.add_argument('--img_size', type=int, default=512)
     parser.add_argument('--lr', type=float, default=1e-5)
     parser.add_argument('--complex_augs', action='store_true')
-    parser.add_argument('--use_pos_embedding', action='store_true')
     parser.add_argument('--num_blocks', type=int, default=1)
+    parser.add_argument('--num_frames', type=int, default=32)
     parser.add_argument('--random_segment_sample', action='store_true')
     parser.add_argument('--fused_dataset', action='store_true')
     parser.add_argument('--binary_classification', action='store_true')
